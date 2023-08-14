@@ -1,0 +1,167 @@
+<%= form_with(model: activity_offering) do |form| %>
+  <% if activity_offering.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(activity_offering.errors.count, "error") %> prohibited this activity_offering from being saved:</h2>
+
+      <ul>
+        <% activity_offering.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :typeKey, style: "display: block" %>
+    <%= form.text_field :typeKey %>
+  </div>
+
+  <div>
+    <%= form.label :stateKey, style: "display: block" %>
+    <%= form.text_field :stateKey %>
+  </div>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :descr, style: "display: block" %>
+    <%= form.text_field :descr %>
+  </div>
+
+  <div>
+    <%= form.label :effectiveDate, style: "display: block" %>
+    <%= form.date_field :effectiveDate %>
+  </div>
+
+  <div>
+    <%= form.label :expirationDate, style: "display: block" %>
+    <%= form.date_field :expirationDate %>
+  </div>
+
+  <div>
+    <%= form.label :formatOfferingId, style: "display: block" %>
+    <%= form.text_field :formatOfferingId %>
+  </div>
+
+  <div>
+    <%= form.label :formatOfferingName, style: "display: block" %>
+    <%= form.text_field :formatOfferingName %>
+  </div>
+
+  <div>
+    <%= form.label :activityId, style: "display: block" %>
+    <%= form.text_field :activityId %>
+  </div>
+
+  <div>
+    <%= form.label :term_id, style: "display: block" %>
+    <%= form.text_field :term_id %>
+  </div>
+
+  <div>
+    <%= form.label :termCode, style: "display: block" %>
+    <%= form.text_field :termCode %>
+  </div>
+
+  <div>
+    <%= form.label :activityCode, style: "display: block" %>
+    <%= form.text_field :activityCode %>
+  </div>
+
+  <div>
+    <%= form.label :scheduleIds, style: "display: block" %>
+    <%= form.text_field :scheduleIds %>
+  </div>
+
+  <div>
+    <%= form.label :isHonorsOffering, style: "display: block" %>
+    <%= form.check_box :isHonorsOffering %>
+  </div>
+
+  <div>
+    <%= form.label :instructors, style: "display: block" %>
+    <%= form.text_field :instructors %>
+  </div>
+
+  <div>
+    <%= form.label :weeklyInclassContactHours, style: "display: block" %>
+    <%= form.text_field :weeklyInclassContactHours %>
+  </div>
+
+  <div>
+    <%= form.label :weeklyOutofClassHours, style: "display: block" %>
+    <%= form.text_field :weeklyOutofClassHours %>
+  </div>
+
+  <div>
+    <%= form.label :weeklyTotalContactHours, style: "display: block" %>
+    <%= form.text_field :weeklyTotalContactHours %>
+  </div>
+
+  <div>
+    <%= form.label :maximumEnrollment, style: "display: block" %>
+    <%= form.number_field :maximumEnrollment %>
+  </div>
+
+  <div>
+    <%= form.label :minimumEnrollment, style: "display: block" %>
+    <%= form.number_field :minimumEnrollment %>
+  </div>
+
+  <div>
+    <%= form.label :isEvaluated, style: "display: block" %>
+    <%= form.check_box :isEvaluated %>
+  </div>
+
+  <div>
+    <%= form.label :activityOfferingUrl, style: "display: block" %>
+    <%= form.text_field :activityOfferingUrl %>
+  </div>
+
+  <div>
+    <%= form.label :course_offering_id, style: "display: block" %>
+    <%= form.text_field :course_offering_id %>
+  </div>
+
+  <div>
+    <%= form.label :courseOfferingTitle, style: "display: block" %>
+    <%= form.text_field :courseOfferingTitle %>
+  </div>
+
+  <div>
+    <%= form.label :courseOfferingCode, style: "display: block" %>
+    <%= form.text_field :courseOfferingCode %>
+  </div>
+
+  <div>
+    <%= form.label :unitsDeploymentOrgIds, style: "display: block" %>
+    <%= form.text_field :unitsDeploymentOrgIds %>
+  </div>
+
+  <div>
+    <%= form.label :requisiteIds, style: "display: block" %>
+    <%= form.text_field :requisiteIds %>
+  </div>
+
+  <div>
+    <%= form.label :coRequisiteIds, style: "display: block" %>
+    <%= form.text_field :coRequisiteIds %>
+  </div>
+
+  <div>
+    <%= form.label :restrictionIds, style: "display: block" %>
+    <%= form.text_field :restrictionIds %>
+  </div>
+
+  <div>
+    <%= form.label :meta, style: "display: block" %>
+    <%= form.text_field :meta %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

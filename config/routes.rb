@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
-  resources :registration_request_items
-  resources :registration_requests
+  resources :terms
+  resources :people
+  resources :activity_offerings
+  resources :course_offerings
+  resources :registration_requests do
+    resources :registration_request_items
+  end
+
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions',
@@ -10,5 +16,5 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-  root "waitlist_requests#index"
+  root "course_offerings#index"
 end

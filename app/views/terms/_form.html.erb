@@ -1,0 +1,57 @@
+<%= form_with(model: term) do |form| %>
+  <% if term.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(term.errors.count, "error") %> prohibited this term from being saved:</h2>
+
+      <ul>
+        <% term.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :typeKey, style: "display: block" %>
+    <%= form.text_field :typeKey %>
+  </div>
+
+  <div>
+    <%= form.label :stateKey, style: "display: block" %>
+    <%= form.text_field :stateKey %>
+  </div>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :descr, style: "display: block" %>
+    <%= form.text_field :descr %>
+  </div>
+
+  <div>
+    <%= form.label :code, style: "display: block" %>
+    <%= form.text_field :code %>
+  </div>
+
+  <div>
+    <%= form.label :startDate, style: "display: block" %>
+    <%= form.date_field :startDate %>
+  </div>
+
+  <div>
+    <%= form.label :endDate, style: "display: block" %>
+    <%= form.date_field :endDate %>
+  </div>
+
+  <div>
+    <%= form.label :meta, style: "display: block" %>
+    <%= form.text_field :meta %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

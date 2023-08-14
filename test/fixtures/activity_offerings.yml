@@ -1,0 +1,65 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  typeKey: MyString
+  stateKey: MyString
+  name: MyString
+  descr: 
+  effectiveDate: 2023-08-14
+  expirationDate: 2023-08-14
+  formatOfferingId: MyString
+  formatOfferingName: MyString
+  activityId: MyString
+  term: one
+  termCode: MyString
+  activityCode: MyString
+  scheduleIds: MyString
+  isHonorsOffering: false
+  instructors: 
+  weeklyInclassContactHours: 1.5
+  weeklyOutofClassHours: 1.5
+  weeklyTotalContactHours: 1.5
+  maximumEnrollment: 1
+  minimumEnrollment: 1
+  isEvaluated: false
+  activityOfferingUrl: MyString
+  course_offering: one
+  courseOfferingTitle: MyString
+  courseOfferingCode: MyString
+  unitsDeploymentOrgIds: MyString
+  requisiteIds: MyString
+  coRequisiteIds: MyString
+  restrictionIds: MyString
+  meta: 
+
+two:
+  typeKey: MyString
+  stateKey: MyString
+  name: MyString
+  descr: 
+  effectiveDate: 2023-08-14
+  expirationDate: 2023-08-14
+  formatOfferingId: MyString
+  formatOfferingName: MyString
+  activityId: MyString
+  term: two
+  termCode: MyString
+  activityCode: MyString
+  scheduleIds: MyString
+  isHonorsOffering: false
+  instructors: 
+  weeklyInclassContactHours: 1.5
+  weeklyOutofClassHours: 1.5
+  weeklyTotalContactHours: 1.5
+  maximumEnrollment: 1
+  minimumEnrollment: 1
+  isEvaluated: false
+  activityOfferingUrl: MyString
+  course_offering: two
+  courseOfferingTitle: MyString
+  courseOfferingCode: MyString
+  unitsDeploymentOrgIds: MyString
+  requisiteIds: MyString
+  coRequisiteIds: MyString
+  restrictionIds: MyString
+  meta: 
