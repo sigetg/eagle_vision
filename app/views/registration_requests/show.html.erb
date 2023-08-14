@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @registration_request %>
+
+<div>
+  <%= link_to "Edit this registration request", edit_registration_request_path(@registration_request) %> |
+  <%= link_to "Back to registration requests", registration_requests_path %>
+
+  <%= button_to "Destroy this registration request", @registration_request, method: :delete %>
+</div>
