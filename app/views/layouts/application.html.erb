@@ -11,6 +11,19 @@
   </head>
 
   <body>
+    <% flash.each do |name, msg| %>
+      <%= content_tag :div, msg, class: name %>
+    <% end %>
+
+    <% if user_signed_in? %>
+      <%= form_tag(destroy_user_session_path, method: :delete) do %>
+        <%= submit_tag 'Sign Out' %>
+      <% end %>
+    <% else %>
+      <% unless controller_name == 'sessions' || controller_name == 'registrations' %>
+        <%= link_to 'Sign In', new_user_session_path %>
+      <% end %>
+    <% end %>
     <%= yield %>
   </body>
 </html>
