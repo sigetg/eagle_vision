@@ -8,11 +8,16 @@ class RegistrationRequestsController < ApplicationController
 
   # GET /registration_requests/1 or /registration_requests/1.json
   def show
+    @registration_request_items = RegistrationRequestItem.find(:all, :from => "/registration_requests/#{@registration_request.id}/registration_request_items" )
   end
 
   # GET /registration_requests/new
   def new
     @registration_request = RegistrationRequest.new
+    @registration_request_item = RegistrationRequestItem.new
+    @activity_offering = ActivityOffering.find(params[:activity_offering_id])
+    @term_id = params[:term_id]
+    @person = Person.first
   end
 
   # GET /registration_requests/1/edit
@@ -22,9 +27,14 @@ class RegistrationRequestsController < ApplicationController
   # POST /registration_requests or /registration_requests.json
   def create
     @registration_request = RegistrationRequest.new(registration_request_params)
+    @registration_request_item = RegistrationRequestItem.new(registration_request_item_params)
+
 
     respond_to do |format|
       if @registration_request.save
+        @registration_request_item.registration_request_id = @registration_request.id
+      end
+      if @registration_request.save && @registration_request_item.save
         format.html { redirect_to registration_request_url(@registration_request), notice: "Registration request was successfully created." }
         format.json { render :show, status: :created, location: @registration_request }
       else
@@ -65,6 +75,11 @@ class RegistrationRequestsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def registration_request_params
-      params.require(:registration_request).permit(:typeKey, :stateKey, :effectiveDate, :expirationDate, :name, :descr, :person_id, :term_id, :submittedDate, :processResults, :itemStudentIds, :itemStudentPopulationId, :meta)
+      params.require(:registration_request).permit(:typeKey, :stateKey, :effectiveDate, :expirationDate, :name, :descr, :person_id, :term_id, :submittedDate, :processResults, :itemStudentIds, :itemStudentPopulationId, :meta, :registration_request_item)
+    end
+
+    # Only allow a list of trusted parameters through.
+    def registration_request_item_params
+      params.require(:registration_request).require(:registration_request_item).permit(:typeKey, :stateKey, :effectiveDate, :expirationDate, :name, :descr, :registration_request_id, :person_id, :requestedEffectiveDate, :existingRegistrationId, :existingActivityOfferingId, :preferredActivityOfferingIds, :preferredFormatOfferingIds, :preferredRegistrationGroupIds, :preferredCredits, :preferredGradingOptionIds, :processResults, :resultingRegistrationId, :courseWaitlistEntryId, :processingPriority, :lastAttendanceDate, :notificationDate, :meta)
     end
 end

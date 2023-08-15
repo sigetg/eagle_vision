@@ -8,8 +8,6 @@ class CourseOfferingsController < ApplicationController
   # GET /course_offerings/1 or /course_offerings/1.json
   def show
     @activity_offerings = ActivityOffering.find(:all, :from => "/course_offerings/#{@course_offering.id}/activity_offerings" )
-    puts @activity_offerings
-    puts "Course: #{@course_offering.id}"
   end
 
   # GET /course_offerings/new

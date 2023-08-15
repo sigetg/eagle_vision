@@ -1,0 +1,275 @@
+<%= form_with(model: registration_request) do |form| %>
+  <% if registration_request.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(registration_request.errors.count, "error") %> prohibited this registration_request from being saved:</h2>
+
+      <ul>
+        <% registration_request.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :typeKey, style: "display: block" do %>
+      Type Key: Waitlist
+    <% end %>
+    <%= form.hidden_field :typeKey, value: 'Waitlist' %>
+  </div>
+
+  <div>
+    <%= form.label :stateKey, style: "display: block" do %>
+      State Key: Pending
+    <% end %>
+    <%= form.hidden_field :stateKey, value: 'Pending' %>
+  </div>
+
+  <div>
+    <%= form.label :effectiveDate, style: "display: block" do %>
+      Effective Date: <%= Time.now %>
+    <% end %>
+    <%= form.hidden_field :effectiveDate, value: Time.now %>
+  </div>
+
+  <div>
+    <%= form.label :expirationDate, style: "display: block" do %>
+      Expiration Date: <%= Time.now + 1.month %>
+    <% end %>
+    <%= form.hidden_field :expirationDate, value: Time.now + 1.month %>
+  </div>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :descr, style: "display: block" %>
+    <%= form.text_field :descr %>
+  </div>
+
+  <div>
+    <%= form.label :person_id, style: "display: block" do %>
+      Person: <%= current_user.id %>
+    <% end %>
+    <%= form.hidden_field :person_id, value: current_user.id %>
+  </div>
+
+  <div>
+    <%= form.label :term_id, style: "display: block" do %>
+      Term: <%= @term_id %>
+    <% end %>
+    <%= form.hidden_field :term_id, value: @term_id %>
+  </div>
+
+  <div>
+    <%= form.label :submittedDate, style: "display: block" do %>
+      Submitted Date: <%= Time.now %>
+    <% end %>
+    <%= form.hidden_field :submittedDate, value: Time.now %>
+  </div>
+
+  <div>
+    <%= form.label :processResults, style: "display: block" do %>
+      Process Results:
+    <% end %>
+    <%= form.hidden_field :processResults, value: '' %>
+  </div>
+
+  <div>
+    <%= form.label :itemStudentIds, style: "display: block" do %>
+      Student Ids:
+    <% end %>
+    <%= form.hidden_field :itemStudentIds, value: '' %>
+  </div>
+
+  <div>
+    <%= form.label :itemStudentPopulationId, style: "display: block" do %>
+      Student Population Id:
+    <% end %>
+    <%= form.hidden_field :itemStudentPopulationId, value: '' %>
+  </div>
+
+  <div>
+    <%= form.label :meta, style: "display: block" do %>
+      Meta:
+    <% end %>
+    <%= form.hidden_field :meta, value: '' %>
+  </div>
+
+  <h2>Registration Request Item</h2>
+  <%= form.fields_for :registration_request_item do |item_form| %>
+    <% if registration_request_item.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(registration_request_item.errors.count, "error") %> prohibited this registration_request_item from being saved:</h2>
+
+        <ul>
+          <% registration_request_item.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div>
+      <%= item_form.label :typeKey, style: "display: block" do %>
+        Type Key: WaitlistItem
+      <% end %>
+      <%= item_form.hidden_field :typeKey, value: 'WaitlistItem' %>
+    </div>
+
+    <div>
+      <%= item_form.label :stateKey, style: "display: block" do %>
+        State Key: PendingItem
+      <% end %>
+      <%= item_form.hidden_field :stateKey, value: 'PendingItem' %>
+    </div>
+
+    <div>
+      <%= item_form.label :effectiveDate, style: "display: block" do %>
+        Effective Date: <%= Time.now %>
+      <% end %>
+      <%= item_form.hidden_field :effectiveDate, value: Time.now %>
+    </div>
+
+    <div>
+      <%= item_form.label :expirationDate, style: "display: block" do %>
+        Expiration Date: <%= Time.now + 1.month %>
+      <% end %>
+      <%= item_form.hidden_field :expirationDate, value: Time.now + 1.month %>
+    </div>
+
+    <div>
+      <%= item_form.label :name, style: "display: block" %>
+      <%= item_form.text_field :name %>
+    </div>
+
+    <div>
+      <%= item_form.label :descr, style: "display: block" %>
+      <%= item_form.text_field :descr %>
+    </div>
+
+    <div>
+      <%= item_form.label :registration_request_id, style: "display: block" do %>
+        Registration Request: <%= registration_request.id %>
+      <% end %>
+      <%= item_form.hidden_field :registration_request_id, value: registration_request.id %>
+    </div>
+
+    <div>
+      <%= item_form.label :person_id, style: "display: block" do %>
+        Person: <%= current_user.id %>
+      <% end %>
+      <%= item_form.hidden_field :person_id, value: current_user.id %>
+    </div>
+
+    <div>
+      <%= item_form.label :requestedEffectiveDate, style: "display: block" do %>
+        Requested Effective Date: <%= Time.now %>
+      <% end %>
+      <%= item_form.hidden_field :requestedEffectiveDate, value: Time.now %>
+    </div>
+
+    <div>
+      <%= item_form.label :existingRegistrationId, style: "display: block" do %>
+        Existing Registration Id:
+      <% end %>
+      <%= item_form.hidden_field :existingRegistrationId, value: '' %>
+    </div>
+
+    <div>
+      <%= item_form.label :existingActivityOfferingId, style: "display: block" do %>
+        Existing Activity Offering Id:
+      <% end %>
+      <%= item_form.hidden_field :existingActivityOfferingId, value: '' %>
+    </div>
+
+    <div>
+      <%= item_form.label :preferredActivityOfferingIds, style: "display: block" do %>
+        Preferred Activity Offering Ids:
+      <% end %>
+      <%= item_form.hidden_field :preferredActivityOfferingIds, value: '' %>
+    </div>
+
+    <div>
+      <%= item_form.label :preferredFormatOfferingIds, style: "display: block" do %>
+        Preferred Format Offering Ids:
+      <% end %>
+      <%= item_form.hidden_field :preferredFormatOfferingIds, value: '' %>
+    </div>
+
+    <div>
+      <%= item_form.label :preferredRegistrationGroupIds, style: "display: block" do %>
+        Preferred Registration Group Ids:
+      <% end %>
+      <%= item_form.hidden_field :preferredRegistrationGroupIds, value: '' %>
+    </div>
+
+    <div>
+      <%= item_form.label :preferredCredits, style: "display: block" do %>
+        Preferred Credits:
+      <% end %>
+      <%= item_form.hidden_field :preferredCredits, value: '' %>
+    </div>
+
+    <div>
+      <%= item_form.label :preferredGradingOptionIds, style: "display: block" do %>
+        Preferred Grading Option Ids:
+      <% end %>
+      <%= item_form.hidden_field :preferredGradingOptionIds, value: '' %>
+    </div>
+
+    <div>
+      <%= item_form.label :processResults, style: "display: block" do %>
+        Process Results:
+      <% end %>
+      <%= item_form.hidden_field :processResults, value: '' %>
+    </div>
+
+    <div>
+      <%= item_form.label :resultingRegistrationId, style: "display: block" do %>
+        Resulting Registration Id:
+      <% end %>
+      <%= item_form.hidden_field :resultingRegistrationId, value: '' %>
+    </div>
+
+    <div>
+      <%= item_form.label :courseWaitlistEntryId, style: "display: block" do %>
+        Course Waitlist Entry Id:
+      <% end %>
+      <%= item_form.hidden_field :courseWaitlistEntryId, value: '' %>
+    </div>
+
+    <div>
+      <%= item_form.label :processingPriority, style: "display: block" do %>
+        Processing Priority: 0
+      <% end %>
+      <%= item_form.hidden_field :processingPriority, value: 0 %>
+    </div>
+
+    <div>
+      <%= item_form.label :lastAttendanceDate, style: "display: block" do %>
+        Last Attendance Date: <%= Time.now %>
+      <% end %>
+      <%= item_form.hidden_field :lastAttendanceDate, value: Time.now %>
+    </div>
+
+    <div>
+      <%= item_form.label :notificationDate, style: "display: block" do %>
+        Notification Date: <%= Time.now + 1.month %>
+      <% end %>
+      <%= item_form.hidden_field :notificationDate, value: Time.now + 1.month %>
+    </div>
+
+    <div>
+      <%= item_form.label :meta, style: "display: block" do %>
+        Meta:
+      <% end %>
+      <%= item_form.hidden_field :meta, value: '' %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

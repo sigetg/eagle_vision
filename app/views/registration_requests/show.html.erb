@@ -1,6 +1,15 @@
 <p style="color: green"><%= notice %></p>
+<h1>Registration request</h1>
 
 <%= render @registration_request %>
+
+<h2>Registration request item</h2>
+
+<div id="registration_request_items">
+  <% @registration_request_items.each do |registration_request_item| %>
+    <%= render registration_request_item %>
+  <% end %>
+</div>
 
 <div>
   <%= link_to "Edit this registration request", edit_registration_request_path(@registration_request) %> |

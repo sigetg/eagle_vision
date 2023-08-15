@@ -3,9 +3,8 @@ Rails.application.routes.draw do
   resources :people
   resources :course_offerings
   resources :activity_offerings
-  resources :registration_requests do
-    resources :registration_request_items
-  end
+  resources :registration_requests
+  resources :registration_request_items
 
   devise_for :users, controllers: {
     registrations: 'users/registrations',
