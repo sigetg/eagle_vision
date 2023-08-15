@@ -1,4 +1,5 @@
 <p style="color: green"><%= notice %></p>
+<h1>Course offering</h1>
 
 <%= render @course_offering %>
 
@@ -7,4 +8,16 @@
   <%= link_to "Back to course offerings", course_offerings_path %>
 
   <%= button_to "Destroy this course offering", @course_offering, method: :delete %>
+</div>
+
+<h2>Associated Activity Offerings</h2>
+
+<div id="activity_offerings">
+  <% @activity_offerings.each do |activity_offering| %>
+    <%= render activity_offering %>
+    <p>
+      <%= link_to "Create a new Registration Request for this activity offering", new_registration_request_path(activity_offering_id: activity_offering.id) %> |
+      <%= link_to "Show this activity offering", activity_offering %>
+    </p>
+  <% end %>
 </div>

@@ -1,6 +1,5 @@
 class CourseOfferingsController < ApplicationController
   before_action :set_course_offering, only: %i[ show edit update destroy ]
-
   # GET /course_offerings or /course_offerings.json
   def index
     @course_offerings = CourseOffering.all
@@ -8,6 +7,9 @@ class CourseOfferingsController < ApplicationController
 
   # GET /course_offerings/1 or /course_offerings/1.json
   def show
+    @activity_offerings = ActivityOffering.find(:all, :from => "/course_offerings/#{@course_offering.id}/activity_offerings" )
+    puts @activity_offerings
+    puts "Course: #{@course_offering.id}"
   end
 
   # GET /course_offerings/new

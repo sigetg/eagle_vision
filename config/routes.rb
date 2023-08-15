@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   resources :terms
   resources :people
-  resources :activity_offerings
   resources :course_offerings
+  resources :activity_offerings
   resources :registration_requests do
     resources :registration_request_items
   end
