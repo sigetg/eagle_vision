@@ -1,42 +1,22 @@
+<%= render 'search_form' %>
+
 <p id="notice"><%= notice %></p>
 <h1>Course Offerings</h1>
 <table>
   <thead>
     <tr>
-      <th>Typekey</th>
-      <th>Statekey</th>
-      <th>Effectivedate</th>
-      <th>Expirationdate</th>
-      <th>Name</th>
-      <th>Descr</th>
-      <th>Courseid</th>
+      <th>Course Offering Title</th>
       <th>Term</th>
-      <th>Coursecode</th>
-      <th>Courseofferingcode</th>
-      <th>Subjectareaid</th>
-      <th>Coursenumbersuffix</th>
-      <th>Courseofferingtitle</th>
-      <th>Ishonorsoffering</th>
-      <th>Maximumenrollment</th>
-      <th>Minimumenrollment</th>
-      <th>Gradingoptionid</th>
-      <th>Studentregistrationgradingoptionids</th>
-      <th>Creditoptionid</th>
+      <th>Course Code</th>
+      <th>Honors Offering</th>
+      <th>Maximum Enrollment</th>
+      <th>Minimum Enrollment</th>
+      <th>Credits</th>
       <th>Instructors</th>
-      <th>Unitsdeploymentorgids</th>
-      <th>Requisiteids</th>
-      <th>Corequisiteids</th>
-      <th>Restrictionids</th>
-      <th>Campuslocations</th>
-      <th>Isevaluated</th>
-      <th>Courseofferingurl</th>
-      <th>Graderosterdefinitionid</th>
-      <th>Gradingoptionids</th>
-      <th>Creditoptionids</th>
-      <th>Meta</th>
+      <th>Deployment Orginization</th>
     </tr>
   </thead>
-  <%= render 'course_offering', locals: {course_offerings: @course_offerings} %>
+  <%= render 'course_offerings', locals: {course_offerings: @course_offerings} %>
 </table>
 
 <%= link_to "New course offering", new_course_offering_path %>

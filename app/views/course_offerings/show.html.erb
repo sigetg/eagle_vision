@@ -1,12 +1,10 @@
 <p style="color: green"><%= notice %></p>
-<h1>Course offering</h1>
+<h1><%= @course_offering.courseOfferingTitle %></h1>
 
 <%= render @course_offering %>
 
 <div>
-  <%= link_to "Edit this course offering", edit_course_offering_path(@course_offering) %> |
   <%= link_to "Back to course offerings", course_offerings_path %>
-
   <%= button_to "Destroy this course offering", @course_offering, method: :delete %>
 </div>
 

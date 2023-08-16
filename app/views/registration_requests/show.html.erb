@@ -1,9 +1,9 @@
 <p style="color: green"><%= notice %></p>
-<h1>Registration request</h1>
+<h1>Waitlist request</h1>
 
 <%= render @registration_request %>
 
-<h2>Registration request item</h2>
+<h2>Waitlist request item</h2>
 
 <div id="registration_request_items">
   <% @registration_request_items.each do |registration_request_item| %>
@@ -12,8 +12,8 @@
 </div>
 
 <div>
-  <%= link_to "Edit this registration request", edit_registration_request_path(@registration_request) %> |
-  <%= link_to "Back to registration requests", registration_requests_path %>
+  <%= link_to "Edit this waitlist request", edit_registration_request_path(@registration_request) %> |
+  <%= link_to "Back to waitlist requests", registration_requests_path %>
 
-  <%= button_to "Destroy this registration request", @registration_request, method: :delete %>
+  <%= button_to "Destroy this waitlist request", @registration_request, method: :delete %>
 </div>

@@ -16,7 +16,7 @@
     <% end %>
 
     <% if user_signed_in? %>
-      <%= link_to 'My Registration Requests', registration_requests_path %>
+      <%= link_to 'My Waitlist Requests', registration_requests_path %>
       <%= link_to 'Search Course Offerings', course_offerings_path %>
       <%= form_tag(destroy_user_session_path, method: :delete) do %>
         <%= submit_tag 'Sign Out' %>
@@ -26,11 +26,6 @@
         <%= link_to 'Sign In', new_user_session_path %>
       <% end %>
     <% end %>
-    <%# search form %>
-    <form action="/search">
-      <input placeholder="Search" name="key" type="text">
-      <button type="submit">Search</button>
-    </form>
     <%= yield %>
   </body>
 </html>

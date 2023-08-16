@@ -1,38 +1,37 @@
+<div id="<%= dom_id course_offering %>">
+  <p>
+    <strong>Name:</strong>
+    <%= course_offering.name %>
+  </p>
 
-<tbody>
-  <% @course_offerings.each do |course_offering| %>
-    <tr>
-      <td><%= course_offering.typeKey %></td>
-      <td><%= course_offering.stateKey %></td>
-      <td><%= course_offering.effectiveDate %></td>
-      <td><%= course_offering.expirationDate %></td>
-      <td><%= course_offering.name %></td>
-      <td><%= course_offering.descr.inspect %></td>
-      <td><%= course_offering.courseId %></td>
-      <td><%= course_offering.term_id %></td>
-      <td><%= course_offering.courseCode %></td>
-      <td><%= course_offering.courseOfferingCode %></td>
-      <td><%= course_offering.subjectAreaId %></td>
-      <td><%= course_offering.courseNumberSuffix %></td>
-      <td><%= course_offering.courseOfferingTitle %></td>
-      <td><%= course_offering.isHonorsOffering %></td>
-      <td><%= course_offering.maximumEnrollment %></td>
-      <td><%= course_offering.minimumEnrollment %></td>
-      <td><%= course_offering.gradingOptionId %></td>
-      <td><%= course_offering.studentRegistrationGradingOptionIds %></td>
-      <td><%= course_offering.creditOptionId %></td>
-      <td><%= course_offering.instructors %></td>
-      <td><%= course_offering.unitsDeploymentOrgIds %></td>
-      <td><%= course_offering.requisiteIds %></td>
-      <td><%= course_offering.coRequisiteIds %></td>
-      <td><%= course_offering.restrictionIds %></td>
-      <td><%= course_offering.campusLocations %></td>
-      <td><%= course_offering.isEvaluated %></td>
-      <td><%= course_offering.courseOfferingUrl %></td>
-      <td><%= course_offering.gradeRosterDefinitionId %></td>
-      <td><%= course_offering.gradingOptionIds %></td>
-      <td><%= course_offering.creditOptionIds %></td>
-      <td><%= course_offering.meta %></td>
-    </tr>
-  <% end %>
-</tbody>
+  <p>
+    <strong>Description:</strong>
+    <%= course_offering.descr.attributes["notes"] %>
+  </p>
+
+  <p>
+    <strong>Course Code:</strong>
+    <%= course_offering.courseId %>
+  </p>
+
+  <p>
+    <strong>Term:</strong>
+    <%= course_offering.term_id %>
+  </p>
+
+  <p>
+    <strong>Credits:</strong>
+    <%= course_offering.creditOptionId %>
+  </p>
+
+  <p>
+    <strong>Instructors:</strong>
+    <%= course_offering.instructors.map { |instructor| instructor.attributes["name"] }[0] %>
+  </p>
+
+  <p>
+    <strong>Deployment Organization:</strong>
+    <%= course_offering.unitsDeploymentOrgIds[0] %>
+  </p>
+
+</div>
