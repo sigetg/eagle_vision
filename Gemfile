@@ -78,3 +78,5 @@ gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection", "~> 1.0"
 
 gem "activeresource", "~> 6.0"
+
+gem "rolify", "~> 6.0"

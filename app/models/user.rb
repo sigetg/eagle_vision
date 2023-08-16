@@ -1,5 +1,8 @@
 class User < ApplicationRecord
   # has_one :person
+  after_create :assign_default_role
+  rolify
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -14,5 +17,11 @@ class User < ApplicationRecord
       # uncomment the line below to skip the confirmation emails.
       # user.skip_confirmation!
     end
+  end
+
+  private
+
+  def assign_default_role
+    add_role(:user) # Change 'user' to the desired default role
   end
 end
