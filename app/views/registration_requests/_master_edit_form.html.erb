@@ -1,0 +1,282 @@
+<%= form_with(model: registration_request) do |form| %>
+  <% if registration_request.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(registration_request.errors.count, "error") %> prohibited this registration_request from being saved:</h2>
+
+      <ul>
+        <% registration_request.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :typeKey, style: "display: block" do %>
+      Type Key: Waitlist
+    <% end %>
+    <%= form.hidden_field :typeKey, value: registration_request.typeKey %>
+  </div>
+
+  <div>
+    <%= form.label :stateKey, style: "display: block" do %>
+      State Key: Pending
+    <% end %>
+    <%= form.hidden_field :stateKey, value: registration_request.stateKey %>
+  </div>
+
+  <div>
+    <%= form.label :effectiveDate, style: "display: block" do %>
+      Effective Date: <%= registration_request.effectiveDate %>
+    <% end %>
+    <%= form.hidden_field :effectiveDate, value: registration_request.effectiveDate %>
+  </div>
+
+  <div>
+    <%= form.label :expirationDate, style: "display: block" do %>
+      Expiration Date: <%= registration_request.expirationDate %>
+    <% end %>
+    <%= form.hidden_field :expirationDate, value: registration_request.expirationDate %>
+  </div>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :descr, style: "display: block" %>
+    <%= form.text_field :descr %>
+  </div>
+
+  <div>
+    <%= form.label :person_id, style: "display: block" do %>
+      Person: <%= registration_request.person_id %>
+    <% end %>
+    <%= form.hidden_field :person_id, value: registration_request.person_id %>
+  </div>
+
+  <div>
+    <%= form.label :term_id, style: "display: block" do %>
+      Term: <%= registration_request.term_id %>
+    <% end %>
+    <%= form.hidden_field :term_id, value: registration_request.term_id %>
+  </div>
+
+  <div>
+    <%= form.label :submittedDate, style: "display: block" do %>
+      Submitted Date: <%= registration_request.submittedDate %>
+    <% end %>
+    <%= form.hidden_field :submittedDate, value: registration_request.submittedDate %>
+  </div>
+
+  <div>
+    <%= form.label :processResults, style: "display: block" do %>
+      Process Results: <%= registration_request.processResults %>
+    <% end %>
+    <%= form.hidden_field :processResults, value: registration_request.processResults %>
+  </div>
+
+  <div>
+    <%= form.label :itemStudentIds, style: "display: block" do %>
+      Student Ids: <%= registration_request.itemStudentIds %>
+    <% end %>
+    <%= form.hidden_field :itemStudentIds, value: registration_request.itemStudentIds %>
+  </div>
+
+  <div>
+    <%= form.label :itemStudentPopulationId, style: "display: block" do %>
+      Student Population Id: <%= registration_request.itemStudentPopulationId %>
+    <% end %>
+    <%= form.hidden_field :itemStudentPopulationId, value: registration_request.itemStudentPopulationId %>
+  </div>
+
+  <div>
+    <%= form.label :meta, style: "display: block" do %>
+      Meta: <%= registration_request.meta %>
+    <% end %>
+    <%= form.hidden_field :meta, value: registration_request.meta %>
+  </div>
+
+  <h2>Registration Request Item</h2>
+  <%= form.fields_for :registration_request_item do |item_form| %>
+    <% if registration_request_item.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(registration_request_item.errors.count, "error") %> prohibited this registration_request_item from being saved:</h2>
+
+        <ul>
+          <% registration_request_item.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div>
+      <%= item_form.label :typeKey, style: "display: block" do %>
+        Type Key: <%= registration_request_item.typeKey %>
+      <% end %>
+      <%= item_form.hidden_field :typeKey, value: registration_request_item.typeKey %>
+    </div>
+
+    <div>
+      <%= item_form.label :stateKey, style: "display: block" do %>
+        State Key: registration_request_item.stateKey
+      <% end %>
+      <%= item_form.hidden_field :stateKey, value: registration_request_item.stateKey %>
+    </div>
+
+    <div>
+      <%= item_form.label :effectiveDate, style: "display: block" do %>
+        Effective Date: <%= registration_request_item.effectiveDate %>
+      <% end %>
+      <%= item_form.hidden_field :effectiveDate, value: registration_request_item.effectiveDate %>
+    </div>
+
+    <div>
+      <%= item_form.label :expirationDate, style: "display: block" do %>
+        Expiration Date: <%= registration_request_item.expirationDate %>
+      <% end %>
+      <%= item_form.hidden_field :expirationDate, value: registration_request_item.expirationDate %>
+    </div>
+
+    <div>
+      <%= item_form.label :name, style: "display: block" %>
+      <%= item_form.text_field :name,  value: registration_request_item.name %>
+    </div>
+
+    <div>
+      <%= item_form.label :descr, style: "display: block" %>
+      <%= item_form.text_field :descr, value: registration_request_item.descr %>
+    </div>
+
+    <div>
+      <%= item_form.label :registration_request_id, style: "display: block" do %>
+        Registration Request: <%= registration_request_item.registration_request_id %>
+      <% end %>
+      <%= item_form.hidden_field :registration_request_id, value: registration_request_item.registration_request_id %>
+    </div>
+
+    <div>
+      <%= item_form.label :person_id, style: "display: block" do %>
+        Person: <%= registration_request_item.person_id %>
+      <% end %>
+      <%= item_form.hidden_field :person_id, value: registration_request_item.person_id %>
+    </div>
+
+    <div>
+      <%= item_form.label :activity_offering_id, style: "display: block" do %>
+        Activity Offering: <%= registration_request_item.activity_offering_id %>
+      <% end %>
+      <%= item_form.hidden_field :activity_offering_id, value: registration_request_item.activity_offering_id %>
+    </div>
+
+    <div>
+      <%= item_form.label :requestedEffectiveDate, style: "display: block" do %>
+        Requested Effective Date: <%= registration_request_item.requestedEffectiveDate %>
+      <% end %>
+      <%= item_form.hidden_field :requestedEffectiveDate, value: registration_request_item.requestedEffectiveDate %>
+    </div>
+
+    <div>
+      <%= item_form.label :existingRegistrationId, style: "display: block" do %>
+        Existing Registration Id: <%= registration_request_item.existingRegistrationId %>
+      <% end %>
+      <%= item_form.hidden_field :existingRegistrationId, value: registration_request_item.existingRegistrationId %>
+    </div>
+
+    <div>
+      <%= item_form.label :existingActivityOfferingId, style: "display: block" do %>
+        Existing Activity Offering Id: <%= registration_request_item.existingActivityOfferingId %>
+      <% end %>
+      <%= item_form.hidden_field :existingActivityOfferingId, value: registration_request_item.existingActivityOfferingId %>
+    </div>
+
+    <div>
+      <%= item_form.label :preferredActivityOfferingIds, style: "display: block" do %>
+        Preferred Activity Offering Ids: <%= registration_request_item.preferredActivityOfferingIds %>
+      <% end %>
+      <%= item_form.hidden_field :preferredActivityOfferingIds, value: registration_request_item.preferredActivityOfferingIds %>
+    </div>
+
+    <div>
+      <%= item_form.label :preferredFormatOfferingIds, style: "display: block" do %>
+        Preferred Format Offering Ids: <%= registration_request_item.preferredFormatOfferingIds %>
+      <% end %>
+      <%= item_form.hidden_field :preferredFormatOfferingIds, value: registration_request_item.preferredFormatOfferingIds %>
+    </div>
+
+    <div>
+      <%= item_form.label :preferredRegistrationGroupIds, style: "display: block" do %>
+        Preferred Registration Group Ids: <%= registration_request_item.preferredRegistrationGroupIds %>
+      <% end %>
+      <%= item_form.hidden_field :preferredRegistrationGroupIds, value: registration_request_item.preferredRegistrationGroupIds %>
+    </div>
+
+    <div>
+      <%= item_form.label :preferredCredits, style: "display: block" do %>
+        Preferred Credits: <%= registration_request_item.preferredCredits %>
+      <% end %>
+      <%= item_form.hidden_field :preferredCredits, value: registration_request_item.preferredCredits %>
+    </div>
+
+    <div>
+      <%= item_form.label :preferredGradingOptionIds, style: "display: block" do %>
+        Preferred Grading Option Ids: <%= registration_request_item.preferredGradingOptionIds %>
+      <% end %>
+      <%= item_form.hidden_field :preferredGradingOptionIds, value: registration_request_item.preferredGradingOptionIds %>
+    </div>
+
+    <div>
+      <%= item_form.label :processResults, style: "display: block" do %>
+        Process Results: <%= registration_request_item.processResults %>
+      <% end %>
+      <%= item_form.hidden_field :processResults, value: registration_request_item.processResults %>
+    </div>
+
+    <div>
+      <%= item_form.label :resultingRegistrationId, style: "display: block" do %>
+        Resulting Registration Id: <%= registration_request_item.resultingRegistrationId %>
+      <% end %>
+      <%= item_form.hidden_field :resultingRegistrationId, value: registration_request_item.resultingRegistrationId %>
+    </div>
+
+    <div>
+      <%= item_form.label :courseWaitlistEntryId, style: "display: block" do %>
+        Course Waitlist Entry Id: <%= registration_request_item.courseWaitlistEntryId %>
+      <% end %>
+      <%= item_form.hidden_field :courseWaitlistEntryId, value: registration_request_item.courseWaitlistEntryId %>
+    </div>
+
+    <div>
+      <%= item_form.label :processingPriority, style: "display: block" do %>
+        Processing Priority: <%= registration_request_item.processingPriority %>
+      <% end %>
+      <%= item_form.hidden_field :processingPriority, value: registration_request_item.processingPriority %>
+    </div>
+
+    <div>
+      <%= item_form.label :lastAttendanceDate, style: "display: block" do %>
+        Last Attendance Date: <%= registration_request_item.lastAttendanceDate %>
+      <% end %>
+      <%= item_form.hidden_field :lastAttendanceDate, value: registration_request_item.lastAttendanceDate %>
+    </div>
+
+    <div>
+      <%= item_form.label :notificationDate, style: "display: block" do %>
+        Notification Date: <%= registration_request_item.notificationDate %>
+      <% end %>
+      <%= item_form.hidden_field :notificationDate, value: registration_request_item.notificationDate %>
+    </div>
+
+    <div>
+      <%= item_form.label :meta, style: "display: block" do %>
+        Meta: <%= registration_request_item.meta %>
+      <% end %>
+      <%= item_form.hidden_field :meta, value: registration_request_item.meta %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

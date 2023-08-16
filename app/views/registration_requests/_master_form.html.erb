@@ -151,7 +151,7 @@
 
     <div>
       <%= item_form.label :registration_request_id, style: "display: block" do %>
-        Registration Request: <%= registration_request.id %>
+        Registration Request: <%= registration_request.id %>Will set on submit
       <% end %>
       <%= item_form.hidden_field :registration_request_id, value: registration_request.id %>
     </div>
@@ -161,6 +161,13 @@
         Person: <%= current_user.id %>
       <% end %>
       <%= item_form.hidden_field :person_id, value: current_user.id %>
+    </div>
+
+    <div>
+      <%= item_form.label :activity_offering_id, style: "display: block" do %>
+        Activity Offering: <%= @activity_offering.id %>
+      <% end %>
+      <%= item_form.hidden_field :activity_offering_id, value: activity_offering.id %>
     </div>
 
     <div>
