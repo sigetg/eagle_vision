@@ -5,6 +5,11 @@ class CourseOfferingsController < ApplicationController
     @course_offerings = CourseOffering.all
   end
 
+  def search
+    key = "%#{params[:key]}%"
+    @course_offerings = CourseOffering.find(:all, { params: { key: key } })
+  end
+
   # GET /course_offerings/1 or /course_offerings/1.json
   def show
     @activity_offerings = ActivityOffering.find(:all, :from => "/course_offerings/#{@course_offering.id}/activity_offerings" )

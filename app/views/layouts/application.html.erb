@@ -26,6 +26,11 @@
         <%= link_to 'Sign In', new_user_session_path %>
       <% end %>
     <% end %>
+    <%# search form %>
+    <form action="/search">
+      <input placeholder="Search" name="key" type="text">
+      <button type="submit">Search</button>
+    </form>
     <%= yield %>
   </body>
 </html>

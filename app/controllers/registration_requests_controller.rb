@@ -4,7 +4,12 @@ class RegistrationRequestsController < ApplicationController
 
   # GET /registration_requests or /registration_requests.json
   def index
-    @registration_requests = RegistrationRequest.all
+    if current_user.has_role?(:admin)
+      @registration_requests = RegistrationRequest.all
+    else
+      #need to give user an associated peron_id for this to work properly
+      @registration_requests = RegistrationRequest.find(:all, :params => { :person_id => current_user.id })
+    end
   end
 
   # GET /registration_requests/1 or /registration_requests/1.json
@@ -51,6 +56,7 @@ class RegistrationRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @registration_request.update_attributes(registration_request_params) && @registration_request_items[0].update_attributes(registration_request_item_params)
+        RegistrationRequestMailer.registration_request_changed(current_user, @registration_request).deliver_later
         format.html { redirect_to registration_request_url(@registration_request), notice: "Registration request was successfully updated." }
         format.json { render :show, status: :ok, location: @registration_request }
       else

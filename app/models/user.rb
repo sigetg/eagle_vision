@@ -22,6 +22,6 @@ class User < ApplicationRecord
   private
 
   def assign_default_role
-    add_role(:user) # Change 'user' to the desired default role
+    add_role(:user) # Change 'user' to the desired default role. Current roles are user and admin.
   end
 end
