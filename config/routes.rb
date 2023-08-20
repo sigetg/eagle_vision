@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   resources :terms
   resources :people
-  resources :course_offerings
+  resources :course_offerings do
+    resources :activity_offerings
+  end
   get '/search', to: "course_offerings#search"
   resources :activity_offerings
   resources :registration_requests

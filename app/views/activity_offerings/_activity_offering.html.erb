@@ -64,12 +64,4 @@
     <%= activity_offering.unitsDeploymentOrgIds[0] %>
   </p>
 
-<% if @registration_request_items %>
-  <h2>Registration Requests</h2>
-  <% @registration_request_items.each do |item| %>
-    <%= render item.registration_request %>
-    <%= render item %>
-  <% end %>
-<% end %>
-
 </div>

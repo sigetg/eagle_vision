@@ -18,12 +18,19 @@
     <%= form.hidden_field :typeKey, value: registration_request.typeKey %>
   </div>
 
-  <div>
-    <%= form.label :stateKey, style: "display: block" do %>
-      State Key: Pending
-    <% end %>
-    <%= form.hidden_field :stateKey, value: registration_request.stateKey %>
-  </div>
+  <% if current_user.has_role?(:admin) %>
+    <div>
+      <%= form.label :stateKey, style: "display: block" %>
+      <%= form.text_field :stateKey, value: registration_request.stateKey %>
+    </div>
+  <% else %>
+    <div>
+      <%= form.label :stateKey, style: "display: block" do %>
+        State Key: Pending
+      <% end %>
+      <%= form.hidden_field :stateKey, value: registration_request.stateKey %>
+    </div>
+  <% end %>
 
   <div>
     <%= form.label :effectiveDate, style: "display: block" do %>

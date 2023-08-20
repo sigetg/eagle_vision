@@ -1,0 +1,9 @@
+<h2>Registration Requests</h2>
+<% @registration_request_items.each do |item| %>
+  <%= render item.registration_request %>
+  <%= render item %>
+  <p>
+    <%= link_to "Show this registration request", registration_request_path(item.registration_request) %> |
+    <%= link_to "Edit this registration request", edit_registration_request_path(item.registration_request) %> |
+    <%= link_to "Destroy this registration request", registration_request_path(item.registration_request), method: :delete %>
+<% end %>

@@ -15,7 +15,7 @@
     <%= render activity_offering %>
     <p>
       <%= link_to "Create a new Registration Request for this activity offering", new_registration_request_path(activity_offering_id: activity_offering.id, term_id: activity_offering.term_id) %> |
-      <%= link_to "Show this activity offering", activity_offering %>
+      <%= link_to "Show this activity offering", course_offering_activity_offering_path(@course_offering) %>
     </p>
   <% end %>
 </div>
