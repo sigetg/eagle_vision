@@ -8,6 +8,12 @@ class ActivityOfferingsController < ApplicationController
 
   # GET /activity_offerings/1 or /activity_offerings/1.json
   def show
+    @registration_request_items = RegistrationRequestItem.find(:all, :params => { :activity_offering_id => @activity_offering.id })
+    puts @registration_request_items
+    @registration_request_items.each do |item|
+      item.registration_request = RegistrationRequest.find(:one, :from => "/registration_requests/#{item.registration_request_id}")
+      # @registration_requests.push(registration_request)
+    end
   end
 
   # GET /activity_offerings/new

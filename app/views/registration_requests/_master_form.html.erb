@@ -51,9 +51,9 @@
 
   <div>
     <%= form.label :person_id, style: "display: block" do %>
-      Person: <%= current_user.id %>
+      Person: <%= @person.name %>
     <% end %>
-    <%= form.hidden_field :person_id, value: current_user.id %>
+    <%= form.hidden_field :person_id, value: @person.id %>
   </div>
 
   <div>
@@ -158,16 +158,9 @@
 
     <div>
       <%= item_form.label :person_id, style: "display: block" do %>
-        Person: <%= current_user.id %>
+        Person: <%= @person.name %>
       <% end %>
-      <%= item_form.hidden_field :person_id, value: current_user.id %>
-    </div>
-
-    <div>
-      <%= item_form.label :activity_offering_id, style: "display: block" do %>
-        Activity Offering: <%= @activity_offering.id %>
-      <% end %>
-      <%= item_form.hidden_field :activity_offering_id, value: activity_offering.id %>
+      <%= item_form.hidden_field :person_id, value: @person.id %>
     </div>
 
     <div>
@@ -273,6 +266,13 @@
         Meta:
       <% end %>
       <%= item_form.hidden_field :meta, value: '' %>
+    </div>
+
+      <div>
+      <%= item_form.label :activity_offering_id, style: "display: block" do %>
+        Activity Offering: <%= @activity_offering.id %>
+      <% end %>
+      <%= item_form.hidden_field :activity_offering_id, value: @activity_offering.id %>
     </div>
   <% end %>
 

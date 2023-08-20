@@ -8,7 +8,7 @@ class RegistrationRequestsController < ApplicationController
       @registration_requests = RegistrationRequest.all
     else
       #need to give user an associated peron_id for this to work properly
-      @registration_requests = RegistrationRequest.find(:all, :params => { :person_id => current_user.id })
+      @registration_requests = RegistrationRequest.find(:all, :params => { :person_id => current_user.person_id })
     end
   end
 
@@ -23,7 +23,7 @@ class RegistrationRequestsController < ApplicationController
     @activity_offering = ActivityOffering.find(params[:activity_offering_id])
     @term_id = params[:term_id]
     # This needs to be person associated with current user, and needs to be hooked up to new view
-    @person = Person.first
+    @person = Person.find(current_user.person_id)
   end
 
   # GET /registration_requests/1/edit
@@ -41,8 +41,11 @@ class RegistrationRequestsController < ApplicationController
     respond_to do |format|
       if @registration_request.save
         @registration_request_item.registration_request_id = @registration_request.id
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @registration_request.errors, status: :unprocessable_entity }
       end
-      if @registration_request.save && @registration_request_item.save
+      if @registration_request_item.save
         format.html { redirect_to registration_request_url(@registration_request), notice: "Registration request was successfully created." }
         format.json { render :show, status: :created, location: @registration_request }
       else

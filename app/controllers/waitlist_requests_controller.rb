@@ -3,7 +3,6 @@ class WaitlistRequestsController < ApplicationController
   require 'json'
 
   def index
-    require 'net/http'
 
     url = URI.parse('http://127.0.0.1:4000/registration_requests.json')
     request = Net::HTTP::Get.new(url.to_s)
