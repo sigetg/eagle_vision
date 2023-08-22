@@ -9,13 +9,6 @@ class ApiService
     api_data.map { |api_item| self.class.map_to_course_offering(api_item) }
   end
 
-  def fetch_and_map_waitlistactivityofferings(course_offering_id)
-    response = self.class.get("/waitlistactivityofferings?courseOfferingId=#{course_offering_id}")
-    api_data = JSON.parse(response.body)
-
-    api_data.map { |api_item| self.class.map_to_activity_offering(api_item) }
-  end
-
   def self.map_to_course_offering(api_item)
     course_offering = api_item['courseOffering']
     CourseOffering.new(
@@ -57,21 +50,87 @@ class ApiService
     )
   end
 
+  def fetch_and_map_waitlistactivityofferings(course_offering_id)
+    response = self.class.get("/waitlistactivityofferings?courseOfferingId=#{course_offering_id}")
+    api_data = JSON.parse(response.body)
+
+    api_data.map { |api_item| self.class.map_to_activity_offering(api_item) }
+  end
+
   def self.map_to_activity_offering(api_item)
     activity_offering = api_item['activityOffering']
     ActivityOffering.new(
+      attributes: activity_offering['attributes'],
+      meta: activity_offering['meta'],
       id: activity_offering['id'],
       typeKey: activity_offering['typeKey'],
       stateKey: activity_offering['stateKey'],
       effectiveDate: activity_offering['effectiveDate'],
       expirationDate: activity_offering['expirationDate'],
       name: activity_offering['name'],
+      descr: activity_offering['descr'],
+      formatOfferingId: activity_offering['formatOfferingId'],
+      formatOfferingName: activity_offering['formatOfferingName'],
+      activityId: activity_offering['activityId'],
+      termId: activity_offering['termId'],
+      termCode: activity_offering['termCode'],
       activityCode: activity_offering['activityCode'],
       scheduleIds: activity_offering['scheduleIds'],
+      isHonorsOffering: activity_offering['isHonorsOffering'],
       instructors: activity_offering['instructors'],
+      weeklyInclassContactHours: activity_offering['weeklyInclassContactHours'],
+      weeklyTotalContactHours: activity_offering['weeklyTotalContactHours'],
       maximumEnrollment: activity_offering['maximumEnrollment'],
       minimumEnrollment: activity_offering['minimumEnrollment'],
       isEvaluated: activity_offering['isEvaluated'],
+      activityOfferingUrl: activity_offering['activityOfferingUrl'],
+      courseOfferingId: activity_offering['courseOfferingId'],
+      courseOfferingTitle: activity_offering['courseOfferingTitle'],
+      courseOfferingCode: activity_offering['courseOfferingCode'],
+      weeklyOutofClassHours: activity_offering['weeklyOutofClassHours'],
+      unitsDeploymentOrgIds: activity_offering['unitsDeploymentOrgIds'],
+      requisiteIds: activity_offering['requisiteIds'],
+      coRequisiteIds: activity_offering['coRequisiteIds'],
+      restrictionIds: activity_offering['restrictionIds'],
+      type: activity_offering['type'],
+      state: activity_offering['state']
+    )
+  end
+
+  def fetch_and_map_waitlistactivityofferings(course_offering_id)
+    response = self.class.get("/waitlistactivityofferings?courseOfferingId=#{course_offering_id}")
+    api_data = JSON.parse(response.body)
+
+    api_data.map { |api_item| self.class.map_to_activity_offering(api_item) }
+  end
+
+  def self.map_to_activity_offering(api_item)
+    activity_offering = api_item['activityOffering']
+    ActivityOffering.new(
+      attributes: activity_offering['attributes'],
+      meta: activity_offering['meta'],
+      id: activity_offering['id'],
+      typeKey: activity_offering['typeKey'],
+      stateKey: activity_offering['stateKey'],
+      effectiveDate: activity_offering['effectiveDate'],
+      expirationDate: activity_offering['expirationDate'],
+      name: activity_offering['name'],
+      descr: activity_offering['descr'],
+      formatOfferingId: activity_offering['formatOfferingId'],
+      formatOfferingName: activity_offering['formatOfferingName'],
+      activityId: activity_offering['activityId'],
+      termId: activity_offering['termId'],
+      termCode: activity_offering['termCode'],
+      activityCode: activity_offering['activityCode'],
+      scheduleIds: activity_offering['scheduleIds'],
+      isHonorsOffering: activity_offering['isHonorsOffering'],
+      instructors: activity_offering['instructors'],
+      weeklyInclassContactHours: activity_offering['weeklyInclassContactHours'],
+      weeklyTotalContactHours: activity_offering['weeklyTotalContactHours'],
+      maximumEnrollment: activity_offering['maximumEnrollment'],
+      minimumEnrollment: activity_offering['minimumEnrollment'],
+      isEvaluated: activity_offering['isEvaluated'],
+      activityOfferingUrl: activity_offering['activityOfferingUrl'],
       courseOfferingId: activity_offering['courseOfferingId'],
       courseOfferingTitle: activity_offering['courseOfferingTitle'],
       courseOfferingCode: activity_offering['courseOfferingCode'],

@@ -1,5 +1,42 @@
-class ActivityOffering < ActiveResource::Base
-  self.site = "http://127.0.0.1:3000"
+class ActivityOffering
+  include ActiveModel::Model
+
+  attr_accessor \
+    :attributes,
+    :meta,
+    :id,
+    :typeKey,
+    :stateKey,
+    :effectiveDate,
+    :expirationDate,
+    :name,
+    :descr,
+    :formatOfferingId,
+    :formatOfferingName,
+    :activityId,
+    :termId,
+    :termCode,
+    :activityCode,
+    :scheduleIds,
+    :isHonorsOffering,
+    :instructors,
+    :weeklyInclassContactHours,
+    :weeklyTotalContactHours,
+    :maximumEnrollment,
+    :minimumEnrollment,
+    :isEvaluated,
+    :activityOfferingUrl,
+    :courseOfferingId,
+    :courseOfferingTitle,
+    :courseOfferingCode,
+    :weeklyOutofClassHours,
+    :unitsDeploymentOrgIds,
+    :requisiteIds,
+    :coRequisiteIds,
+    :restrictionIds,
+    :type,
+    :state
+
   # belongs_to :term
   # belongs_to :course_offering
 end

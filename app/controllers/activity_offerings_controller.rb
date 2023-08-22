@@ -1,9 +1,12 @@
 class ActivityOfferingsController < ApplicationController
   before_action :set_activity_offering, only: %i[ show edit update destroy ]
+  before_action :set_api_service, only: %i[ index ]
 
   # GET /activity_offerings or /activity_offerings.json
   def index
-    @activity_offerings = ActivityOffering.all
+    course_offering_id = params[:course_offering_id]
+    puts "COURSE OFFERING ID: #{course_offering_id}"
+    @activity_offerings = @api_service.fetch_and_map_waitlistactivityofferings(course_offering_id)
   end
 
   # GET /activity_offerings/1 or /activity_offerings/1.json
@@ -72,5 +75,9 @@ class ActivityOfferingsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def activity_offering_params
       params.require(:activity_offering).permit(:typeKey, :stateKey, :name, :descr, :effectiveDate, :expirationDate, :formatOfferingId, :formatOfferingName, :activityId, :term_id, :termCode, :activityCode, :scheduleIds, :isHonorsOffering, :instructors, :weeklyInclassContactHours, :weeklyOutofClassHours, :weeklyTotalContactHours, :maximumEnrollment, :minimumEnrollment, :isEvaluated, :activityOfferingUrl, :course_offering_id, :courseOfferingTitle, :courseOfferingCode, :unitsDeploymentOrgIds, :requisiteIds, :coRequisiteIds, :restrictionIds, :meta)
+    end
+
+    def set_api_service
+      @api_service = ApiService.new
     end
 end

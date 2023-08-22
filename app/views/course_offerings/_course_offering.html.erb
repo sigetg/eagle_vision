@@ -9,23 +9,16 @@
   </p>
 
   <p>
-    <strong>Course Code:</strong>
-    <%= course_offering.courseCode %>
-  </p>
-
-  <p>
-    <strong>Credits:</strong>
-    <%= course_offering.creditOptionId %>
-  </p>
-
-  <p>
-    <strong>Instructors:</strong>
-    <%= course_offering.instructors %>
+    <strong>Course Offering ID:</strong>
+    <%= course_offering.id %>
   </p>
 
   <p>
     <strong>Deployment Organization:</strong>
     <%= course_offering.unitsDeploymentOrgIds %>
   </p>
+  <%= link_to 'Show Associated Activity Offerings', course_offering_activity_offerings_path(course_offering.id) %>
+  <%= link_to 'Show Associated Registration Groups', course_offering_activity_offerings_path(course_offering.id) %>
+
 
 </div>
