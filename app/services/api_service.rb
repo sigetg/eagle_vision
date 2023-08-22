@@ -28,7 +28,7 @@ class ApiService
       expirationDate: course_offering['expirationDate'],
       name: course_offering['name'],
       descr:  course_offering['descr'],
-      courseId: course_offering['courseId'#
+      courseId: course_offering['courseId'],
       termId: course_offering['termId'],
       courseOfferingTitle: course_offering['courseOfferingTitle'],
       courseCode: course_offering['courseCode'],
@@ -84,5 +84,4 @@ class ApiService
       state: activity_offering['state']
     )
   end
-end
 end
