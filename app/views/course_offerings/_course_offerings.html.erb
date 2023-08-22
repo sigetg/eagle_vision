@@ -2,15 +2,15 @@
 <tbody>
   <% @course_offerings.each do |course_offering| %>
     <tr>
-      <td><%= link_to course_offering.courseOfferingTitle, course_offering_path(course_offering) %></td>
-      <td><%= course_offering.term_id %></td>
-      <td><%= course_offering.courseCode %></td>
-      <td><%= course_offering.isHonorsOffering %></td>
-      <td><%= course_offering.maximumEnrollment %></td>
-      <td><%= course_offering.minimumEnrollment %></td>
-      <td><%= course_offering.creditOptionId %></td>
-      <td><%= course_offering.instructors.map { |instructor| instructor.attributes["name"] }[0] %></td>
-      <td><%= course_offering.unitsDeploymentOrgIds[0] %></td>
+      <%# <td><%= link_to course_offering.courseOffering.courseOfferingTitle, course_offering_path(course_offering) %>
+      <td><%= course_offering.courseOffering.courseOfferingTitle %></td>
+      <td><%= course_offering.courseOffering.courseCode %></td>
+      <td><%= course_offering.courseOffering.maximumEnrollment %></td>
+      <td><%= course_offering.courseOffering.minimumEnrollment %></td>
+      <td><%= course_offering.courseOffering.creditOptionId %></td>
+      <td><%= course_offering.courseOffering.instructors %></td>
+      <td><%= course_offering.courseOffering.unitsDeploymentOrgIds %></td>
     </tr>
+    <%= raw(course_offering.courseOffering.descr.plain) %>
   <% end %>
 </tbody>

@@ -2,13 +2,14 @@
 
 <p id="notice"><%= notice %></p>
 <h1>Course Offerings</h1>
-<table>
+<% @course_offerings.each do |course_offering| %>
+  <%= render 'course_offering', course_offering: course_offering.courseOffering  %>
+<% end %>
+<%# <table>
   <thead>
     <tr>
       <th>Course Offering Title</th>
-      <th>Term</th>
       <th>Course Code</th>
-      <th>Honors Offering</th>
       <th>Maximum Enrollment</th>
       <th>Minimum Enrollment</th>
       <th>Credits</th>
@@ -17,6 +18,3 @@
     </tr>
   </thead>
   <%= render 'course_offerings', locals: {course_offerings: @course_offerings} %>
-</table>
-
-<%= link_to "New course offering", new_course_offering_path %>

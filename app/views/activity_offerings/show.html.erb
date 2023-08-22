@@ -2,7 +2,7 @@
 <h1>Activity offering</h1>
 <%= render @activity_offering %>
 
-<% if @registration_request_items %>
+<% if @registration_request_items && current_user.has_role?(:admin) %>
   <%= render 'associated_registration_requests', registration_request_items: @registration_request_items %>
 <% end %>
 

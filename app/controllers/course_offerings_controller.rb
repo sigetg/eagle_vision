@@ -2,12 +2,19 @@ class CourseOfferingsController < ApplicationController
   before_action :set_course_offering, only: %i[ show edit update destroy ]
   # GET /course_offerings or /course_offerings.json
   def index
-    @course_offerings = CourseOffering.all
+    term_id = "kuali.atp.FA2023-2024"
+    code = "ENGL1009"
+
+    # @course_offerings = CourseOffering.find(:all, params: { termId: term_id, code: code })
+    # @course_offerings = CourseOffering.all
+    @course_offerings = CourseOffering.find(:all, :from => "/waitlist/waitlistcourseofferings?termId=#{term_id}&code=#{code}" )
   end
 
   def search
+    term_id = "kuali.atp.FA2023-2024"
     key = "%#{params[:key]}%"
-    @course_offerings = CourseOffering.find(:all, { params: { key: key } })
+    @course_offerings = CourseOffering.find(:all, :from => "/waitlist/waitlistcourseofferings?termId=#{term_id}&code=#{key}" )
+
   end
 
   # GET /course_offerings/1 or /course_offerings/1.json

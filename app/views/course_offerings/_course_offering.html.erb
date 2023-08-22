@@ -1,22 +1,16 @@
 <div id="<%= dom_id course_offering %>">
-  <p>
+  <h3>
     <strong>Name:</strong>
     <%= course_offering.name %>
-  </p>
+  </h3>
 
   <p>
-    <strong>Description:</strong>
-    <%= course_offering.descr.attributes["notes"] %>
+    <%= raw(course_offering.descr.plain) %>
   </p>
 
   <p>
     <strong>Course Code:</strong>
-    <%= course_offering.courseId %>
-  </p>
-
-  <p>
-    <strong>Term:</strong>
-    <%= course_offering.term_id %>
+    <%= course_offering.courseCode %>
   </p>
 
   <p>
@@ -26,12 +20,12 @@
 
   <p>
     <strong>Instructors:</strong>
-    <%= course_offering.instructors.map { |instructor| instructor.attributes["name"] }[0] %>
+    <%= course_offering.instructors %>
   </p>
 
   <p>
     <strong>Deployment Organization:</strong>
-    <%= course_offering.unitsDeploymentOrgIds[0] %>
+    <%= course_offering.unitsDeploymentOrgIds %>
   </p>
 
 </div>
