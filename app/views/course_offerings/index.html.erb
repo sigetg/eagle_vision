@@ -3,7 +3,7 @@
 <p id="notice"><%= notice %></p>
 <h1>Course Offerings</h1>
 <% @course_offerings.each do |course_offering| %>
-  <%= render 'course_offering', course_offering: course_offering.courseOffering  %>
+  <%= render 'course_offering', course_offering: course_offering  %>
 <% end %>
 <%# <table>
   <thead>

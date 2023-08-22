@@ -2,7 +2,12 @@
 
 <h1>Search Results</h1>
 <p id="notice"><%= notice %></p>
-<table>
+<% @course_offerings.each do |course_offering| %>
+  <%= render 'course_offering', course_offering: course_offering  %>
+<% end %>
+
+
+<%# <table>
   <thead>
     <tr>
       <th>Course Offering Title</th>
@@ -17,4 +22,3 @@
     </tr>
   </thead>
   <%= render 'course_offerings', locals: {course_offerings: @course_offerings} %>
-</table>

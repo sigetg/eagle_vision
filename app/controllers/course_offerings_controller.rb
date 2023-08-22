@@ -1,19 +1,23 @@
 class CourseOfferingsController < ApplicationController
   before_action :set_course_offering, only: %i[ show edit update destroy ]
+  before_action :set_api_service, only: %i[ index search ]
   # GET /course_offerings or /course_offerings.json
   def index
     term_id = "kuali.atp.FA2023-2024"
     code = "ENGL1009"
+    @course_offerings = @api_service.fetch_and_map_waitlistcourseofferings(term_id, code)
 
-    # @course_offerings = CourseOffering.find(:all, params: { termId: term_id, code: code })
     # @course_offerings = CourseOffering.all
-    @course_offerings = CourseOffering.find(:all, :from => "/waitlist/waitlistcourseofferings?termId=#{term_id}&code=#{code}" )
+    # @course_offerings = CourseOffering.find(:all, :from => "/waitlist/waitlistcourseofferings?termId=#{term_id}&code=#{code}" )
   end
 
   def search
     term_id = "kuali.atp.FA2023-2024"
-    key = "%#{params[:key]}%"
-    @course_offerings = CourseOffering.find(:all, :from => "/waitlist/waitlistcourseofferings?termId=#{term_id}&code=#{key}" )
+    code = "#{params[:key]}
+    "
+    @course_offerings = @api_service.fetch_and_map_waitlistcourseofferings(term_id, code)
+    puts "COURSEOFFERINGS: #{@course_offerings.inspect}}"
+    # @course_offerings = CourseOffering.find(:all, :from => "/waitlist/waitlistcourseofferings?termId=#{term_id}&code=#{key}" )
 
   end
 
@@ -78,5 +82,9 @@ class CourseOfferingsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def course_offering_params
       params.require(:course_offering).permit(:typeKey, :stateKey, :effectiveDate, :expirationDate, :name, :descr, :courseId, :term_id, :courseCode, :courseOfferingCode, :subjectAreaId, :courseNumberSuffix, :courseOfferingTitle, :isHonorsOffering, :maximumEnrollment, :minimumEnrollment, :gradingOptionId, :studentRegistrationGradingOptionIds, :creditOptionId, :instructors, :unitsDeploymentOrgIds, :requisiteIds, :coRequisiteIds, :restrictionIds, :campusLocations, :isEvaluated, :courseOfferingUrl, :gradeRosterDefinitionId, :gradingOptionIds, :creditOptionIds, :meta)
+    end
+
+    def set_api_service
+      @api_service = ApiService.new
     end
 end

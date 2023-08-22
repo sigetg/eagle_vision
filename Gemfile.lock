@@ -110,6 +110,9 @@ GEM
     globalid (1.1.0)
       activesupport (>= 5.0)
     hashie (5.0.0)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.2.1)
@@ -278,6 +281,7 @@ DEPENDENCIES
   capybara
   debug
   devise (~> 4.9)
+  httparty (~> 0.21.0)
   importmap-rails
   jbuilder
   letter_opener (~> 1.8)
