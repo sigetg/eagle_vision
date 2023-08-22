@@ -1,0 +1,2 @@
+json.extract! registration_group, :id, :attributes, :meta, :typeKey, :stateKey, :name, :descr, :id, :formatOfferingId, :courseOfferingId, :termId, :registrationCode, :courseCode, :activityOfferingIds, :multiOfferingId, :bundledOfferingId, :isGenerated, :gradingOptionId, :studentRegistrationGradingOptionIds, :creditOptionId, :requisiteIds, :coRequisiteIds, :restrictionIds, :type, :state, :created_at, :updated_at
+json.url registration_group_url(registration_group, format: :json)

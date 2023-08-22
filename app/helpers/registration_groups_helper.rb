@@ -1,0 +1,2 @@
+module RegistrationGroupsHelper
+end

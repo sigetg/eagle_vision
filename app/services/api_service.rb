@@ -101,6 +101,7 @@ class ApiService
     response = self.class.get("/waitlistactivityofferings?courseOfferingId=#{course_offering_id}")
     api_data = JSON.parse(response.body)
 
+    #returns an array of activity offerings
     api_data.map { |api_item| self.class.map_to_activity_offering(api_item) }
   end
 
@@ -142,5 +143,48 @@ class ApiService
       type: activity_offering['type'],
       state: activity_offering['state']
     )
+  end
+
+  def fetch_and_map_waitlistregistrationgroups(course_offering_id)
+    response = self.class.get("/waitlistregistrationgroups?courseOfferingId=#{course_offering_id}")
+    api_data = JSON.parse(response.body)
+
+    # returns an array of registration groups each with associated activity offerings
+    api_data.map { |api_item| self.class.map_to_registration_group(api_item) }
+  end
+
+  def self.map_to_registration_group(api_item)
+    registration_group = api_item['registrationGroup']
+    activity_offerings = api_item['activityOfferings']
+    group = RegistrationGroup.new(
+      attributes: registration_group['attributes'],
+      meta: registration_group['meta'],
+      id: registration_group['id'],
+      typeKey: registration_group['typeKey'],
+      stateKey: registration_group['stateKey'],
+      name: registration_group['name'],
+      descr: registration_group['descr'],
+      formatOfferingId: registration_group['formatOfferingId'],
+      courseOfferingId: registration_group['courseOfferingId'],
+      termId: registration_group['termId'],
+      registrationCode: registration_group['registrationCode'],
+      courseCode: registration_group['courseCode'],
+      activityOfferingIds: registration_group['activityOfferingIds'],
+      multiOfferingId: registration_group['multiOfferingId'],
+      bundledOfferingId: registration_group['bundledOfferingId'],
+      isGenerated: registration_group['isGenerated'],
+      gradingOptionId: registration_group['gradingOptionId'],
+      studentRegistrationGradingOptionIds: registration_group['studentRegistrationGradingOptionIds'],
+      creditOptionId: registration_group['creditOptionId'],
+      requisiteIds: registration_group['requisiteIds'],
+      coRequisiteIds: registration_group['coRequisiteIds'],
+      restrictionIds: registration_group['restrictionIds'],
+      type: registration_group['type'],
+      state: registration_group['state']
+    )
+
+    activities = activity_offerings.map { |activity_offering| self.map_to_activity_offering(activity_offering) }
+
+    { registration_group: group, activity_offerings: activities }
   end
 end

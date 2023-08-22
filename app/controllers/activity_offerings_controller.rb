@@ -5,7 +5,6 @@ class ActivityOfferingsController < ApplicationController
   # GET /activity_offerings or /activity_offerings.json
   def index
     course_offering_id = params[:course_offering_id]
-    puts "COURSE OFFERING ID: #{course_offering_id}"
     @activity_offerings = @api_service.fetch_and_map_waitlistactivityofferings(course_offering_id)
   end
 

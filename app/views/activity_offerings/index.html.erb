@@ -3,15 +3,5 @@
 <h1>Activity offerings</h1>
 
 <div id="activity_offerings">
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Format Offering Name</th>
-      <th>Instructors</th>
-      <th>Maximum Enrollment</th>
-    </tr>
-    <% @activity_offerings.each do |activity_offering| %>
-      <%= render activity_offering %>
-    <% end %>
-  </table>
+  <%= render 'activity_offerings_list', activity_offerings: @activity_offerings %>
 </div>
