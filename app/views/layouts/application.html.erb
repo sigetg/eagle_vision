@@ -15,7 +15,11 @@
       <%= content_tag :div, msg, class: name %>
     <% end %>
     <% if user_signed_in? %>
-      <%= @person.inspect  %>
+      <%= form_tag set_term_path do %>
+        <%= select_tag(:term_index, options_for_select(@terms.map.with_index {|term, index| [term.name, index]})) %>
+        <%= submit_tag 'Select Term' %>
+      <% end %>
+      Current Term: <%= session[:term]["name"] %> <br>
       <%= link_to 'My Waitlist Requests', registration_requests_path %>
       <%= link_to 'Search Course Offerings', course_offerings_path %>
       <%= form_tag(destroy_user_session_path, method: :delete) do %>

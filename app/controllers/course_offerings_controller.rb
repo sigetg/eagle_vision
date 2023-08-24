@@ -2,7 +2,7 @@ class CourseOfferingsController < ApplicationController
   before_action :set_course_offering, only: %i[ show edit update destroy ]
   # GET /course_offerings or /course_offerings.json
   def index
-    term_id = "kuali.atp.FA2023-2024"
+    term_id = session[:term]["id"]
     code = "ENGL1009"
     @course_offerings = @api_service.fetch_and_map_waitlistcourseofferings(term_id, code)
 
@@ -11,7 +11,7 @@ class CourseOfferingsController < ApplicationController
   end
 
   def search
-    term_id = "kuali.atp.FA2023-2024"
+    term_id = session[:term]["id"]
     code = "#{params[:key]}
     "
     @course_offerings = @api_service.fetch_and_map_waitlistcourseofferings(term_id, code)
