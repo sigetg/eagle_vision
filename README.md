@@ -1,24 +1,11 @@
-# README
+# EagleVision
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A rails app to allow BC students to submit waitlist requests for desired classes
 
-Things you may want to cover:
+* Collects Boston College course and registration data from the EagleApps API (not included in this repo sadly) and allows users to search through it to find a section to submit a waitlist request for.
 
-* Ruby version
+* Persists very little data in the database, as all data apart from user data is pulled from and posted to the EagleApps API.
 
-* System dependencies
+* Uses the ruby gems devise, omniauth (google oauth), httparty, and rolify.
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Built with rails 7.0.7 and ruby 3.2.2
