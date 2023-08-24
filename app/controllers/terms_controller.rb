@@ -3,7 +3,6 @@ class TermsController < ApplicationController
 
   # GET /terms or /terms.json
   def index
-    @terms = Term.all
   end
 
   # GET /terms/1 or /terms/1.json

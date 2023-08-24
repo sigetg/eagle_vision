@@ -12,18 +12,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
 
   def create
-    build_resource(sign_up_params)
-    if data = fetch_data_from_api(resource.email)[0]
-      resource.person_id = data['id']
-      resource.typeKey = data['typeKey']
-      resource.stateKey = data['stateKey']
-      resource.name = data['name']
-      resource.descr = data['descr']
-      resource.pictureDocumentId = data['pictureDocumentId']
-      resource.meta = data['meta']
-      resource.person_email = data['person_email']
-    end
-    if resource.save && resource.person_email != nil
+   build_resource(sign_up_params)
+    if resource.save
       yield resource if block_given?
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
@@ -67,31 +57,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   protected
 
-  def fetch_data_from_api(email)
-    uri = URI("http://127.0.0.1:3000/people?person_email=#{email}")
-    response = Net::HTTP.get_response(uri)
-    if response.is_a?(Net::HTTPSuccess)
-      data = JSON.parse(response.body)
-      # Process the API response and return the necessary data
-      # For example: data['name'], data['age'], etc.
-    else
-      Rails.logger.error("API Error: #{response.code} - #{response.message}")
-      nil
-    end
-  rescue StandardError => e
-    Rails.logger.error("API Error: #{e.message}")
-    nil
-  end
-
     # If you have extra params to permit, append them to the sanitizer.
 
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:typeKey, :stateKey, :name, :descr, :pictureDocumentId, :meta, :person_email])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:person_id])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:typeKey, :stateKey, :name, :descr, :pictureDocumentId, :meta, :person_email])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:person_id])
   end
 
   # The path used after sign up.

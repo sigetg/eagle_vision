@@ -2,6 +2,50 @@ class ApiService
   include HTTParty
   base_uri 'http://127.0.0.1:8080/waitlist'
 
+  def fetch_and_map_waitlistperson(person_id)
+    response = self.class.get("/waitlistpersons/#{person_id}")
+    api_data = JSON.parse(response.body)
+
+    self.class.map_to_person(api_data)
+  end
+
+  def self.map_to_person(api_item)
+    person = api_item['person']
+    active_terms = api_item['activeTerms']
+    return_terms = []
+    return_person = Person.new(
+      attributes: person['attributes'],
+      meta: person['meta'],
+      typeKey: person['typeKey'],
+      stateKey: person['stateKey'],
+      name: person['name'],
+      descr: person['descr'],
+      id: person['id'],
+      pictureDocumentId: person['pictureDocumentId'],
+      type: person['type'],
+      state: person['state']
+    )
+    active_terms.each do |term|
+      term = Term.new(
+        attributes: term['attributes'],
+        meta: term['meta'],
+        typeKey: term['typeKey'],
+        stateKey: term['stateKey'],
+        name: term['name'],
+        descr: term['descr'],
+        id: term['id'],
+        code: term['code'],
+        startDate: term['startDate'],
+        endDate: term['endDate'],
+        adminOrgId: term['adminOrgId'],
+        type: term['type'],
+        state: term['state']
+      )
+      return_terms.append(term)
+    end
+    [ return_person, return_terms ]
+  end
+
   def fetch_and_map_waitlistcourseofferings(term, code)
     response = self.class.get("/waitlistcourseofferings?termId=#{term}&code=#{code}")
     api_data = JSON.parse(response.body)
@@ -107,7 +151,7 @@ class ApiService
 
   def self.map_to_activity_offering(api_item)
     activity_offering = api_item['activityOffering']
-    ActivityOffering.new(
+    activity = ActivityOffering.new(
       attributes: activity_offering['attributes'],
       meta: activity_offering['meta'],
       id: activity_offering['id'],
@@ -143,6 +187,11 @@ class ApiService
       type: activity_offering['type'],
       state: activity_offering['state']
     )
+    if api_item['scheduleNames']
+      schedule_names = api_item['scheduleNames']
+      activity.scheduleNames = schedule_names[0]
+    end
+    activity
   end
 
   def fetch_and_map_waitlistregistrationgroups(course_offering_id)

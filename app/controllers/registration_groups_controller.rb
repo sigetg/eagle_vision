@@ -1,6 +1,5 @@
 class RegistrationGroupsController < ApplicationController
   before_action :set_registration_group, only: %i[ show edit update destroy ]
-  before_action :set_api_service, only: %i[ index ]
 
   # GET /registration_groups or /registration_groups.json
   def index
@@ -70,9 +69,5 @@ class RegistrationGroupsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def registration_group_params
       params.require(:registration_group).permit(:attributes, :meta, :typeKey, :stateKey, :name, :descr, :id, :formatOfferingId, :courseOfferingId, :termId, :registrationCode, :courseCode, :activityOfferingIds, :multiOfferingId, :bundledOfferingId, :isGenerated, :gradingOptionId, :studentRegistrationGradingOptionIds, :creditOptionId, :requisiteIds, :coRequisiteIds, :restrictionIds, :type, :state)
-    end
-
-    def set_api_service
-      @api_service = ApiService.new
     end
 end

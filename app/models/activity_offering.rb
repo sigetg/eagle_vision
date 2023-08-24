@@ -35,7 +35,8 @@ class ActivityOffering
     :coRequisiteIds,
     :restrictionIds,
     :type,
-    :state
+    :state,
+    :scheduleNames
 
   # belongs_to :term
   # belongs_to :course_offering

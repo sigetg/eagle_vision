@@ -6,10 +6,5 @@
   <% @registration_groups_data.each do |registration_group_data| %>
     <%= render registration_group_data[:registration_group] %>
     <%= render 'activity_offerings/activity_offerings_list', activity_offerings: registration_group_data[:activity_offerings] %>
-    <p>
-      <%= link_to "Show this registration group", registration_group_path(id: registration_group_data[:registration_group].id) %>
-    </p>
   <% end %>
 </div>
-
-<%= link_to "New registration group", new_registration_group_path %>
