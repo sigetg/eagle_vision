@@ -15,4 +15,5 @@ class Term
     :adminOrgId,
     :type,
     :state
+
 end

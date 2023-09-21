@@ -37,7 +37,4 @@ class ActivityOffering
     :type,
     :state,
     :scheduleNames
-
-  # belongs_to :term
-  # belongs_to :course_offering
 end

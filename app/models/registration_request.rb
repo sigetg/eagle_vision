@@ -19,4 +19,5 @@ class RegistrationRequest
     :itemStudentPopulationId,
     :type,
     :state
+
 end

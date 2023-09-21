@@ -12,7 +12,6 @@
         <td><%= activity_offering.scheduleNames %></td>
         <td><%= format_instructor_names(activity_offering.instructors.map { |instructor| instructor['personName']}) %></td>
         <td><%= activity_offering.maximumEnrollment %></td>
-        <td><%= link_to "Submit Waitlist Request", new_registration_request_path %></td>
       </tr>
     </div>
   <% end %>

@@ -15,7 +15,7 @@
     <%= form.label :typeKey, style: "display: block" do %>
       Type Key: Waitlist
     <% end %>
-    <%= form.hidden_field :typeKey, value: 'Waitlist' %>
+    <%= form.hidden_field :typeKey, value: @registration_request.typeKey %>
   </div>
 
   <div>

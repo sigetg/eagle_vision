@@ -5,6 +5,18 @@ class TermsController < ApplicationController
   def index
   end
 
+  def terms_dropdown
+    @person, @terms = @api_service.fetch_and_map_waitlistperson(current_user.email.split("@")[0])
+    if session[:term].nil?
+      session[:term] = @terms[0]
+    end
+    respond_to do |format|
+      format.html { render partial: 'terms_dropdown', layout: false }
+      format.json { render json: @terms }
+      format.turbo_stream
+    end
+  end
+
   # GET /terms/1 or /terms/1.json
   def show
   end
@@ -57,13 +69,15 @@ class TermsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_term
-      @term = Term.find(params[:id])
+  def set_term
+    if params[:term_index]
+      session[:term] = @terms[params[:term_index].to_i]
     end
+    puts "TERMINACION: #{session[:term].inspect}"
+  end
 
-    # Only allow a list of trusted parameters through.
-    def term_params
-      params.require(:term).permit(:typeKey, :stateKey, :name, :descr, :code, :startDate, :endDate, :meta)
-    end
+  # Only allow a list of trusted parameters through.
+  def term_params
+    params.require(:term).permit(:typeKey, :stateKey, :name, :descr, :code, :startDate, :endDate, :meta)
+  end
 end

@@ -47,8 +47,10 @@
   </div>
 
   <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+    <%= form.label :name, style: "display: block" do %>
+      Name: <%= registration_request.name %>
+    <% end %>
+    <%= form.hidden_field :name, value: registration_request.name %>
   </div>
 
   <div>
@@ -57,17 +59,17 @@
   </div>
 
   <div>
-    <%= form.label :person_id, style: "display: block" do %>
-      Person: <%= registration_request.person_id %>
+    <%= form.label :requestorId, style: "display: block" do %>
+      Person: <%= registration_request.requestorId %>
     <% end %>
-    <%= form.hidden_field :person_id, value: registration_request.person_id %>
+    <%= form.hidden_field :requestorId, value: registration_request.requestorId %>
   </div>
 
   <div>
-    <%= form.label :term_id, style: "display: block" do %>
-      Term: <%= registration_request.term_id %>
+    <%= form.label :termId, style: "display: block" do %>
+      Term: <%= registration_request.termId %>
     <% end %>
-    <%= form.hidden_field :term_id, value: registration_request.term_id %>
+    <%= form.hidden_field :term_id, value: registration_request.termId %>
   </div>
 
   <div>
@@ -147,34 +149,31 @@
     </div>
 
     <div>
-      <%= item_form.label :name, style: "display: block" %>
-      <%= item_form.text_field :name,  value: registration_request_item.name %>
-    </div>
-
-    <div>
-      <%= item_form.label :descr, style: "display: block" %>
-      <%= item_form.text_field :descr, value: registration_request_item.descr %>
-    </div>
-
-    <div>
-      <%= item_form.label :registration_request_id, style: "display: block" do %>
-        Registration Request: <%= registration_request_item.registration_request_id %>
+      <%= item_form.label :name, style: "display: block" do %>
+        Name: <%= registration_request_item.name %>
       <% end %>
-      <%= item_form.hidden_field :registration_request_id, value: registration_request_item.registration_request_id %>
+      <%= form.hidden_field :name, value: registration_request_item.name %>
     </div>
 
     <div>
-      <%= item_form.label :person_id, style: "display: block" do %>
-        Person: <%= registration_request_item.person_id %>
+      <%= item_form.label :descr, style: "display: block" do %>
+        Descr: <%= registration_request_item.descr %>
       <% end %>
-      <%= item_form.hidden_field :person_id, value: registration_request_item.person_id %>
+      <%= item_form.hidden_field :descr, value: registration_request_item.descr %>
     </div>
 
     <div>
-      <%= item_form.label :activity_offering_id, style: "display: block" do %>
-        Activity Offering: <%= registration_request_item.activity_offering_id %>
+      <%= item_form.label :registrationRequestId, style: "display: block" do %>
+        Registration Request: <%= registration_request_item.registrationRequestId %>
       <% end %>
-      <%= item_form.hidden_field :activity_offering_id, value: registration_request_item.activity_offering_id %>
+      <%= item_form.hidden_field :registrationRequestId, value: registration_request_item.registrationRequestId %>
+    </div>
+
+    <div>
+      <%= item_form.label :studentId, style: "display: block" do %>
+        Person: <%= registration_request_item.studentId %>
+      <% end %>
+      <%= item_form.hidden_field :studentId, value: registration_request_item.studentId %>
     </div>
 
     <div>

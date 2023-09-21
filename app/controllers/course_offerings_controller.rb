@@ -3,7 +3,7 @@ class CourseOfferingsController < ApplicationController
   # GET /course_offerings or /course_offerings.json
   def index
     term_id = session[:term]["id"]
-    code = "ENGL1009"
+    code = "a"
     @course_offerings = @api_service.fetch_and_map_waitlistcourseofferings(term_id, code)
 
     # @course_offerings = CourseOffering.all

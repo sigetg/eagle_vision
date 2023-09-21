@@ -1,12 +1,23 @@
 class ApiService
   include HTTParty
+  include HashToStruct
+  class DoesNotExistException < StandardError
+    def initialize(resource_id)
+      @resource_id = resource_id
+      super("The resource with ID #{@resource_id} does not exist.")
+    end
+  end
+
   base_uri 'http://127.0.0.1:8080/waitlist'
 
   def fetch_and_map_waitlistperson(person_id)
     response = self.class.get("/waitlistpersons/#{person_id}")
-    api_data = JSON.parse(response.body)
-
-    self.class.map_to_person(api_data)
+    if response.code == 200
+      api_data = JSON.parse(response.body)
+      self.class.map_to_person(api_data)
+    else
+      raise DoesNotExistException.new(person_id)
+    end
   end
 
   def self.map_to_person(api_item)
@@ -43,7 +54,7 @@ class ApiService
       )
       return_terms.append(term)
     end
-    [ return_person, return_terms ]
+    [ return_person, active_terms ]
   end
 
   def fetch_and_map_waitlistcourseofferings(term, code)
@@ -236,4 +247,105 @@ class ApiService
 
     { registration_group: group, activity_offerings: activities }
   end
+
+
+  def create_waitlist_request(studentId, registrationGroupId)
+    response = self.class.post("/waitlistrequests?studentId=#{studentId}&registrationGroupId=#{registrationGroupId}")
+    if response.code == 200
+      api_data = JSON.parse(response.body)
+      self.class.map_to_registration_request(api_data)
+    end
+  end
+
+  def self.map_to_registration_request(api_item)
+    registration_request = api_item['registrationRequest']
+    registration_request_item = api_item['registrationRequestItem']
+    request = RegistrationRequest.new(
+      id: registration_request['id'],
+      attributes: registration_request['attributes'],
+      meta: registration_request['meta'],
+      typeKey: registration_request['typeKey'],
+      stateKey: registration_request['stateKey'],
+      effectiveDate: registration_request['effectiveDate'],
+      expirationDate: registration_request['expirationDate'],
+      name: registration_request['name'],
+      descr: registration_request['descr'],
+      requestorId: registration_request['requestorId'],
+      termId: registration_request['termId'],
+      submittedDate: registration_request['submittedDate'],
+      processResults: registration_request['processResults'],
+      itemStudentIds: registration_request['itemStudentIds'],
+      itemStudentPopulationId: registration_request['itemStudentPopulationId'],
+      type: registration_request['type'],
+      state: registration_request['state']
+    )
+
+    request_item = RegistrationRequestItem.new(
+      id: registration_request_item['id'],
+      typeKey: registration_request_item['typeKey'],
+      stateKey: registration_request_item['stateKey'],
+      effectiveDate: registration_request_item['effectiveDate'],
+      expirationDate: registration_request_item['expirationDate'],
+      name: registration_request_item['name'],
+      descr: registration_request_item['descr'],
+      registrationRequestId: registration_request_item['registrationRequestId'],
+      studentId: registration_request_item['studentId'],
+      requestedEffectiveDate: registration_request_item['requestedEffectiveDate'],
+      existingRegistrationId: registration_request_item['existingRegistrationId'],
+      existingActivityOfferingId: registration_request_item['existingActivityOfferingId'],
+      preferredActivityOfferingIds: registration_request_item['preferredActivityOfferingIds'],
+      preferredFormatOfferingIds: registration_request_item['preferredFormatOfferingIds'],
+      preferredRegistrationGroupIds: registration_request_item['preferredRegistrationGroupIds'],
+      preferredCredits: registration_request_item['preferredCredits'],
+      preferredGradingOptionIds: registration_request_item['preferredGradingOptionIds'],
+      processResults: registration_request_item['processResults'],
+      resultingRegistrationId: registration_request_item['resultingRegistrationId'],
+      courseWaitlistEntryId: registration_request_item['courseWaitlistEntryId'],
+      processingPriority: registration_request_item['processingPriority'],
+      lastAttendanceDate: registration_request_item['lastAttendanceDate'],
+      notificationDate: registration_request_item['notificationDate'],
+      meta: registration_request_item['meta'],
+      attributes: registration_request_item['attributes'],
+      type: registration_request_item['type'],
+      state: registration_request_item['state']
+    )
+
+    { registration_request: request, registration_request_item: request_item }
+  end
+
+  def update_waitlist_request(waitlistRequestId, waitlistRequest)
+    headers = { 'Content-Type' => 'application/json' }
+    json_body = waitlistRequest.to_h.to_json
+    # puts "json_body="+ json_body
+    response = self.class.put("/waitlistrequests/#{waitlistRequestId}", body: json_body, headers: headers)
+    if response.code == 200
+      # puts "response.body="+ response.body
+      h = JSON.parse(response.body)
+      return HashToStruct.struct(h)
+    end
+    raise DoesNotExistException.new waitlistRequestId
+  end
+
+  def get_waitlist_request(waitlistRequestId)
+    url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests/" + waitlistRequestId
+    response = self.class.get("/waitlistrequests/#{waitlistRequestId}")
+    if response.status == 200
+      h = JSON.parse(response.body)
+      r=HashToStruct.struct(h)
+      return r
+    end
+    raise DoesNotExistException.new waitlistRequestId
+  end
+
+
+  def change_waitlist_request_state(waitlistRequestId, stateKey)
+    headers = { 'Content-Type' => 'application/json' }
+    # puts "json_body="+ json_body
+    response = self.class.put("/waitlistrequests/#{waitlistRequestId}/changestate/#{stateKey}", headers: headers)
+    if response.code == 200
+      return
+    end
+    raise DoesNotExistException.new waitlistRequestId
+  end
+
 end

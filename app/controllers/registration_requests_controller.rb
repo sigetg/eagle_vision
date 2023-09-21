@@ -4,26 +4,20 @@ class RegistrationRequestsController < ApplicationController
 
   # GET /registration_requests or /registration_requests.json
   def index
-    if current_user.has_role?(:admin)
-      @registration_requests = RegistrationRequest.all
-    else
-      #need to give user an associated peron_id for this to work properly
-      @registration_requests = RegistrationRequest.find(:all, :params => { :person_id => current_user.person_id })
-    end
+    @registration_requests = []
   end
 
   # GET /registration_requests/1 or /registration_requests/1.json
   def show
+    @registration_request = @api_service.get_waitlist_request(params[:id])
   end
 
   # GET /registration_requests/new
   def new
-    @registration_request = RegistrationRequest.new
-    @registration_request_item = RegistrationRequestItem.new
-    @activity_offering = ActivityOffering.find(params[:activity_offering_id])
-    @term_id = params[:term_id]
-    # This needs to be person associated with current user, and needs to be hooked up to new view
-    @person = Person.find(current_user.person_id)
+    registration_request_data = @api_service.create_waitlist_request(@person.id, params[:registration_group_id])
+    @registration_request = registration_request_data[:registration_request]
+    @registration_request_item = registration_request_data[:registration_request_item]
+    @registration_group = params[:registration_group]
   end
 
   # GET /registration_requests/1/edit

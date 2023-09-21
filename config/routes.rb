@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :terms
-  post 'set_term', to: 'application#set_term', as: :set_term
+  post 'set_term', to: 'terms#set_term', as: :set_term
+  get 'terms_dropdown', to: 'terms#terms_dropdown', as: :terms_dropdown
   resources :people
   resources :course_offerings do
     resources :activity_offerings

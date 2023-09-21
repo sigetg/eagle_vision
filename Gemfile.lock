@@ -109,6 +109,7 @@ GEM
     faraday-net_http (3.0.2)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    hash_to_struct (1.0.0)
     hashie (5.0.0)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
@@ -281,6 +282,7 @@ DEPENDENCIES
   capybara
   debug
   devise (~> 4.9)
+  hash_to_struct (~> 1.0)
   httparty (~> 0.21.0)
   importmap-rails
   jbuilder

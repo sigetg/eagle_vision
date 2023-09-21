@@ -82,3 +82,5 @@ gem "activeresource", "~> 6.0"
 
 gem "rolify", "~> 6.0"
 gem "httparty", "~> 0.21.0"
+
+gem "hash_to_struct", "~> 1.0"

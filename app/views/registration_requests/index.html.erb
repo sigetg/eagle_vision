@@ -1,14 +1,15 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Waitlist requests</h1>
-
-<div id="registration_requests">
-  <% @registration_requests.each do |registration_request| %>
-    <%= render registration_request %>
-    <p>
-      <%= link_to "Show this waitlist request", registration_request %>
-    </p>
-  <% end %>
-</div>
+<% if @registration_requests != nil %>
+  <div id="registration_requests">
+    <% @registration_requests.each do |registration_request| %>
+      <%= render registration_request %>
+      <p>
+        <%= link_to "Show this waitlist request", registration_request %>
+      </p>
+    <% end %>
+  </div>
+<% end %>
 
 <%= link_to "New waitlist request", course_offerings_path %>
