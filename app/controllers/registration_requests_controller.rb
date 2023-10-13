@@ -4,7 +4,11 @@ class RegistrationRequestsController < ApplicationController
 
   # GET /registration_requests or /registration_requests.json
   def index
-    @registration_requests = []
+    # TODO: Figure out how to fetch the current user's ID!!!!
+    # @registration_requests = @api_service.get_waitlist_request_by_student(current_user.email.split("@")[0])
+    @registration_requests = @api_service.get_waitlist_request_by_student("90000001")
+    # @registration_requests = @api_service.get_waitlist_request("60f3bb1c-e6d5-4dc3-8636-5a5be4213dd5")
+
   end
 
   # GET /registration_requests/1 or /registration_requests/1.json
@@ -15,9 +19,11 @@ class RegistrationRequestsController < ApplicationController
   # GET /registration_requests/new
   def new
     registration_request_data = @api_service.create_waitlist_request(@person.id, params[:registration_group_id])
-    @registration_request = registration_request_data[:registration_request]
-    @registration_request_item = registration_request_data[:registration_request_item]
+    @RegistrationRequest = registration_request_data[:registration_request]
+    @RegistrationRequestItem = registration_request_data[:registration_request_item]
     @registration_group = params[:registration_group]
+    @api_service.update_waitlist_request(registration_request_data[:registrationRequest].id, registration_request_data)
+    redirect_to registration_requests_path, notice: "Registration request was successfully created."
   end
 
   # GET /registration_requests/1/edit
@@ -28,18 +34,9 @@ class RegistrationRequestsController < ApplicationController
 
   # POST /registration_requests or /registration_requests.json
   def create
-    @registration_request = RegistrationRequest.new(registration_request_params)
-    @registration_request_item = RegistrationRequestItem.new(registration_request_item_params)
-
-
+    @registration_request = params["RegistrationRequest"]
     respond_to do |format|
-      if @registration_request.save
-        @registration_request_item.registration_request_id = @registration_request.id
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @registration_request.errors, status: :unprocessable_entity }
-      end
-      if @registration_request_item.save
+      if @api_service.update_waitlist_request(@registration_request['id'], @registration_request)
         format.html { redirect_to registration_request_url(@registration_request), notice: "Registration request was successfully created." }
         format.json { render :show, status: :created, location: @registration_request }
       else
@@ -74,22 +71,14 @@ class RegistrationRequestsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_registration_request
-      @registration_request = RegistrationRequest.find(params[:id])
-    end
-
-    def set_registration_request_items
-      @registration_request_items = RegistrationRequestItem.find(:all, :from => "/registration_requests/#{params[:id]}/registration_request_items" )
-    end
 
     # Only allow a list of trusted parameters through.
-    def registration_request_params
-      params.require(:registration_request).permit(:typeKey, :stateKey, :effectiveDate, :expirationDate, :name, :descr, :person_id, :term_id, :submittedDate, :processResults, :itemStudentIds, :itemStudentPopulationId, :meta, :registration_request_item)
-    end
+    # def registration_request_params
+    #   params.require(:registration_request).permit(:typeKey, :stateKey, :effectiveDate, :expirationDate, :name, :descr, :requestorId, :termId, :submittedDate, :processResults, :itemStudentIds, :itemStudentPopulationId, :meta)
+    # end
 
     # Only allow a list of trusted parameters through.
     def registration_request_item_params
-      params.require(:registration_request).require(:registration_request_item).permit(:typeKey, :stateKey, :effectiveDate, :expirationDate, :name, :descr, :registration_request_id, :person_id, :requestedEffectiveDate, :existingRegistrationId, :existingActivityOfferingId, :preferredActivityOfferingIds, :preferredFormatOfferingIds, :preferredRegistrationGroupIds, :preferredCredits, :preferredGradingOptionIds, :processResults, :resultingRegistrationId, :courseWaitlistEntryId, :processingPriority, :lastAttendanceDate, :notificationDate, :meta, :activity_offering_id)
+      params.require(:registration_request).require(:registration_request_item).permit(:typeKey, :stateKey, :effectiveDate, :expirationDate, :name, :descr, :registrationRequestId, :studentId, :requestedEffectiveDate, :existingRegistrationId, :existingActivityOfferingId, :preferredActivityOfferingIds, :preferredFormatOfferingIds, :preferredRegistrationGroupIds, :preferredCredits, :preferredGradingOptionIds, :processResults, :resultingRegistrationId, :courseWaitlistEntryId, :processingPriority, :lastAttendanceDate, :notificationDate, :meta)
     end
 end
