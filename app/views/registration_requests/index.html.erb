@@ -6,7 +6,7 @@
     <% @registration_requests.each do |registration_request| %>
       <%= render partial: "registration_request", locals: {registration_request: registration_request[:registrationRequest]} %>
       <p>
-        <%= link_to "Show this waitlist request", registration_request %>
+        <%= link_to "Show this waitlist request", registration_request_path(registration_request[:registrationRequest].id) %>
       </p>
     <% end %>
   </div>

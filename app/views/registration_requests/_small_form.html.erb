@@ -12,6 +12,13 @@
   <% end %>
 
   <div>
+    <%= form.label :registration_request_data, style: "display: block" do %>
+      Request Data: <%= @registration_request_data %>
+    <% end %>
+    <%= form.hidden_field :registration_request_data, value: @registration_request_data %>
+  </div>
+
+  <div>
     <%= form.label :id, style: "display: block" do %>
       Registration Request: <%= @RegistrationRequest.id %>
     <% end %>

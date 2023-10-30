@@ -1,19 +1,16 @@
 <p style="color: green"><%= notice %></p>
 <h1>Waitlist request</h1>
 
-<%= render @registration_request %>
+<%= render partial: "registration_request", locals: {registration_request: @registration_request[:registrationRequest]} %>
 
 <h2>Waitlist request item</h2>
 
-<div id="registration_request_items">
-  <% @registration_request_items.each do |registration_request_item| %>
-    <%= render registration_request_item %>
-  <% end %>
-</div>
+<%= render partial: "registration_request_item", locals: {registration_request_item: @registration_request[:registrationRequestItem]} %>
 
 <div>
-  <%= link_to "Edit this waitlist request", edit_registration_request_path(@registration_request) %> |
+  <%= link_to "Edit this waitlist request", edit_registration_request_path(@registration_request[:registrationRequest].id) %> |
+    <%= link_to "Delete this waitlist request", registration_request_path(@registration_request[:registrationRequest].id), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'} %> |
   <%= link_to "Back to waitlist requests", registration_requests_path %>
 
-  <%= button_to "Destroy this waitlist request", @registration_request, method: :delete %>
+  <%# <%= button_to "Destroy this waitlist request", @registration_request, action: "delete" %>
 </div>

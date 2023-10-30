@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/search', to: "course_offerings#search"
   resources :activity_offerings
   resources :registration_requests
+  post '/registration_requests/:id(.:format)', to: "registration_requests#create"
   resources :registration_request_items
 
   devise_for :users, controllers: {
@@ -18,7 +19,6 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
-  resources :waitlist_requests
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

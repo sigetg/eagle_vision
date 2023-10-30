@@ -218,6 +218,7 @@ class ApiService
   end
 
   def self.map_to_registration_group(api_item)
+    puts "API Item: " + api_item.inspect
     registration_group = api_item['registrationGroup']
     activity_offerings = api_item['activityOfferings']
     group = RegistrationGroup.new(
@@ -323,7 +324,8 @@ class ApiService
     json_body = waitlistRequest.to_json
     puts "json_body="+ json_body
     response = self.class.put("/waitlistrequests/#{waitlistRequestId}", body: json_body, headers: headers)
-    # puts 'RESPONSE:' + response.inspect
+    puts 'RESPONSE:' + response.inspect
+    puts 'CODE:' + response.code.to_s
     if response.code == 200
       # puts "response.body="+ response.body
       h = JSON.parse(response.body)
@@ -363,6 +365,16 @@ class ApiService
     headers = { 'Content-Type' => 'application/json' }
     # puts "json_body="+ json_body
     response = self.class.put("/waitlistrequests/#{waitlistRequestId}/changestate/#{stateKey}", headers: headers)
+    if response.code == 200
+      return
+    end
+    raise DoesNotExistException.new waitlistRequestId
+  end
+
+  def delete_waitlist_request(waitlistRequestId)
+    headers = { 'Content-Type' => 'application/json' }
+    # puts "json_body="+ json_body
+    response = self.class.delete("/waitlistrequests/#{waitlistRequestId}", headers: headers)
     if response.code == 200
       return
     end
