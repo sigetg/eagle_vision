@@ -9,7 +9,7 @@
 
 <div>
   <%= link_to "Edit this waitlist request", edit_registration_request_path(@registration_request[:registrationRequest].id) %> |
-    <%= link_to "Delete this waitlist request", registration_request_path(@registration_request[:registrationRequest].id), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'} %> |
+    <%= link_to "Delete this waitlist request", registration_request_path(@registration_request[:registrationRequest].id), data: {turbo_method: :delete} %> |
   <%= link_to "Back to waitlist requests", registration_requests_path %>
 
   <%# <%= button_to "Destroy this waitlist request", @registration_request, action: "delete" %>

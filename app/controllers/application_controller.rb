@@ -18,6 +18,6 @@ class ApplicationController < ActionController::Base
     if session[:term].nil?
       session[:term] = @terms[0]
     end
-     puts "PERSON: #{current_user.person_id}"
+    puts "PERSON: #{current_user.person_id}"
   end
 end

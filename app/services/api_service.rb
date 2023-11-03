@@ -218,7 +218,6 @@ class ApiService
   end
 
   def self.map_to_registration_group(api_item)
-    puts "API Item: " + api_item.inspect
     registration_group = api_item['registrationGroup']
     activity_offerings = api_item['activityOfferings']
     group = RegistrationGroup.new(
@@ -256,11 +255,21 @@ class ApiService
 
   def create_waitlist_request(studentId, registrationGroupId)
     response = self.class.post("/waitlistrequests?studentId=#{studentId}&registrationGroupId=#{registrationGroupId}")
-    # puts "RESPONSIA: " + response.inspect
     if response.code == 200
       api_data = JSON.parse(response.body)
       self.class.map_to_registration_request(api_data)
     end
+  end
+
+  def get_waitlist_request(waitlistRequestId)
+    url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests/" + waitlistRequestId
+    response = self.class.get("/waitlistrequests/#{waitlistRequestId}")
+    if response.parsed_response["registrationRequest"]["id"] == waitlistRequestId
+      api_data = JSON.parse(response.body)
+      self.class.map_to_registration_request(api_data)
+      # r=HashToStruct.struct(h)
+    end
+    # raise DoesNotExistException.new waitlistRequestId
   end
 
   def self.map_to_registration_request(api_item)
@@ -327,20 +336,8 @@ class ApiService
     puts 'RESPONSE:' + response.inspect
     puts 'CODE:' + response.code.to_s
     if response.code == 200
-      # puts "response.body="+ response.body
       h = JSON.parse(response.body)
       return HashToStruct.struct(h)
-    end
-    raise DoesNotExistException.new waitlistRequestId
-  end
-
-  def get_waitlist_request(waitlistRequestId)
-    url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests/" + waitlistRequestId
-    response = self.class.get("/waitlistrequests/#{waitlistRequestId}")
-    if response.parsed_response["registrationRequest"]["id"] == waitlistRequestId
-      h = JSON.parse(response.body)
-      r=HashToStruct.struct(h)
-      return r
     end
     raise DoesNotExistException.new waitlistRequestId
   end
@@ -351,7 +348,6 @@ class ApiService
     response = self.class.get("/waitlistrequests?studentId=#{studentId}")
     if response.code == 200
       api_data = JSON.parse(response.body)
-      puts "APIDATA: " + api_data.inspect
       for i in 0...api_data.length() do
         request = self.class.map_to_registration_request(api_data[i])
         r.append(request)
@@ -363,7 +359,6 @@ class ApiService
 
   def change_waitlist_request_state(waitlistRequestId, stateKey)
     headers = { 'Content-Type' => 'application/json' }
-    # puts "json_body="+ json_body
     response = self.class.put("/waitlistrequests/#{waitlistRequestId}/changestate/#{stateKey}", headers: headers)
     if response.code == 200
       return
@@ -373,7 +368,6 @@ class ApiService
 
   def delete_waitlist_request(waitlistRequestId)
     headers = { 'Content-Type' => 'application/json' }
-    # puts "json_body="+ json_body
     response = self.class.delete("/waitlistrequests/#{waitlistRequestId}", headers: headers)
     if response.code == 200
       return
