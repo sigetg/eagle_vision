@@ -1,84 +1,35 @@
 class CourseOfferingsController < ApplicationController
-  before_action :set_course_offering, only: %i[ show edit update destroy ]
+  before_action :set_person_and_terms
   # GET /course_offerings or /course_offerings.json
   def index
-    term_id = session[:term]["id"]
-    code = "a"
+    puts params.inspect
+    if params[:term_id]
+      term_id = params[:term_id]
+      @term_name = params[:term_name]
+    else
+      term_id = session.dig(:term, "id")
+      @term_name = session.dig(:term, "name") #delete user version of this stuff
+    end
+    code = ""
     @course_offerings = @api_service.fetch_and_map_waitlistcourseofferings(term_id, code)
-
-    # @course_offerings = CourseOffering.all
-    # @course_offerings = CourseOffering.find(:all, :from => "/waitlist/waitlistcourseofferings?termId=#{term_id}&code=#{code}" )
   end
 
   def search
-    term_id = session[:term]["id"]
-    code = "#{params[:key]}
-    "
+    puts params.inspect
+    if params[:term_id]
+      term_id = params[:term_id]
+      @term_name = params[:term_name]
+    else
+      term_id = session.dig(:term, "id")
+      @term_name = session.dig(:term, "name")
+    end
+    code = "#{params[:key]}"
     @course_offerings = @api_service.fetch_and_map_waitlistcourseofferings(term_id, code)
-    # @course_offerings = CourseOffering.find(:all, :from => "/waitlist/waitlistcourseofferings?termId=#{term_id}&code=#{key}" )
-
-  end
-
-  # GET /course_offerings/1 or /course_offerings/1.json
-  def show
-    @activity_offerings = ActivityOffering.find(:all, :from => "/course_offerings/#{@course_offering.id}/activity_offerings" )
-  end
-
-  # GET /course_offerings/new
-  def new
-    @course_offering = CourseOffering.new
-  end
-
-  # GET /course_offerings/1/edit
-  def edit
-  end
-
-  # POST /course_offerings or /course_offerings.json
-  def create
-    @course_offering = CourseOffering.new(course_offering_params)
-
-    respond_to do |format|
-      if @course_offering.save
-        format.html { redirect_to course_offering_url(@course_offering), notice: "Course offering was successfully created." }
-        format.json { render :show, status: :created, location: @course_offering }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @course_offering.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /course_offerings/1 or /course_offerings/1.json
-  def update
-    respond_to do |format|
-      if @course_offering.update(course_offering_params)
-        format.html { redirect_to course_offering_url(@course_offering), notice: "Course offering was successfully updated." }
-        format.json { render :show, status: :ok, location: @course_offering }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @course_offering.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /course_offerings/1 or /course_offerings/1.json
-  def destroy
-    @course_offering.destroy
-
-    respond_to do |format|
-      format.html { redirect_to course_offerings_url, notice: "Course offering was successfully destroyed." }
-      format.json { head :no_content }
-    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_course_offering
-      @course_offering = CourseOffering.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def course_offering_params
-      params.require(:course_offering).permit(:typeKey, :stateKey, :effectiveDate, :expirationDate, :name, :descr, :courseId, :term_id, :courseCode, :courseOfferingCode, :subjectAreaId, :courseNumberSuffix, :courseOfferingTitle, :isHonorsOffering, :maximumEnrollment, :minimumEnrollment, :gradingOptionId, :studentRegistrationGradingOptionIds, :creditOptionId, :instructors, :unitsDeploymentOrgIds, :requisiteIds, :coRequisiteIds, :restrictionIds, :campusLocations, :isEvaluated, :courseOfferingUrl, :gradeRosterDefinitionId, :gradingOptionIds, :creditOptionIds, :meta)
-    end
+  def set_term
+    session
+  end
 end

@@ -1,5 +1,5 @@
 class RegistrationGroupsController < ApplicationController
-
+  before_action :set_api_service
   # GET /registration_groups or /registration_groups.json
   def index
     course_offering_id = params[:course_offering_id]

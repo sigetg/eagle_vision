@@ -1,5 +1,5 @@
 <%= form_tag set_term_path do %>
-  <%= select_tag(:term_index, options_for_select(@terms.map.with_index {|term, index| [term['name'], index]})) %>
+  <%= select_tag(:term_index, options_for_select(@terms.map.with_index {|term, index| [term['name'], index]}), selected: term_name) %>
   <%= submit_tag 'Select Term'%>
 <% end %>
-Current Term: <%= session[:term]["name"] %> <br>
+Current Term: <%= term_name %> <br>

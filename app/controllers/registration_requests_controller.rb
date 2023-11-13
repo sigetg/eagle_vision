@@ -1,4 +1,6 @@
 class RegistrationRequestsController < ApplicationController
+  before_action :set_api_service
+  before_action :set_person_and_terms, only: %i[ new ]
 
   # GET /registration_requests or /registration_requests.json
   def index
@@ -21,14 +23,6 @@ class RegistrationRequestsController < ApplicationController
     @RegistrationRequestItem = @registration_request_data[:registrationRequestItem]
   end
 
-  # GET /registration_requests/1/edit
-  def edit
-    puts params.inspect
-    @registration_request_data = @api_service.get_waitlist_request(params[:id])
-    @RegistrationRequest = @registration_request_data[:registrationRequest]
-    @RegistrationRequestItem = @registration_request_data[:registrationRequestItem]
-  end
-
   # POST /registration_requests or /registration_requests.json
   def create
     @registration_request = @api_service.get_waitlist_request(params[:id])
@@ -45,6 +39,14 @@ class RegistrationRequestsController < ApplicationController
         format.json { render json: @registration_request.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # GET /registration_requests/1/edit
+  def edit
+    puts params.inspect
+    @registration_request_data = @api_service.get_waitlist_request(params[:id])
+    @RegistrationRequest = @registration_request_data[:registrationRequest]
+    @RegistrationRequestItem = @registration_request_data[:registrationRequestItem]
   end
 
   # PATCH/PUT /registration_requests/1 or /registration_requests/1.json
