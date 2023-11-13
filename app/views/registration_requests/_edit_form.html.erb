@@ -1,4 +1,4 @@
-<%= form_with(model: registration_request, url: "/registration_requests/" + @RegistrationRequest.id, method: :put) do |form| %>
+<%= form_with(model: registration_request, url: registration_requests_path) do |form| %>
   <% if @RegistrationRequest.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(@RegistrationRequest.errors.count, "error") %> prohibited this @RegistrationRequest from being saved:</h2>
@@ -12,17 +12,18 @@
   <% end %>
 
   <div>
-    <%= form.label :registration_request_data, style: "display: block" do %>
-      Request Data: <%= @registration_request_data %>
-    <% end %>
     <%= form.hidden_field :registration_request_data, value: @registration_request_data %>
   </div>
 
   <div>
-    <%= form.label :id, style: "display: block" do %>
+    <!--<%= form.label :id, style: "display: block" do %>
       Registration Request: <%= @RegistrationRequest.id %>
-    <% end %>
+    <% end %>-->
     <%= form.hidden_field :id, value: @RegistrationRequest.id %>
+  </div>
+
+  <div>
+    <%= form.hidden_field :typeKey, value: @RegistrationRequest.typeKey %>
   </div>
 
   <% if current_user.has_role?(:admin) %>
@@ -33,60 +34,57 @@
   <% else %>
     <div>
       <%= form.label :stateKey, style: "display: block" do %>
-        State Key: <%= @RegistrationRequest.stateKey %>
+        State: <%= @RegistrationRequest.stateKey %>
       <% end %>
       <%= form.hidden_field :stateKey, value: @RegistrationRequest.stateKey %>
     </div>
   <% end %>
 
   <div>
-    <%= form.label :effectiveDate, style: "display: block" do %>
-      Effective Date: <%= @RegistrationRequest.effectiveDate %>
-    <% end %>
     <%= form.hidden_field :effectiveDate, value: @RegistrationRequest.effectiveDate %>
   </div>
 
   <div>
-    <%= form.label :expirationDate, style: "display: block" do %>
-      Expiration Date: <%= @RegistrationRequest.expirationDate %>
-    <% end %>
     <%= form.hidden_field :expirationDate, value: @RegistrationRequest.expirationDate %>
   </div>
 
   <div>
-    <%= form.label :name, style: "display: block" do %>
-      Name: <%= @RegistrationRequest.name %>
-    <% end %>
     <%= form.hidden_field :name, value: @RegistrationRequest.name %>
   </div>
 
   <div>
     <%= form.label :descr, style: "display: block" %>
-    <%= form.text_field :descr, value: @RegistrationRequest.descr["plain"] %>
+    <%= form.text_area :descr %>
   </div>
 
   <div>
-    <%= form.label :requestorId, style: "display: block" do %>
-      Person: <%= @RegistrationRequest.requestorId %>
-    <% end %>
     <%= form.hidden_field :requestorId, value: @RegistrationRequest.requestorId %>
   </div>
 
   <div>
-    <%= form.label :termId, style: "display: block" do %>
-      Term: <%= @RegistrationRequest.termId %>
-    <% end %>
     <%= form.hidden_field :termId, value: @RegistrationRequest.termId %>
   </div>
 
   <div>
-    <%= form.label :submittedDate, style: "display: block" do %>
-      Submitted Date: <%= @RegistrationRequest.submittedDate %>
-    <% end %>
     <%= form.hidden_field :submittedDate, value: @RegistrationRequest.submittedDate %>
   </div>
 
-  <h2>Registration Request Item</h2>
+  <div>
+    <%= form.hidden_field :processResults, value: @RegistrationRequest.processResults %>
+  </div>
+
+  <div>
+    <%= form.hidden_field :itemStudentIds, value: @RegistrationRequest.itemStudentIds %>
+  </div>
+
+  <div>
+    <%= form.hidden_field :itemStudentPopulationId, value: @RegistrationRequest.itemStudentPopulationId %>
+  </div>
+
+  <div>
+    <%= form.hidden_field :meta, value: @RegistrationRequest.meta %>
+  </div>
+
   <%= form.fields_for :@RegistrationRequestItem do |item_form| %>
     <% if @RegistrationRequestItem.errors.any? %>
       <div style="color: red">
@@ -100,26 +98,99 @@
       </div>
     <% end %>
     <div>
-      <%= item_form.label :id, style: "display: block" do %>
-        Registration Request Item: <%= @RegistrationRequestItem.id %>
-      <% end %>
       <%= item_form.hidden_field :id, value: @RegistrationRequestItem.id %>
+    </div>
+    <div>
+      <%= item_form.hidden_field :typeKey, value: @RegistrationRequestItem.typeKey %>
     </div>
 
     <div>
-      <%= item_form.label :registrationRequestId, style: "display: block" do %>
-        Registration Request: <%= @RegistrationRequestItem.registrationRequestId %>
-      <% end %>
+      <%= item_form.hidden_field :stateKey, value: @RegistrationRequestItem.stateKey %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :effectiveDate, value: @RegistrationRequestItem.effectiveDate %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :expirationDate, value: @RegistrationRequestItem.expirationDate %>
+    </div>
+
+    <div>
+      <%= form.hidden_field :name, value: @RegistrationRequestItem.name %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :descr, value: @RegistrationRequestItem.descr %>
+    </div>
+
+    <div>
       <%= item_form.hidden_field :registrationRequestId, value: @RegistrationRequestItem.registrationRequestId %>
     </div>
 
     <div>
-      <%= item_form.label :studentId, style: "display: block" do %>
-        Person: <%= @RegistrationRequestItem.studentId %>
-      <% end %>
       <%= item_form.hidden_field :studentId, value: @RegistrationRequestItem.studentId %>
     </div>
 
+    <div>
+      <%= item_form.hidden_field :requestedEffectiveDate, value: @RegistrationRequestItem.requestedEffectiveDate %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :existingRegistrationId, value: @RegistrationRequestItem.existingRegistrationId %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :existingActivityOfferingId, value: @RegistrationRequestItem.existingActivityOfferingId %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :preferredActivityOfferingIds, value: @RegistrationRequestItem.preferredActivityOfferingIds %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :preferredFormatOfferingIds, value: @RegistrationRequestItem.preferredFormatOfferingIds %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :preferredRegistrationGroupIds, value: @RegistrationRequestItem.preferredRegistrationGroupIds %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :preferredCredits, value: @RegistrationRequestItem.preferredCredits %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :preferredGradingOptionIds, value: @RegistrationRequestItem.preferredGradingOptionIds %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :processResults, value: @RegistrationRequestItem.processResults %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :resultingRegistrationId, value: @RegistrationRequestItem.resultingRegistrationId %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :courseWaitlistEntryId, value: @RegistrationRequestItem.courseWaitlistEntryId %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :processingPriority, value: @RegistrationRequestItem.processingPriority %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :lastAttendanceDate, value: @RegistrationRequestItem.lastAttendanceDate %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :notificationDate, value: @RegistrationRequestItem.notificationDate %>
+    </div>
+
+    <div>
+      <%= item_form.hidden_field :meta, value: @RegistrationRequestItem.meta %>
+    </div>
   <% end %>
 
   <div>

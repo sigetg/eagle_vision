@@ -4,10 +4,7 @@ class RegistrationRequestsController < ApplicationController
 
   # GET /registration_requests or /registration_requests.json
   def index
-    # @registration_requests = @api_service.get_waitlist_request_by_student(current_user.email.split("@")[0])
-    @registration_requests = @api_service.get_waitlist_request_by_student("90000001")      # TODO: Figure out how to fetch the current user's ID!!!!
-    # @registration_requests = @api_service.get_waitlist_request("60f3bb1c-e6d5-4dc3-8636-5a5be4213dd5")
-
+    @registration_requests = @api_service.get_waitlist_request_by_student(current_user.person_id.to_s)
   end
 
   # GET /registration_requests/1 or /registration_requests/1.json

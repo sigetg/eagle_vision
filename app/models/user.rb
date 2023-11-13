@@ -14,6 +14,10 @@ class User < ApplicationRecord
       user.password = Devise.friendly_token[0, 20]
       user.full_name = auth.info.name # assuming the user model has a name
       user.avatar_url = auth.info.image # assuming the user model has an image
+      api_service = ApiService.new
+      person, terms = api_service.fetch_and_map_waitlistperson(user.email.split("@")[0])
+      user.person_id = person.id
+      puts user.inspect
       # If you are using confirmable and the provider(s) you use validate emails,
       # uncomment the line below to skip the confirmation emails.
       # user.skip_confirmation!
@@ -29,4 +33,5 @@ class User < ApplicationRecord
       add_role(:user) # Change 'user' to the desired default role. Current roles are user and admin.
     end
   end
+
 end
