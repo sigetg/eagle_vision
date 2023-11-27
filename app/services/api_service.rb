@@ -16,17 +16,17 @@ class ApiService
 
   base_uri 'http://127.0.0.1:8080/waitlist'
 
-  def fetch_and_map_waitlistperson(person_id)
+  def fetch_and_map_waitlistperson_and_term(person_id)
     response = self.class.get("/waitlistpersons/#{person_id}")
     if response.code == 200
       api_data = JSON.parse(response.body)
-      self.class.map_to_person(api_data)
+      self.class.map_to_person_and_term(api_data)
     else
       raise DoesNotExistException.new(person_id)
     end
   end
 
-  def self.map_to_person(api_item)
+  def self.map_to_person_and_term(api_item)
     person = api_item['person']
     active_terms = api_item['activeTerms']
     return_terms = []
@@ -62,6 +62,52 @@ class ApiService
     end
     [ return_person, active_terms ]
   end
+
+  def fetch_and_map_waitlistperson_affiliations_and_authorized_departments(person_id)
+    response = self.class.get("/waitlistpersons/#{person_id}")
+    if response.code == 200
+      api_data = JSON.parse(response.body)
+      self.class.map_to_affiliations_and_authorized_departments(api_data)
+    else
+      raise DoesNotExistException.new(person_id)
+    end
+  end
+
+  def self.map_to_affiliations_and_authorized_departments(api_item)
+    affiliations = api_item['affiliations']
+    authorizedDepartments = api_item['authorizedDepartments']
+    return_depts = []
+    return_affiliations = []
+    affiliations.each do |affiliation|
+       affiliation = Affiliation.new(
+        personAffiliation: affiliation["personAffiliation"],
+        type: affiliation["type"]
+      )
+      return_affiliations.append(affiliation)
+    end
+    authorizedDepartments.each do |dept|
+      dept = Department.new(
+        attributes: dept['attributes'],
+        meta: dept['meta'],
+        typeKey: dept['typeKey'],
+        stateKey: dept['stateKey'],
+        id: dept["id"],
+        shortName: dept["shortName"],
+        longName: dept["longName"],
+        sortName: dept["sortName"],
+        longDescr: dept["longDescr"],
+        shortDescr: dept["shortDescr"],
+        effectiveDate: dept["effectiveDate"],
+        expirationDate: dept["expirationDate"],
+        orgCodes: dept["orgCodes"],
+        type: dept["type"],
+        state: dept["state"]
+      )
+      return_depts.append(dept)
+    end
+    [ return_affiliations, return_depts ]
+  end
+
 
   def fetch_and_map_waitlistcourseofferings(term, code)
     response = self.class.get("/waitlistcourseofferings?termId=#{term}&code=#{code}")
@@ -261,6 +307,9 @@ class ApiService
     end
   end
 
+
+  # CRUD for Waitlist Requests
+
   def get_waitlist_request(waitlistRequestId)
     url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests/" + waitlistRequestId
     response = self.class.get("/waitlistrequests/#{waitlistRequestId}")
@@ -342,10 +391,40 @@ class ApiService
     raise DoesNotExistException.new waitlistRequestId
   end
 
-  def get_waitlist_request_by_student(studentId)
+  def get_waitlist_requests_by_student(studentId)
     r = Array.new
     url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests?studentId=" + studentId
     response = self.class.get("/waitlistrequests?studentId=#{studentId}")
+    if response.code == 200
+      api_data = JSON.parse(response.body)
+      for i in 0...api_data.length() do
+        request = self.class.map_to_registration_request(api_data[i])
+        r.append(request)
+      end
+      return r
+    end
+    return []
+  end
+
+  def get_waitlist_requests_by_course_offering(courseOfferingId)
+    r = Array.new
+    url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests?courseOfferingId=" + courseOfferingId
+    response = self.class.get("/waitlistrequests?courseOfferingId=#{courseOfferingId}")
+    if response.code == 200
+      api_data = JSON.parse(response.body)
+      for i in 0...api_data.length() do
+        request = self.class.map_to_registration_request(api_data[i])
+        r.append(request)
+      end
+      return r
+    end
+    return []
+  end
+
+  def get_waitlist_requests_by_term_and_deptId(termId, deptId)
+    r = Array.new
+    url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests?termId=" + termId + "&deptId=" + deptId
+    response = self.class.get("/waitlistrequests?termId=" + termId + "&deptId=" + deptId)
     if response.code == 200
       api_data = JSON.parse(response.body)
       for i in 0...api_data.length() do

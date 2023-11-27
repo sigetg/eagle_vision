@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   def set_person_and_terms
     set_api_service
-    @person, @terms = @api_service.fetch_and_map_waitlistperson(current_user.email.split("@")[0])
+    @person, @terms = @api_service.fetch_and_map_waitlistperson_and_term(current_user.email.split("@")[0])
     if session[:term].nil?
       session[:term] = @terms[0]
     end

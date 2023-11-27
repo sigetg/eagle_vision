@@ -15,7 +15,7 @@ class User < ApplicationRecord
       user.full_name = auth.info.name # assuming the user model has a name
       user.avatar_url = auth.info.image # assuming the user model has an image
       api_service = ApiService.new
-      person, terms = api_service.fetch_and_map_waitlistperson(user.email.split("@")[0])
+      person, terms = api_service.fetch_and_map_waitlistperson_and_term(user.email.split("@")[0])
       user.person_id = person.id
       puts user.inspect
       # If you are using confirmable and the provider(s) you use validate emails,
@@ -27,10 +27,18 @@ class User < ApplicationRecord
   private
 
   def assign_default_role
-    if has_role?(:user)
-      puts "User already has role"
+    api_service = ApiService.new
+    affiliations, departments = api_service.fetch_and_map_waitlistperson_affiliations_and_authorized_departments(self.person_id)
+    is_admin = false
+    for affiliation in affiliations
+      if affiliation.type["name"] == "Staff"
+        is_admin = true
+      end
+    end
+    if is_admin
+      add_role(:admin)
     else
-      add_role(:user) # Change 'user' to the desired default role. Current roles are user and admin.
+      add_role(:user)
     end
   end
 

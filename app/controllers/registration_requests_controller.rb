@@ -1,10 +1,27 @@
 class RegistrationRequestsController < ApplicationController
   before_action :set_api_service
-  before_action :set_person_and_terms, only: %i[ new ]
+  before_action :set_person_and_terms, only: %i[ create ]
 
   # GET /registration_requests or /registration_requests.json
   def index
-    @registration_requests = @api_service.get_waitlist_request_by_student(current_user.person_id.to_s)
+    if current_user.has_role?("admin")
+      set_person_and_terms
+      affiliations, departments = @api_service.fetch_and_map_waitlistperson_affiliations_and_authorized_departments(current_user.person_id.to_s)
+      @registration_requests = []
+      departments.each do |department|
+        @registration_requests += @api_service.get_waitlist_requests_by_term_and_deptId(session[:term]["id"], department.id)
+        puts "REGREQS: " + @registration_requests.inspect
+      end
+      puts "REGREQS: " + @registration_requests.inspect
+    else
+      @registration_requests = @api_service.get_waitlist_requests_by_student(current_user.person_id.to_s)
+    end
+  end
+
+  def course_offering_requests
+    course_offering_id = params[:course_offering_id]
+    @registration_requests = @api_service.get_waitlist_requests_by_course_offering(course_offering_id)
+    render :index
   end
 
   # GET /registration_requests/1 or /registration_requests/1.json
@@ -14,15 +31,15 @@ class RegistrationRequestsController < ApplicationController
 
   # GET /registration_requests/new
   def new #@person is set in app cntroller atm. change that
+    @registration_group_id = params[:registration_group_id]
     #This creates a reauest on every reload. Must change so it only creates on submit.
-    @registration_request_data = @api_service.create_waitlist_request(@person.id, params[:registration_group_id])
-    @RegistrationRequest = @registration_request_data[:registrationRequest]
-    @RegistrationRequestItem = @registration_request_data[:registrationRequestItem]
   end
 
   # POST /registration_requests or /registration_requests.json
   def create
-    @registration_request = @api_service.get_waitlist_request(params[:id])
+    @registration_request_data = @api_service.create_waitlist_request(@person.id, params[:registration_group_id])
+    @RegistrationRequest = @registration_request_data[:registrationRequest]
+    @registration_request = @api_service.get_waitlist_request(@RegistrationRequest.id)
     # @api_service.update_waitlist_request(registration_request_data[:registrationRequest].id, registration_request_data)
     # redirect_to registration_requests_path, notice: "Registration request was successfully created."
     @registration_request[:registrationRequest].descr = params['descr']

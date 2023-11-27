@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
 
   resources :registration_requests
+  get '/course_offering_requests/:course_offering_id', to: "registration_requests#course_offering_requests" #this should be a slash not a dot
   # resources :registration_request_items
 
   #login routes
