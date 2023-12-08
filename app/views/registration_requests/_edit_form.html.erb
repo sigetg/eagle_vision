@@ -29,7 +29,7 @@
   <% if current_user.has_role?(:admin) %>
     <div>
       <%= form.label :stateKey, style: "display: block" %>
-      <%= form.text_field :stateKey, value: @RegistrationRequest.stateKey %>
+      <%= form.select :stateKey, ['kuali.courseregistration.request.state.submitted', 'kuali.courseregistration.request.state.completed']%> <!-- idk what this needs to be -->
     </div>
   <% else %>
     <div>

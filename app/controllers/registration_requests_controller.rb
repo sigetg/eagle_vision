@@ -8,12 +8,20 @@ class RegistrationRequestsController < ApplicationController
       set_person_and_terms
       affiliations, departments = @api_service.fetch_and_map_waitlistperson_affiliations_and_authorized_departments(current_user.person_id.to_s)
       @registration_requests = []
+      @avalible_seats = []
       departments.each do |department|
-        @registration_requests += @api_service.get_waitlist_requests_by_term_and_deptId(session[:term]["id"], department.id)
-        puts "REGREQS: " + @registration_requests.inspect
+        dept_reg_requests = @api_service.get_waitlist_requests_by_term_and_deptId(session[:term]["id"], department.id)
+        @registration_requests += dept_reg_requests
+        dept_reg_requests.each do |reg_request|
+          activity_offerings = []
+          reg_request[:registrationRequestItem].preferredActivityOfferingIds.each do |activity_offering_id| # need to be able to fetch by activity_offering_id
+            # activity_offerings += @api_service.fetch_and_map_waitlistactivityofferings(activity_offering_id.to_i)
+          end
+        end
       end
-      puts "REGREQS: " + @registration_requests.inspect
+      # puts "REGREQS: " + @registration_requests.inspect
     else
+      puts "IT IS GWTTING HWERE: " + current_user.person_id.to_s
       @registration_requests = @api_service.get_waitlist_requests_by_student(current_user.person_id.to_s)
     end
   end
@@ -30,9 +38,9 @@ class RegistrationRequestsController < ApplicationController
   end
 
   # GET /registration_requests/new
-  def new #@person is set in app cntroller atm. change that
+  def new
     @registration_group_id = params[:registration_group_id]
-    #This creates a reauest on every reload. Must change so it only creates on submit.
+    @activity_offering_ids = params[:activity_offering_ids]
   end
 
   # POST /registration_requests or /registration_requests.json
@@ -43,6 +51,7 @@ class RegistrationRequestsController < ApplicationController
     # @api_service.update_waitlist_request(registration_request_data[:registrationRequest].id, registration_request_data)
     # redirect_to registration_requests_path, notice: "Registration request was successfully created."
     @registration_request[:registrationRequest].descr = params['descr']
+    @registration_request[:registrationRequestItem].preferredActivityOfferingIds = params['activity_offering_ids']
     respond_to do |format|
       if @api_service.update_waitlist_request(@registration_request[:registrationRequest].id, @registration_request)
         @api_service.change_waitlist_request_state(@registration_request[:registrationRequest].id, "kuali.courseregistration.request.state.submitted")

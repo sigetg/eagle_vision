@@ -13,6 +13,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create
    build_resource(sign_up_params)
+  api_service = ApiService.new
+  person, terms = api_service.fetch_and_map_waitlistperson_and_term(resource.email.split("@")[0])
+  resource.person_id = person.id
+   puts "PERSONID: " + resource.person_id.to_s
     if resource.save
       yield resource if block_given?
       if resource.active_for_authentication?
