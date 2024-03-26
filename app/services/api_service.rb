@@ -157,16 +157,22 @@ class ApiService
   end
 
 
-  def fetch_and_map_waitlistactivityofferings(course_offering_id)
-    response = self.class.get("/waitlistactivityofferings?courseOfferingId=#{course_offering_id}")
+  def fetch_and_map_waitlistactivityofferings(activity_offering_id)
+    response = self.class.get("/waitlistactivityofferings/#{activity_offering_id}")
     api_data = JSON.parse(response.body)
+    # puts "API RESPONSE: " + response.inspect
+    # puts "API ITEM: " + api_data.inspect
+    # puts "ID: " + activity_offering_id.inspect
 
     #returns an array of activity offerings
-    api_data.map { |api_item| self.class.map_to_activity_offering(api_item) }
+    self.class.map_to_activity_offering(api_data)
   end
 
   def self.map_to_activity_offering(api_item)
-    activity_offering = api_item['activityOffering']
+    # puts "API ITEM: " + api_item.inspect
+    activity_offering = api_item["activityOffering"]
+    # puts "ACT: " + activity_offering.inspect
+
     activity = ActivityOffering.new(
       attributes: activity_offering['attributes'],
       meta: activity_offering['meta'],
@@ -334,10 +340,7 @@ class ApiService
   def update_waitlist_request(waitlistRequestId, waitlistRequest)
     headers = { 'Content-Type' => 'application/json' }
     json_body = waitlistRequest.to_json
-    puts "json_body="+ json_body
     response = self.class.put("/waitlistrequests/#{waitlistRequestId}", body: json_body, headers: headers)
-    puts 'RESPONSE:' + response.inspect
-    puts 'CODE:' + response.code.to_s
     if response.code == 200
       h = JSON.parse(response.body)
       return HashToStruct.struct(h)
@@ -375,10 +378,40 @@ class ApiService
     return []
   end
 
+
   def get_waitlist_requests_by_term_and_deptId(termId, deptId)
     r = Array.new
-    url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests?termId=" + termId + "&deptId=" + deptId
     response = self.class.get("/waitlistrequests?termId=" + termId + "&deptId=" + deptId)
+    if response.code == 200
+      api_data = JSON.parse(response.body)
+      for i in 0...api_data.length() do
+        request = self.class.map_to_registration_request(api_data[i])
+        r.append(request)
+      end
+      return r
+    end
+    return []
+  end
+
+  def get_waitlist_requests_by_term_deptId_and_stateKey(termId, deptId, stateKey)
+    r = Array.new
+    # url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests?termId=" + termId + "&deptId=" + deptId + "&stateKey=" + stateKey
+    response = self.class.get("/waitlistrequests?termId=" + termId + "&deptId=" + deptId + "&stateKey=" + stateKey)
+    if response.code == 200
+      api_data = JSON.parse(response.body)
+      for i in 0...api_data.length() do
+        request = self.class.map_to_registration_request(api_data[i])
+        r.append(request)
+      end
+      return r
+    end
+    return []
+  end
+
+  def get_waitlist_requests_by_stateKey(stateKey)
+    r = Array.new
+    # url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests?termId=" + termId + "&deptId=" + deptId + "&stateKey=" + stateKey
+    response = self.class.get("/waitlistrequests?stateKey=" + stateKey)
     if response.code == 200
       api_data = JSON.parse(response.body)
       for i in 0...api_data.length() do

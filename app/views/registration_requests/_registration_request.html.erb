@@ -15,7 +15,7 @@
 
   <p>
     <strong>Effective Date:</strong>
-    <%= registration_request.effectiveDate %>
+    <%= DateTime.parse(registration_request.effectiveDate).strftime("%B %d, %Y %H:%M:%S") %>
   </p>
 
   <p>

@@ -16,6 +16,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   api_service = ApiService.new
   person, terms = api_service.fetch_and_map_waitlistperson_and_term(resource.email.split("@")[0])
   resource.person_id = person.id
+  # begin
+  # rescue =>
+
+  # else
+  #     #... executes when no error
+  # ensure
+  #     #... always executed
+  # end
    puts "PERSONID: " + resource.person_id.to_s
     if resource.save
       yield resource if block_given?

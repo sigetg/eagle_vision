@@ -6,6 +6,8 @@
 <h2>Waitlist request item</h2>
 
 <%= render partial: "registration_request_item", locals: {registration_request_item: @registration_request[:registrationRequestItem]} %>
+<%= params["activity_offerings"].inspect %>
+<%# <%= render 'activity_offerings/activity_offerings_list', activity_offerings: activity_offerings %> %>
 
 <div>
   <%= link_to "Edit this waitlist request", edit_registration_request_path(@registration_request[:registrationRequest].id) %> |

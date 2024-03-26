@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
 
-
   def set_api_service
     @api_service = ApiService.new
   end
