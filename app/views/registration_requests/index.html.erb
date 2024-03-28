@@ -3,15 +3,16 @@
 
 <h1>Waitlist requests</h1>
 <% if @registration_requests != nil %>
-<%= form_tag registration_requests_path, method: :get do %>
-  <%= select_tag(:stateKey, options_for_select(['kuali.courseregistration.request.state.submitted', 'kuali.courseregistration.request.state.processed.success', 'kuali.courseregistration.request.state.discarded'])) %>
-  <%= submit_tag 'Filter by State'%>
-<% end %>
+  <%= render partial: "state_key_dropdown" %>
   <div id="registration_requests">
     <% @registration_requests.each do |registration_request| %>
-      <%= render partial: "registration_request", locals: {registration_request: registration_request[:registrationRequest]} %>
-      <%= render "edit_form", registration_request: registration_request[:registrationRequest], registration_request_item: registration_request[:registrationRequestItem] %>
+      <h3>
+        <strong>Name:</strong>
+        <%= registration_request[:registrationRequest].name %>
+      </h3>
       <%= render 'activity_offerings/activity_offerings_list', activity_offerings: @activity_offerings[registration_request[:registrationRequest].id] %>
+      <%= render partial: "registration_request", locals: {registration_request: registration_request[:registrationRequest], creator: @creator_names[registration_request[:registrationRequest].id]} %>
+      <%= render "edit_form", registration_request: registration_request[:registrationRequest], registration_request_item: registration_request[:registrationRequestItem] %>
       <p>
         <%= link_to "Show this waitlist request", registration_request_path(registration_request[:registrationRequest].id, activity_offerings: @activity_offerings[registration_request[:registrationRequest].id][0]) %>
       </p>

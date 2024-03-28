@@ -1,7 +1,7 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Format Offering Name</th>
+    <th>Building/Timeslot</th>
     <th>Instructors</th>
     <th>Maximum Enrollment</th>
   </tr>
@@ -9,7 +9,7 @@
     <div id="<%= dom_id activity_offering %>">
       <tr>
         <td><%= activity_offering.name %></td>
-        <td><%= activity_offering.scheduleNames %></td>
+        <td><%= activity_offering.scheduleNames %></td> <!-- I am not sure why the schedule names are not populated in the API. Check with norm?-->
         <td><%= format_instructor_names(activity_offering.instructors.map { |instructor| instructor['personName']}) %></td>
         <td><%= activity_offering.maximumEnrollment %></td>
       </tr>

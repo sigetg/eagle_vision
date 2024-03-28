@@ -169,9 +169,7 @@ class ApiService
   end
 
   def self.map_to_activity_offering(api_item)
-    # puts "API ITEM: " + api_item.inspect
     activity_offering = api_item["activityOffering"]
-    # puts "ACT: " + activity_offering.inspect
 
     activity = ActivityOffering.new(
       attributes: activity_offering['attributes'],
@@ -426,6 +424,7 @@ class ApiService
   def change_waitlist_request_state(waitlistRequestId, stateKey)
     headers = { 'Content-Type' => 'application/json' }
     response = self.class.put("/waitlistrequests/#{waitlistRequestId}/changestate/#{stateKey}", headers: headers)
+    puts "RESPONSE" + response.inspect
     if response.code == 200
       return
     end

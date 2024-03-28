@@ -1,11 +1,15 @@
 <div>
-  <h3>
-    <strong>Name:</strong>
-    <%= registration_request.name %>
-  </h3>
   <p>
     <strong>Status:</strong>
-    <%= registration_request.stateKey %>
+    <% case registration_request.stateKey %>
+    <% when 'kuali.courseregistration.request.state.submitted' %>
+      <%= 'Submitted' %>
+    <% when 'kuali.courseregistration.request.state.processed.success' %>
+      <%= 'Accepted' %>
+    <% when 'kuali.courseregistration.request.state.discarded' %>
+      <%= 'Rejected' %>
+    <% end %>
+    <%# <%= registration_request.stateKey %>
   </p>
 
   <p>
@@ -14,23 +18,18 @@
   </p>
 
   <p>
+    <strong>Response:</strong>
+    <%= registration_request.descr["formatted"] %>
+  </p>
+
+  <p>
     <strong>Effective Date:</strong>
     <%= DateTime.parse(registration_request.effectiveDate).strftime("%B %d, %Y %H:%M:%S") %>
   </p>
 
   <p>
-    <strong>Expiration Date:</strong>
-    <%= registration_request.expirationDate %>
-  </p>
-
-  <p>
     <strong>Creator:</strong>
-    <%= registration_request.requestorId %>
-  </p>
-
-  <p>
-    <strong>Term:</strong>
-    <%= registration_request.termId %>
+    <%= creator %>
   </p>
 
 </div>

@@ -5,15 +5,13 @@
   </div>
 
   <div>
-
-    <%= form.label :activity_offering_ids, style: "display: block" do %>
-        State: <%= @activity_offering_ids %>
-      <% end %>
     <%= form.hidden_field :activity_offering_ids, multiple: true, value: @activity_offering_ids %>
   </div>
 
   <div>
-    <%= form.label :descr, style: "display: block" %>
+    <%= form.label :descr, style: "display: block" do %>
+      Description (please include year, major, and any special reasoning for wanting this class in your submission):
+    <% end %>
     <%= form.text_area :descr %>
   </div>
 

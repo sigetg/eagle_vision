@@ -20,25 +20,33 @@
 
 
   <% if current_user.has_role?(:admin) %>
+
     <div>
-      <%= form.label :stateKey, style: "display: block" %>
-      <%= form.select :stateKey, ['kuali.courseregistration.request.state.submitted', 'kuali.courseregistration.request.state.processed.success', 'kuali.courseregistration.request.state.discarded']%> <!-- idk what this needs to be -->
+      <%= form.label :Description, style: "display: block; font-weight: bold" %>
+        <%= registration_request.descr["plain"] %>
     </div>
-  <% else %>
+
     <div>
-      <%= form.label :stateKey, style: "display: block" do %>
-        State: <%= registration_request.stateKey %>
-      <% end %>
-      <%= form.hidden_field :stateKey, value: registration_request.stateKey %>
+      <%= form.label :Status, style: "display: block; font-weight: bold" %>
+      <%= form.select :stateKey, ['Submitted', 'Accepted', 'Rejected']%>
+    </div>
+
+    <div>
+      <%= form.label :Response, style: "display: block; font-weight: bold" %>
+      <%= form.text_area :response, value: registration_request.descr["formatted"] %>
+      <%= %>
+    </div>
+
+  <% else %>
+
+    <div>
+      <%= form.label :Description, style: "display: block; font-weight: bold" %>
+      <%= form.text_area :descr, value: registration_request.descr["plain"] %>
     </div>
   <% end %>
 
   <div>
-    <%= form.label :descr, style: "display: block" %>
-    <%= form.text_area :descr, value: registration_request.descr["plain"] %>
-  </div>
-
-  <div>
     <%= form.submit "Save" %>
   </div>
+
 <% end %>
