@@ -1,6 +1,6 @@
 class RegistrationRequestsController < ApplicationController
   before_action :set_api_service
-  before_action :set_person_and_terms, only: %i[ create, index]
+  before_action :set_person_and_terms, only: %i[ create index]
 
   # GET /registration_requests or /registration_requests.json
   def index
@@ -44,6 +44,9 @@ class RegistrationRequestsController < ApplicationController
       get_associated_requestor_names(@registration_requests, @creator_names)
     end
 
+    #This sorts the requests so they show up with the oldest on top, newest on the bottom
+    @registration_requests = @registration_requests.sort_by { |request| DateTime.parse(request[:registrationRequest].effectiveDate) }
+
   end
 
   def course_offering_requests
@@ -53,6 +56,10 @@ class RegistrationRequestsController < ApplicationController
     @creator_names = {}
     get_associated_activity_offerings(@registration_requests, @activity_offerings)
     get_associated_requestor_names(@registration_requests, @creator_names)
+
+    #This sorts the requests so they show up with the oldest on top, newest on the bottom
+    @registration_requests = @registration_requests.sort_by { |request| DateTime.parse(request[:registrationRequest].effectiveDate) }
+
     render :index
 
   end
