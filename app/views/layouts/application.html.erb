@@ -11,9 +11,11 @@
   </head>
 
   <body>
+<!--
     <% flash.each do |name, msg| %>
       <%= content_tag :div, msg, class: name %>
     <% end %>
+-->
     <% if user_signed_in? %>
       <%= link_to 'My Waitlist Requests', registration_requests_path %>
       <%= link_to 'Search Course Offerings', course_offerings_path %>

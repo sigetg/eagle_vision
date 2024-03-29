@@ -67,6 +67,14 @@ class RegistrationRequestsController < ApplicationController
   # GET /registration_requests/1 or /registration_requests/1.json
   def show
     @registration_request = @api_service.get_waitlist_request(params[:id])
+    @creator = params[:creator]
+    @activity_offerings = []
+    if @registration_request[:registrationRequestItem].preferredActivityOfferingIds[0]
+      preferred_activity_offering_ids = @registration_request[:registrationRequestItem].preferredActivityOfferingIds[0].split
+      preferred_activity_offering_ids.each do |activity_offering_id|
+        @activity_offerings.push(@api_service.fetch_and_map_waitlistactivityofferings(activity_offering_id))
+      end
+    end
   end
 
   # GET /registration_requests/new
@@ -81,7 +89,7 @@ class RegistrationRequestsController < ApplicationController
     # @registration_request_data[:registrationRequest].attributes[0]["creator"] = @person.name NORM CAN I DO THIS PLZ
     # @api_service.update_waitlist_request(registration_request_data[:registrationRequest].id, registration_request_data)
     # redirect_to registration_requests_path, notice: "Registration request was successfully created."
-    @registration_request_data[:registrationRequest].descr["plain"] = params['descr']
+    @registration_request_data[:registrationRequest].descr["plain"] = params[ 'year'] +'\n' + params[ 'major'] + '\n' + params['descr']
     @registration_request_data[:registrationRequest].descr["formatted"] = "Pending"
     @registration_request_data[:registrationRequestItem].preferredActivityOfferingIds = params['activity_offering_ids']
     respond_to do |format|

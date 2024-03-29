@@ -1,18 +1,35 @@
 <p style="color: green"><%= notice %></p>
-<h1>Waitlist request</h1>
+<h1>
+  <%= @registration_request[:registrationRequest].name %>
+</h1>
+<%= render 'activity_offerings/activity_offerings_list', activity_offerings: @activity_offerings %>
 
-<%= render partial: "registration_request", locals: {registration_request: @registration_request[:registrationRequest]} %>
+<%= render partial: "registration_request", locals: {registration_request: @registration_request[:registrationRequest], creator: @creator} %>
 
-<h2>Waitlist request item</h2>
+<p>
+  <strong>Year (Freshman, Sophomore, Junior, Senior...):</strong>
+  <%= @registration_request[:registrationRequest].descr["plain"].split('\n')[0] %>
+</p>
 
-<%= render partial: "registration_request_item", locals: {registration_request_item: @registration_request[:registrationRequestItem]} %>
-<%= params["activity_offerings"].inspect %>
-<%# <%= render 'activity_offerings/activity_offerings_list', activity_offerings: activity_offerings %> %>
+<p>
+  <strong>Major and minor:</strong>
+  <%= @registration_request[:registrationRequest].descr["plain"].split('\n')[1] %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+    <%= @registration_request[:registrationRequest].descr["plain"].split('\n')[2] %>
+</p>
+
+<p>
+  <strong>Response:</strong>
+  <%= @registration_request[:registrationRequest].descr["formatted"] %>
+</p>
 
 <div>
   <%= link_to "Edit this waitlist request", edit_registration_request_path(@registration_request[:registrationRequest].id) %> |
-    <%= link_to "Delete this waitlist request", registration_request_path(@registration_request[:registrationRequest].id), data: {turbo_method: :delete} %> |
   <%= link_to "Back to waitlist requests", registration_requests_path %>
-
-  <%# <%= button_to "Destroy this waitlist request", @registration_request, action: "delete" %>
+  <p>
+  <%= button_to "Delete this waitlist request", registration_request_path(@registration_request[:registrationRequest].id), method: :delete, form: {  data: { turbo_confirm: "Are you sure you want to delete this item?" } } %>
+  </p>
 </div>

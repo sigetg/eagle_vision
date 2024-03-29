@@ -6,8 +6,10 @@ Rails.application.routes.draw do
     get '/registration_groups', to: "registration_groups#index"
   end
 
-  resources :registration_requests
-  get '/course_offering_requests/:course_offering_id', to: "registration_requests#course_offering_requests" #this should be a slash not a dot
+  resources :registration_requests do
+    get 'show_with_params', on: :member
+  end
+  get '/course_offering_requests/:course_offering_id', to: "registration_requests#course_offering_requests"
   # resources :registration_request_items
 
   #login routes
@@ -19,6 +21,7 @@ Rails.application.routes.draw do
 
   resources :terms
   post 'set_term', to: 'terms#set_term', as: :set_term
+  post 'set_term_reg_requests', to: 'terms#set_term_reg_requests', as: :set_term_reg_requests
   get 'terms_dropdown', to: 'terms#terms_dropdown', as: :terms_dropdown
 
   # Defines the root path route ("/")

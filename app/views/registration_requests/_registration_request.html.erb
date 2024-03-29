@@ -1,4 +1,27 @@
 <div>
+
+  <p>
+    <strong>Creator:</strong>
+    <%= creator %>
+  </p>
+
+  <p>
+    <strong>Effective Date:</strong>
+    <%= DateTime.parse(registration_request.effectiveDate).strftime("%B %d, %Y %H:%M:%S") %>
+  </p>
+
+<!--
+  <p>
+    <strong>Description:</strong>
+    <%= registration_request.descr["plain"] %>
+  </p>
+
+  <p>
+    <strong>Response:</strong>
+    <%= registration_request.descr["formatted"] %>
+  </p>
+-->
+
   <p>
     <strong>Status:</strong>
     <% case registration_request.stateKey %>
@@ -10,26 +33,6 @@
       <%= 'Rejected' %>
     <% end %>
     <%# <%= registration_request.stateKey %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
-    <%= registration_request.descr["plain"] %>
-  </p>
-
-  <p>
-    <strong>Response:</strong>
-    <%= registration_request.descr["formatted"] %>
-  </p>
-
-  <p>
-    <strong>Effective Date:</strong>
-    <%= DateTime.parse(registration_request.effectiveDate).strftime("%B %d, %Y %H:%M:%S") %>
-  </p>
-
-  <p>
-    <strong>Creator:</strong>
-    <%= creator %>
   </p>
 
 </div>

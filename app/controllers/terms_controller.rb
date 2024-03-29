@@ -14,10 +14,16 @@ class TermsController < ApplicationController
 
   def set_term
     if params[:term_index]
-      puts "SESSION " + session.inspect
       session[:term] = @terms[params[:term_index].to_i]
     end
     redirect_to controller: "course_offerings", action: "index", term_id: @terms[params[:term_index].to_i]["id"], term_name: @terms[params[:term_index].to_i]["name"]
+  end
+
+  def set_term_reg_requests
+    if params[:term_index]
+      session[:term] = @terms[params[:term_index].to_i]
+    end
+    redirect_to controller: "registration_requests", action: "index", term_id: @terms[params[:term_index].to_i]["id"], term_name: @terms[params[:term_index].to_i]["name"]
   end
 
 end

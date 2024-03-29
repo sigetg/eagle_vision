@@ -21,32 +21,68 @@
 
   <% if current_user.has_role?(:admin) %>
 
-    <div>
-      <%= form.label :Description, style: "display: block; font-weight: bold" %>
-        <%= registration_request.descr["plain"] %>
-    </div>
+    <p>
+      <%= form.label :year, style: "font-weight: bold"  do %>
+        Year (Freshman, Sophomore, Junior, Senior...):
+      <% end %>
+      <%= registration_request.descr["plain"].split('\n')[0] %>
+    </p>
 
-    <div>
+    <p>
+      <%= form.label :major, style: "font-weight: bold" do %>
+        Major and minor:
+      <% end %>
+      <%= registration_request.descr["plain"].split('\n')[1] %>
+    </p>
+
+    <p>
+      <%= form.label :descr, style: "font-weight: bold" do %>
+        Description:
+      <% end %>
+        <%= registration_request.descr["plain"].split('\n')[2] %>
+    </p>
+
+    <p>
       <%= form.label :Status, style: "display: block; font-weight: bold" %>
       <%= form.select :stateKey, ['Submitted', 'Accepted', 'Rejected']%>
-    </div>
+    </p>
 
-    <div>
+    <p>
       <%= form.label :Response, style: "display: block; font-weight: bold" %>
       <%= form.text_area :response, value: registration_request.descr["formatted"] %>
       <%= %>
-    </div>
+    </p>
 
   <% else %>
 
-    <div>
+    <p>
+      <%= form.label :Response, style: "font-weight: bold" %>
+        <%= registration_request.descr["formatted"] %>
+    </p>
+
+    <p>
+      <%= form.label :year, style: "display: block; font-weight: bold" do %>
+        Year (Freshman, Sophomore, Junior, Senior...):
+      <% end %>
+      <%= form.text_field :year, value: registration_request.descr["plain"].split('\n')[0] %>
+    </p>
+
+    <p>
+      <%= form.label :major, style: "display: block; font-weight: bold" do %>
+        Major and minor:
+      <% end %>
+      <%= form.text_field :major, value: registration_request.descr["plain"].split('\n')[1] %>
+    </p>
+
+    <p>
       <%= form.label :Description, style: "display: block; font-weight: bold" %>
-      <%= form.text_area :descr, value: registration_request.descr["plain"] %>
-    </div>
+      <%= form.text_area :descr, value: registration_request.descr["plain"].split('\n')[2] %>
+    </p>
+
   <% end %>
 
-  <div>
+  <p>
     <%= form.submit "Save" %>
-  </div>
+  </p>
 
 <% end %>
