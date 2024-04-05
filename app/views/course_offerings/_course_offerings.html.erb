@@ -1,0 +1,16 @@
+
+<tbody>
+  <% @course_offerings.each do |course_offering| %>
+    <tr>
+      <%# <td><%= link_to course_offering.courseOffering.courseOfferingTitle, course_offering_path(course_offering) %>
+      <td><%= course_offering.courseOffering.courseOfferingTitle %></td>
+      <td><%= course_offering.courseOffering.courseCode %></td>
+      <td><%= course_offering.courseOffering.maximumEnrollment %></td>
+      <td><%= course_offering.courseOffering.minimumEnrollment %></td>
+      <td><%= course_offering.courseOffering.creditOptionId %></td>
+      <td><%= course_offering.courseOffering.instructors %></td>
+      <td><%= course_offering.courseOffering.unitsDeploymentOrgIds %></td>
+    </tr>
+    <%= raw(course_offering.courseOffering.descr.plain) %>
+  <% end %>
+</tbody>

@@ -1,0 +1,18 @@
+<div class="content-container">
+  <%= render 'terms/terms_dropdown', terms: @terms, term_name: @term_name%>
+</div>
+<div class='main-view'>
+  <div id='fix-on-top-searchbar'>
+    <!--terms dropdown got moved here, confused, check later - Terry-->
+    <!-- solved-->
+    <%= render 'search_form' %>
+  </div>
+  <p id="notice"><%= notice %></p>
+  <%= render partial: 'page_buttons', locals: { pagination: @pagination } %>
+  <!--<h1>Course Offerings</h1>-->
+  <div id='course-offering-scroll'>
+    <% @course_offerings.each do |course_offering| %>
+      <%= render 'course_offering', course_offering: course_offering  %>
+    <% end %>
+  </div>
+</div>

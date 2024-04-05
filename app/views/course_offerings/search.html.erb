@@ -1,0 +1,25 @@
+<div class='main-view'>
+  <%= render 'terms/terms_dropdown', terms: @terms, term_name: @term_name %>
+  <%= render 'search_form' %>
+  <%= render partial: 'page_buttons', locals: { pagination: @pagination } %>
+  <h1>Search Results</h1>
+  <p id="notice"><%= notice %></p>
+  <% @course_offerings.each do |course_offering| %>
+    <%= render 'course_offering', course_offering: course_offering  %>
+  <% end %>
+</div>
+<%# <table>
+  <thead>
+    <tr>
+      <th>Course Offering Title</th>
+      <th>Term</th>
+      <th>Course Code</th>
+      <th>Honors Offering</th>
+      <th>Maximum Enrollment</th>
+      <th>Minimum Enrollment</th>
+      <th>Credits</th>
+      <th>Instructors</th>
+      <th>Deployment Orginization</th>
+    </tr>
+  </thead>
+  <%= render 'course_offerings', locals: {course_offerings: @course_offerings} %>

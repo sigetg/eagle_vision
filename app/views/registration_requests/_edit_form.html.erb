@@ -1,0 +1,74 @@
+<%= form_with(url: "/registration_requests/#{registration_request.id}", method: "put") do |form| %>
+  <% if registration_request.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(registration_request.errors.count, "error") %> prohibited this registration_request from being saved:</h2>
+      <ul>
+        <% registration_request.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div>
+    <!--<%= form.label :id, style: "display: block" do %>
+      Registration Request: <%= registration_request.id %>
+    <% end %>-->
+    <%= form.hidden_field :id, value: registration_request.id %>
+  </div>
+  <% if current_user.has_role?(:admin) %>
+    <p>
+      <%= form.label :year, style: "font-weight: bold"  do %>
+        Year (Freshman, Sophomore, Junior, Senior...):
+      <% end %>
+      <%= registration_request.descr["plain"].split('\n')[0] %>
+    </p>
+    <p>
+      <%= form.label :major, style: "font-weight: bold" do %>
+        Major and minor:
+      <% end %>
+      <%= registration_request.descr["plain"].split('\n')[1] %>
+    </p>
+    <p>
+      <%= form.label :descr, style: "font-weight: bold" do %>
+        Description:
+      <% end %>
+      <%= registration_request.descr["plain"].split('\n')[2] %>
+    </p>
+    <p>
+      <%= form.label :Status, style: "display: block; font-weight: bold" %>
+      <%= form.select :stateKey, ['Submitted', 'Accepted', 'Rejected']%>
+    </p>
+    <p>
+      <%= form.label :Response, style: "display: block; font-weight: bold" %>
+      <%= form.text_area :response, value: registration_request.descr["formatted"] %>
+      <%= %>
+    </p>
+  <% else %>
+    <p>
+      <%= form.label :Response, style: "font-weight: bold" %>
+      <%= registration_request.descr["formatted"] %>
+    </p>
+    <p>
+      <%= form.label :year, style: "display: block; font-weight: bold" do %>
+        Year (Freshman, Sophomore, Junior, Senior...):
+      <% end %>
+      <%= form.text_field :year, value: registration_request.descr["plain"].split('\n')[0] %>
+    </p>
+    <p>
+      <%= form.label :major, style: "display: block; font-weight: bold" do %>
+        Major and minor:
+      <% end %>
+      <%= form.text_field :major, value: registration_request.descr["plain"].split('\n')[1] %>
+    </p>
+    <p>
+      <%= form.label :Description, style: "display: block; font-weight: bold" %>
+      <%= form.text_area :descr, value: registration_request.descr["plain"].split('\n')[2] %>
+    </p>
+  <% end %>
+  <!-->might be a break point, check - Terry <-->
+  <div id="button-submit-request">
+    <p>
+      <%= form.submit "Save" %>
+    </p>
+  </div>
+<% end %>

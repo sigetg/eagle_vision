@@ -1,0 +1,14 @@
+<div class='main-view'>
+  <p style="color: green"><%= notice %></p>
+ <!--terry-->
+  <h1>Registration request items</h1>
+  <div id="registration_request_items">
+    <% @registration_request_items.each do |registration_request_item| %>
+      <%= render registration_request_item %>
+      <p>
+        <%= link_to "Show this registration request item", registration_request_item %>
+      </p>
+    <% end %>
+  </div>
+  <%= link_to "New registration request item", new_registration_request_item_path %>
+</div>

@@ -1,0 +1,53 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  attributes: MyString
+  meta: 
+  typeKey: MyString
+  stateKey: MyString
+  name: MyString
+  descr: MyString
+  id: MyString
+  formatOfferingId: MyString
+  courseOfferingId: MyString
+  termId: MyString
+  registrationCode: MyString
+  courseCode: MyString
+  activityOfferingIds: MyString
+  multiOfferingId: MyString
+  bundledOfferingId: MyString
+  isGenerated: false
+  gradingOptionId: MyString
+  studentRegistrationGradingOptionIds: MyString
+  creditOptionId: MyString
+  requisiteIds: MyText
+  coRequisiteIds: MyText
+  restrictionIds: MyText
+  type: 
+  state: MyString
+
+two:
+  attributes: MyString
+  meta: 
+  typeKey: MyString
+  stateKey: MyString
+  name: MyString
+  descr: MyString
+  id: MyString
+  formatOfferingId: MyString
+  courseOfferingId: MyString
+  termId: MyString
+  registrationCode: MyString
+  courseCode: MyString
+  activityOfferingIds: MyString
+  multiOfferingId: MyString
+  bundledOfferingId: MyString
+  isGenerated: false
+  gradingOptionId: MyString
+  studentRegistrationGradingOptionIds: MyString
+  creditOptionId: MyString
+  requisiteIds: MyText
+  coRequisiteIds: MyText
+  restrictionIds: MyText
+  type: 
+  state: MyString

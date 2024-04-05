@@ -1,0 +1,107 @@
+<%= form_with(model: registration_request_item) do |form| %>
+  <% if registration_request_item.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(registration_request_item.errors.count, "error") %> prohibited this registration_request_item from being saved:</h2>
+      <ul>
+        <% registration_request_item.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div>
+    <%= form.label :typeKey, style: "display: block" %>
+    <%= form.text_field :typeKey %>
+  </div>
+  <div>
+    <%= form.label :stateKey, style: "display: block" %>
+    <%= form.text_field :stateKey %>
+  </div>
+  <div>
+    <%= form.label :effectiveDate, style: "display: block" %>
+    <%= form.date_field :effectiveDate %>
+  </div>
+  <div>
+    <%= form.label :expirationDate, style: "display: block" %>
+    <%= form.date_field :expirationDate %>
+  </div>
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+  <div>
+    <%= form.label :descr, style: "display: block" %>
+    <%= form.text_field :descr %>
+  </div>
+  <div>
+    <%= form.label :registration_request_id, style: "display: block" %>
+    <%= form.text_field :registration_request_id %>
+  </div>
+  <div>
+    <%= form.label :person_id, style: "display: block" %>
+    <%= form.text_field :person_id %>
+  </div>
+  <div>
+    <%= form.label :requestedEffectiveDate, style: "display: block" %>
+    <%= form.date_field :requestedEffectiveDate %>
+  </div>
+  <div>
+    <%= form.label :existingRegistrationId, style: "display: block" %>
+    <%= form.text_field :existingRegistrationId %>
+  </div>
+  <div>
+    <%= form.label :existingActivityOfferingId, style: "display: block" %>
+    <%= form.text_field :existingActivityOfferingId %>
+  </div>
+  <div>
+    <%= form.label :preferredActivityOfferingIds, style: "display: block" %>
+    <%= form.text_field :preferredActivityOfferingIds %>
+  </div>
+  <div>
+    <%= form.label :preferredFormatOfferingIds, style: "display: block" %>
+    <%= form.text_field :preferredFormatOfferingIds %>
+  </div>
+  <div>
+    <%= form.label :preferredRegistrationGroupIds, style: "display: block" %>
+    <%= form.text_field :preferredRegistrationGroupIds %>
+  </div>
+  <div>
+    <%= form.label :preferredCredits, style: "display: block" %>
+    <%= form.text_field :preferredCredits %>
+  </div>
+  <div>
+    <%= form.label :preferredGradingOptionIds, style: "display: block" %>
+    <%= form.text_field :preferredGradingOptionIds %>
+  </div>
+  <div>
+    <%= form.label :processResults, style: "display: block" %>
+    <%= form.text_field :processResults %>
+  </div>
+  <div>
+    <%= form.label :resultingRegistrationId, style: "display: block" %>
+    <%= form.text_field :resultingRegistrationId %>
+  </div>
+  <div>
+    <%= form.label :courseWaitlistEntryId, style: "display: block" %>
+    <%= form.text_field :courseWaitlistEntryId %>
+  </div>
+  <div>
+    <%= form.label :processingPriority, style: "display: block" %>
+    <%= form.number_field :processingPriority %>
+  </div>
+  <div>
+    <%= form.label :lastAttendanceDate, style: "display: block" %>
+    <%= form.date_field :lastAttendanceDate %>
+  </div>
+  <div>
+    <%= form.label :notificationDate, style: "display: block" %>
+    <%= form.date_field :notificationDate %>
+  </div>
+  <div>
+    <%= form.label :meta, style: "display: block" %>
+    <%= form.text_field :meta %>
+  </div>
+  <div>
+    <%= form.submit, id:"button-submit-request" %>
+  </div>
+<% end %>

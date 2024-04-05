@@ -1,0 +1,17 @@
+<div>
+  <% if  pagination.previous_page? %>
+    <%= link_to 'First', course_offerings_path(page_no: 1) %>
+    <%= link_to '< Previous', course_offerings_path(page_no: 2) %>
+  <% else %>
+    <p>First</p>
+    <p>&#60; Previous</p>
+  <% end %>
+  <p><%= "Page #{pagination.page} of #{pagination.total_pages}" %></p>
+  <% if pagination.next_page? %>
+    <%= link_to 'Next >', search_path(page: pagination.next_page, key: @code) %>
+    <%= link_to 'Last', search_path(page: pagination.total_pages, key: @code) %>
+  <% else %>
+    <p>Next &#62;</p>
+    <p>Last </p>
+  <% end %>
+</div>

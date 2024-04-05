@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  typeKey: MyString
+  stateKey: MyString
+  name: MyString
+  descr: 
+  pictureDocumentId: MyString
+  meta: 
+
+two:
+  typeKey: MyString
+  stateKey: MyString
+  name: MyString
+  descr: 
+  pictureDocumentId: MyString
+  meta: 

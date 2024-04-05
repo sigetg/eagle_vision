@@ -1,0 +1,11 @@
+<div class='main-view'>
+  <p style="color: green"><%= notice %></p>
+ <!--terry-->
+  <h1>Registration groups</h1>
+  <div id="registration_groups">
+    <% @registration_groups_data.each do |registration_group_data| %>
+      <%= render registration_group_data[:registration_group] %>
+      <%= render 'activity_offerings/activity_offerings_list', activity_offerings: registration_group_data[:activity_offerings], registration_group: registration_group_data[:registration_group] %>
+    <% end %>
+  </div>
+</div>

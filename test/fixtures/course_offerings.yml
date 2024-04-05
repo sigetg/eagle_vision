@@ -1,0 +1,67 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  typeKey: MyString
+  stateKey: MyString
+  effectiveDate: 2023-08-14
+  expirationDate: 2023-08-14
+  name: MyString
+  descr: 
+  courseId: MyString
+  term: one
+  courseCode: MyString
+  courseOfferingCode: MyString
+  subjectAreaId: MyString
+  courseNumberSuffix: MyString
+  courseOfferingTitle: MyString
+  isHonorsOffering: false
+  maximumEnrollment: 1
+  minimumEnrollment: 1
+  gradingOptionId: MyString
+  studentRegistrationGradingOptionIds: MyString
+  creditOptionId: MyString
+  instructors: 
+  unitsDeploymentOrgIds: MyString
+  requisiteIds: MyString
+  coRequisiteIds: MyString
+  restrictionIds: MyString
+  campusLocations: MyString
+  isEvaluated: false
+  courseOfferingUrl: MyString
+  gradeRosterDefinitionId: MyString
+  gradingOptionIds: MyString
+  creditOptionIds: MyString
+  meta: 
+
+two:
+  typeKey: MyString
+  stateKey: MyString
+  effectiveDate: 2023-08-14
+  expirationDate: 2023-08-14
+  name: MyString
+  descr: 
+  courseId: MyString
+  term: two
+  courseCode: MyString
+  courseOfferingCode: MyString
+  subjectAreaId: MyString
+  courseNumberSuffix: MyString
+  courseOfferingTitle: MyString
+  isHonorsOffering: false
+  maximumEnrollment: 1
+  minimumEnrollment: 1
+  gradingOptionId: MyString
+  studentRegistrationGradingOptionIds: MyString
+  creditOptionId: MyString
+  instructors: 
+  unitsDeploymentOrgIds: MyString
+  requisiteIds: MyString
+  coRequisiteIds: MyString
+  restrictionIds: MyString
+  campusLocations: MyString
+  isEvaluated: false
+  courseOfferingUrl: MyString
+  gradeRosterDefinitionId: MyString
+  gradingOptionIds: MyString
+  creditOptionIds: MyString
+  meta: 

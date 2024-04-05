@@ -1,0 +1,19 @@
+<div class='main-view'>
+  <p style="color: green"><%= notice %></p>
+  <h1><%= @course_offering.courseOfferingTitle %></h1>
+  <%= render @course_offering %>
+  <div>
+    <%= link_to "Back to course offerings", course_offerings_path %>
+    <%= button_to "Destroy this course offering", @course_offering, method: :delete %>
+  </div>
+  <h2>Associated Activity Offerings</h2>
+  <div id="activity_offerings">
+    <% @activity_offerings.each do |activity_offering| %>
+      <%= render activity_offering %>
+      <p>
+        <%= link_to "Create a New Registration Request For This Activity Offering", new_registration_request_path(activity_offering_id: activity_offering.id, term_id: activity_offering.term_id) %> |
+        <%= link_to current_user.has_role?(:admin) ? "Show Associated Waitlist Requests" : "Show this activity offering", course_offering_activity_offering_path(@course_offering) %>
+      </p>
+    <% end %>
+  </div>
+</div>

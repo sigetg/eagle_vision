@@ -1,0 +1,19 @@
+<table  class="activity_offering_tb">
+  <tr>
+    <th>Name</th>
+    <th>Schedule</th>
+    <th>Instructors</th>
+    <th>Maximum Enrollment</th>
+  </tr>
+  <% activity_offerings.each do |activity_offering| %>
+    <div id="<%= dom_id activity_offering %>">
+      <tr>
+        <td><%= activity_offering.name %></td>
+        <td><%= activity_offering.scheduleNames %></td>
+        <!-- I am not sure why the schedule names are not populated in the API. Check with norm?-->
+        <td><%= format_instructor_names(activity_offering.instructors.map { |instructor| instructor['personName']}) %></td>
+        <td id="max_enroll"><%= activity_offering.maximumEnrollment %></td>
+      </tr>
+    </div>
+  <% end %>
+</table>

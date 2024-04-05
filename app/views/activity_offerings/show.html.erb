@@ -1,0 +1,12 @@
+<div class='main-view'>
+  <!--<p style="color: green"><%= notice %></p>--> <!--terry-->
+  <h1>Activity offering</h1>
+  <%= render @activity_offering %>
+  <% if @registration_request_items && current_user.has_role?(:admin) %>
+    <%= render 'associated_registration_requests', registration_request_items: @registration_request_items %>
+  <% end %>
+  <div>
+    <%= link_to "Back to course offering", course_offering_path(id: params[:course_offering_id]) %>
+    <%= button_to "Destroy this activity offering", @activity_offering, method: :delete %>
+  </div>
+</div>

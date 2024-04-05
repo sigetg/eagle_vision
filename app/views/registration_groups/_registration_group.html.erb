@@ -1,0 +1,6 @@
+<div id="<%= dom_id registration_group %>">
+
+  <h3><%= registration_group.name %></h3>
+  <td><%= link_to "Submit Waitlist Request", new_registration_request_path(registration_group_id: registration_group.id, activity_offering_ids: registration_group.activityOfferingIds) %></td>
+
+</div>

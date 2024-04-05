@@ -1,0 +1,4 @@
+<%= form_tag registration_requests_path, method: :get do %>
+  <%= select_tag(:stateKey, options_for_select(['Submitted', 'Accepted', 'Rejected'])) %>
+  <%= submit_tag 'Filter by State'%>
+<% end %>
