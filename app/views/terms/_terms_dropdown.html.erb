@@ -1,5 +1,9 @@
-<%= form_tag set_term_path do %>
-  <%= select_tag(:term_index, options_for_select(@terms.map.with_index {|term, index| [term['name'], index]}), selected: term_name) %>
-  <%= submit_tag 'Select Term'%>
-<% end %>
-Current Term: <%= term_name %> <br>
+<div id='term-dropdown'>
+  <%= form_tag set_term_path do %>
+    <%= select_tag(:term_index, options_for_select(@terms.map.with_index {|term, index| [term['name'], index]}), selected: term_name) %>
+    <%= submit_tag 'Select Term', id: 'term-submit-button'%>
+  <% end %>
+  Current Term: <%= term_name %> <br>
+  <!--check if needs to change to what I changed in the form before"-Terry-->
+  <!--solved-->
+</div>

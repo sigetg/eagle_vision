@@ -5,27 +5,119 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body>
-<!--
-    <% flash.each do |name, msg| %>
-      <%= content_tag :div, msg, class: name %>
-    <% end %>
--->
-    <% if user_signed_in? %>
-      <%= link_to 'My Waitlist Requests', registration_requests_path %>
-      <%= link_to 'Search Course Offerings', course_offerings_path %>
-      <%= form_tag(destroy_user_session_path, method: :delete) do %>
-        <%= submit_tag 'Sign Out' %>
-      <% end %>
+    <% if user_signed_in? %> <!--add the block disappear here, just insert the script tag-->
+      <div class="banner">
+        <div class="banner-image">
+          <img src="https://www.bc.edu/content/bc-web/offices/office-of-university-communications/policies-guidelines/graphic-identity-system/_jcr_content/par/responsive_columns/col1/bc_image_content/image.img.png/1550507443010.png" alt="Boston College Logo" height="36px" width="36px">
+        </div>
+        <div class="banner-header"><strong>
+            <p>EagleVisionPro</p>
+          </strong></div>
+        <div class="banner-content">
+          <p>Student Registration Waitlist Portal</p>
+        </div>
+        <div class="banner-login-button">
+          <%= form_tag(destroy_user_session_path, method: :delete) do %>
+            <%= submit_tag 'Sign Out', id: "button-signout"%>
+          <% end %>
+        </div>
+      </div>
+      <div id="menu-container">
+        <div class="navbar">
+          <h1 class="navbar-header">Course Search</h1>
+          <script>
+            let tokenKeys = {
+                  course_offerings: "Course Search",
+                  registration_requests: "My Requests",
+                  contact: "Contact",
+                  // ... more keys
+            };
+
+            // Function to update content based on a key
+            function updateContent(key) {
+              let content = tokenKeys[key];
+              if (content) {
+                document.querySelector('.navbar-header').textContent = content;
+              }
+            }
+
+            // Function to detect page/view changes
+            function onPageChange() {
+              // Logic to determine the current page or view
+              // This could be based on the URL, state, or any other method
+              let currentPage = window.location.pathname; // Example based on URL path
+
+              // Update the content based on the current page
+              // You might need to map page names to token keys
+              let tokenKey = currentPage.substring(1); // Removing the leading '/'
+              updateContent(tokenKey);
+            }
+
+            // Event listener for page load and page changes
+            window.addEventListener('load', onPageChange); // On page load
+            window.addEventListener('popstate', onPageChange); // On browser navigation (back/forward)
+
+            // If using a Single Page Application (SPA) framework,
+            // you may need to hook into its routing events instead.
+          </script>
+          <!--try to get it to work with site name-->
+        </div>
+        <div id="menu-decor-block">
+          <%= image_tag("menu.png", width: 35, :id => "menu-icon") %>
+          <div id="menu-item">
+            <%= link_to 'Search Course Offerings', course_offerings_path, id: 'menu-text' %>
+          </div>
+          <div id="menu-item">
+            <%= link_to 'My Waitlist Requests', registration_requests_path, id: 'menu-text' %>
+          </div>
+          <div id="menu-item">
+            <p id="menu-text">
+              Contact Department
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content-container">
+        <% flash.each do |name, msg| %>
+          <%= content_tag :div, msg, class: name, id:'welcome-message' %>
+        <% end %>
+      </div>
     <% else %>
-      <% unless controller_name == 'sessions' || controller_name == 'registrations' %>
-        <%= link_to 'Sign In', new_user_session_path %>
-      <% end %>
+      <!-- Floating block -->
+      <div id="floatingBlock" class="floating-block">
+        <div id="floating-login-form" class="floating-login-form">
+          <%= image_tag("eagle-logo.png", width: 35, :id => "floatbox-eagle-logo") %>
+          <p id="app-name"><b>EagleVision Pro</b></p>
+          <p id="sign-in-note"><b>Sign in to continue</b></p>
+          <% unless controller_name == 'sessions' || controller_name == 'registrations' %>
+            <%= link_to 'Sign In', new_user_session_path %>
+          <% end %>
+          <div class="login-form">
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+              <div class="field">
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", id: 'email-fill' %>
+              </div>
+              <div class="field">
+                <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password", id: 'password-fill' %>
+              </div>
+              <% if devise_mapping.rememberable? %>
+                <div class="field-checkbox">
+                  <%= f.check_box :remember_me, id: 'checkbox'%>
+                  <%= f.label :remember_me, id: 'checkbox-label'%>
+                </div>
+              <% end %>
+              <div class="actions">
+                <%= f.submit "Log in", id:'login-button' %>
+              </div>
+            <% end %>
+            <%= render "devise/shared/links" %>
+          </div>
+        </div>
+      </div>
     <% end %>
     <%= yield %>
   </body>

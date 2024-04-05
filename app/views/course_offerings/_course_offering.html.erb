@@ -1,16 +1,19 @@
-<div id="<%= dom_id course_offering %>">
-  <h3>
-    <%= course_offering.name %>
-  </h3>
-
-  <p>
-    <%= raw(course_offering.descr['plain']) %>
-  </p>
-
-  <%= link_to 'Show Associated Registration Groups', course_offering_registration_groups_path(course_offering.id) %>
-  <% if current_user.has_role?("admin") %>
-    <%= link_to 'Show Existing Registration Requests', "course_offering_requests/#{course_offering.id}" %>
-  <% end %>
-
-
+<div class='course-offering-box'>
+  <div id="<%= dom_id course_offering %>">
+    <h3>
+      <%= course_offering.name %>
+    </h3>
+    <p>
+      <%= raw(course_offering.descr['plain']) %>
+    </p>
+    <p>
+      <strong>Term:</strong>
+      <%= session[:term]["name"] %>
+      <!--<%= course_offering.termId %>-->
+    </p>
+    <%= link_to 'Show Associated Registration Groups', course_offering_registration_groups_path(course_offering.id) %>
+    <% if current_user.has_role?("admin") %>
+      <%= link_to 'Show Existing Registration Requests', "course_offering_requests/#{course_offering.id}" %>
+    <% end %>
+  </div>
 </div>

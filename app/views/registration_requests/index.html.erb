@@ -1,24 +1,25 @@
-<%= render 'terms/terms_dropdown_reg_requests', terms: @terms, term_name: @term_name %>
-<p style="color: green"><%= notice %></p>
-
-<h1>Waitlist requests</h1>
-<% if @registration_requests != nil %>
-  <%= render partial: "state_key_dropdown" %>
-  <div id="registration_requests">
-    <% @registration_requests.each do |registration_request| %>
-      <h3>
-        <strong>Name:</strong>
-        <%= registration_request[:registrationRequest].name %>
-      </h3>
-      <%= render 'activity_offerings/activity_offerings_list', activity_offerings: @activity_offerings[registration_request[:registrationRequest].id] %>
-      <%= render partial: "registration_request", locals: {registration_request: registration_request[:registrationRequest], creator: @creator_names[registration_request[:registrationRequest].id]} %>
-      <%= render "edit_form", registration_request: registration_request[:registrationRequest], registration_request_item: registration_request[:registrationRequestItem] %>
-      <p>
-        <%= link_to "Show this waitlist request", registration_request_path(registration_request[:registrationRequest].id, creator: @creator_names[registration_request[:registrationRequest].id]) %>
-      </p>
-
-    <% end %>
-  </div>
-<% end %>
-
-<%= link_to "New waitlist request", course_offerings_path %>
+<div class="content-container">
+  <%= render 'terms/terms_dropdown_reg_requests', terms: @terms, term_name: @term_name %>
+  <p style="color: green"><%= notice %></p>
+</div>
+<div class='main-view'>
+  <h1>Waitlist requests</h1>
+  <% if @registration_requests != nil %>
+    <%= render partial: "state_key_dropdown" %>
+    <div id="registration_requests">
+      <% @registration_requests.each do |registration_request| %>
+        <h3>
+          <strong>Name:</strong>
+          <%= registration_request[:registrationRequest].name %>
+        </h3>
+        <%= render 'activity_offerings/activity_offerings_list', activity_offerings: @activity_offerings[registration_request[:registrationRequest].id] %>
+        <%= render partial: "registration_request", locals: {registration_request: registration_request[:registrationRequest], creator: @creator_names[registration_request[:registrationRequest].id]} %>
+        <%= render "edit_form", registration_request: registration_request[:registrationRequest], registration_request_item: registration_request[:registrationRequestItem] %>
+        <p>
+          <%= link_to "Show this waitlist request", registration_request_path(registration_request[:registrationRequest].id, creator: @creator_names[registration_request[:registrationRequest].id]) %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+  <%= link_to "New waitlist request", course_offerings_path %>
+</div>

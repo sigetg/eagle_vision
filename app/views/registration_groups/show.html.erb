@@ -1,10 +1,10 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @registration_group %>
-
-<div>
-  <%= link_to "Edit this registration group", edit_registration_group_path(@registration_group) %> |
-  <%= link_to "Back to registration groups", registration_groups_path %>
-
-  <%= button_to "Destroy this registration group", @registration_group, method: :delete %>
+<div class='main-view'>
+  <p style="color: green"><%= notice %></p>
+ <!--terry-->
+  <%= render @registration_group %>
+  <div>
+    <%= link_to "Edit this registration group", edit_registration_group_path(@registration_group) %> |
+    <%= link_to "Back to registration groups", registration_groups_path %>
+    <%= button_to "Destroy this registration group", @registration_group, method: :delete %>
+  </div>
 </div>
