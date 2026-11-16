@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # prebuilt Ruby 3.2 exists here, not on 26.04; revisit in PR 2
     services:
       # A throwaway Postgres for the users table. The waitlist API is never
       # needed: WebMock stubs every call to it.
@@ -32,7 +32,7 @@ jobs:
       - run: bin/rspec
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # prebuilt Ruby 3.2 exists here, not on 26.04; revisit in PR 2
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -41,7 +41,7 @@ jobs:
       - run: bin/rubocop --format github
 
   scan:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # prebuilt Ruby 3.2 exists here, not on 26.04; revisit in PR 2
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
