@@ -1,12 +1,29 @@
 class ApiService
   include HTTParty
   include HashToStruct
-  class DoesNotExistException < StandardError
+  # Every error this class raises is an ApiService::Error, so a caller can
+  # rescue them all at once or pick one.
+  class Error < StandardError; end
+
+  # The API answered, but has no record with this id.
+  class NotFound < Error
     def initialize(resource_id)
       @resource_id = resource_id
       super("The resource with ID #{@resource_id} does not exist.")
     end
   end
+
+  # The API did not answer: the container is stopped, unreachable, or slow.
+  class Unavailable < Error; end
+
+  # The 2024 name for NotFound, kept so code that rescues it still works.
+  DoesNotExistException = NotFound
+
+  # Low-level errors that all mean "the API did not answer in time".
+  NETWORK_ERRORS = [
+    Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ECONNRESET,
+    Net::OpenTimeout, Net::ReadTimeout, SocketError
+  ].freeze
 
   def initialize
     @hostUrl="http://localhost:8080/"
@@ -14,10 +31,11 @@ class ApiService
     @servicePath="waitlist"
   end
 
-  base_uri 'http://127.0.0.1:8080/waitlist'
+  base_uri ENV.fetch("WAITLIST_API_URL", "http://127.0.0.1:8080/waitlist")
+  default_timeout 5
 
   def fetch_and_map_waitlistperson_and_term(person_id)
-    response = self.class.get("/waitlistpersons/#{person_id}")
+    response = http(:get, "/waitlistpersons/#{person_id}")
     if response.code == 200
       api_data = JSON.parse(response.body)
       self.class.map_to_person_and_term(api_data)
@@ -64,7 +82,7 @@ class ApiService
   end
 
   def fetch_and_map_waitlistperson_affiliations_and_authorized_departments(person_id)
-    response = self.class.get("/waitlistpersons/#{person_id}")
+    response = http(:get, "/waitlistpersons/#{person_id}")
     if response.code == 200
       api_data = JSON.parse(response.body)
       self.class.map_to_affiliations_and_authorized_departments(api_data)
@@ -110,7 +128,7 @@ class ApiService
 
 
   def fetch_and_map_waitlistcourseofferings(term, code)
-    response = self.class.get("/waitlistcourseofferings?termId=#{term}&code=#{code}")
+    response = http(:get, "/waitlistcourseofferings?termId=#{term}&code=#{code}")
     api_data = JSON.parse(response.body)
     api_data.map { |api_item| self.class.map_to_course_offering(api_item) }
   end
@@ -158,7 +176,7 @@ class ApiService
 
 
   def fetch_and_map_waitlistactivityofferings(activity_offering_id)
-    response = self.class.get("/waitlistactivityofferings/#{activity_offering_id}")
+    response = http(:get, "/waitlistactivityofferings/#{activity_offering_id}")
     api_data = JSON.parse(response.body)
     # puts "API RESPONSE: " + response.inspect
     # puts "API ITEM: " + api_data.inspect
@@ -215,7 +233,7 @@ class ApiService
   end
 
   def fetch_and_map_waitlistregistrationgroups(course_offering_id)
-    response = self.class.get("/waitlistregistrationgroups?courseOfferingId=#{course_offering_id}")
+    response = http(:get, "/waitlistregistrationgroups?courseOfferingId=#{course_offering_id}")
     api_data = JSON.parse(response.body)
     # returns an array of registration groups each with associated activity offerings
     api_data.map { |api_item| self.class.map_to_registration_group(api_item) }
@@ -258,7 +276,7 @@ class ApiService
 
 
   def create_waitlist_request(studentId, registrationGroupId)
-    response = self.class.post("/waitlistrequests?studentId=#{studentId}&registrationGroupId=#{registrationGroupId}")
+    response = http(:post, "/waitlistrequests?studentId=#{studentId}&registrationGroupId=#{registrationGroupId}")
     if response.code == 200
       api_data = JSON.parse(response.body)
       self.class.map_to_registration_request(api_data)
@@ -270,13 +288,11 @@ class ApiService
 
   def get_waitlist_request(waitlistRequestId)
     url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests/" + waitlistRequestId
-    response = self.class.get("/waitlistrequests/#{waitlistRequestId}")
-    if response.parsed_response["registrationRequest"]["id"] == waitlistRequestId
-      api_data = JSON.parse(response.body)
-      self.class.map_to_registration_request(api_data)
-      # r=HashToStruct.struct(h)
-    end
-    # raise DoesNotExistException.new waitlistRequestId
+    response = http(:get, "/waitlistrequests/#{waitlistRequestId}")
+    raise NotFound.new(waitlistRequestId) unless response.code == 200
+
+    api_data = JSON.parse(response.body)
+    self.class.map_to_registration_request(api_data)
   end
 
   def self.map_to_registration_request(api_item)
@@ -338,7 +354,7 @@ class ApiService
   def update_waitlist_request(waitlistRequestId, waitlistRequest)
     headers = { 'Content-Type' => 'application/json' }
     json_body = waitlistRequest.to_json
-    response = self.class.put("/waitlistrequests/#{waitlistRequestId}", body: json_body, headers: headers)
+    response = http(:put, "/waitlistrequests/#{waitlistRequestId}", body: json_body, headers: headers)
     if response.code == 200
       h = JSON.parse(response.body)
       return HashToStruct.struct(h)
@@ -349,7 +365,7 @@ class ApiService
   def get_waitlist_requests_by_student(studentId)
     r = Array.new
     url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests?studentId=" + studentId
-    response = self.class.get("/waitlistrequests?studentId=#{studentId}")
+    response = http(:get, "/waitlistrequests?studentId=#{studentId}")
     if response.code == 200
       api_data = JSON.parse(response.body)
       for i in 0...api_data.length() do
@@ -364,7 +380,7 @@ class ApiService
   def get_waitlist_requests_by_course_offering(courseOfferingId)
     r = Array.new
     url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests?courseOfferingId=" + courseOfferingId
-    response = self.class.get("/waitlistrequests?courseOfferingId=#{courseOfferingId}")
+    response = http(:get, "/waitlistrequests?courseOfferingId=#{courseOfferingId}")
     if response.code == 200
       api_data = JSON.parse(response.body)
       for i in 0...api_data.length() do
@@ -379,7 +395,7 @@ class ApiService
 
   def get_waitlist_requests_by_term_and_deptId(termId, deptId)
     r = Array.new
-    response = self.class.get("/waitlistrequests?termId=" + termId + "&deptId=" + deptId)
+    response = http(:get, "/waitlistrequests?termId=" + termId + "&deptId=" + deptId)
     if response.code == 200
       api_data = JSON.parse(response.body)
       for i in 0...api_data.length() do
@@ -394,7 +410,7 @@ class ApiService
   def get_waitlist_requests_by_term_deptId_and_stateKey(termId, deptId, stateKey)
     r = Array.new
     # url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests?termId=" + termId + "&deptId=" + deptId + "&stateKey=" + stateKey
-    response = self.class.get("/waitlistrequests?termId=" + termId + "&deptId=" + deptId + "&stateKey=" + stateKey)
+    response = http(:get, "/waitlistrequests?termId=" + termId + "&deptId=" + deptId + "&stateKey=" + stateKey)
     if response.code == 200
       api_data = JSON.parse(response.body)
       for i in 0...api_data.length() do
@@ -409,7 +425,7 @@ class ApiService
   def get_waitlist_requests_by_stateKey(stateKey)
     r = Array.new
     # url = @hostUrl + @servicesUrlFragment + @servicePath + "/waitlistrequests?termId=" + termId + "&deptId=" + deptId + "&stateKey=" + stateKey
-    response = self.class.get("/waitlistrequests?stateKey=" + stateKey)
+    response = http(:get, "/waitlistrequests?stateKey=" + stateKey)
     if response.code == 200
       api_data = JSON.parse(response.body)
       for i in 0...api_data.length() do
@@ -423,8 +439,7 @@ class ApiService
 
   def change_waitlist_request_state(waitlistRequestId, stateKey)
     headers = { 'Content-Type' => 'application/json' }
-    response = self.class.put("/waitlistrequests/#{waitlistRequestId}/changestate/#{stateKey}", headers: headers)
-    puts "RESPONSE" + response.inspect
+    response = http(:put, "/waitlistrequests/#{waitlistRequestId}/changestate/#{stateKey}", headers: headers)
     if response.code == 200
       return
     end
@@ -433,11 +448,20 @@ class ApiService
 
   def delete_waitlist_request(waitlistRequestId)
     headers = { 'Content-Type' => 'application/json' }
-    response = self.class.delete("/waitlistrequests/#{waitlistRequestId}", headers: headers)
+    response = http(:delete, "/waitlistrequests/#{waitlistRequestId}", headers: headers)
     if response.code == 200
       return
     end
     raise DoesNotExistException.new waitlistRequestId
   end
 
+  private
+
+  # Every HTTP call goes through here, so a stopped or slow API becomes one
+  # error (Unavailable) instead of five different low-level ones.
+  def http(verb, path, **options)
+    self.class.public_send(verb, path, **options)
+  rescue *NETWORK_ERRORS => e
+    raise Unavailable, "BC's waitlist API is not responding (#{e.class})"
+  end
 end
