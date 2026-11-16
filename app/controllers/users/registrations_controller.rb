@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_sign_up_params, only: [:create]
-  before_action :configure_account_update_params, only: [:update]
+  before_action :configure_sign_up_params, only: [ :create ]
+  before_action :configure_account_update_params, only: [ :update ]
 
   # GET /resource/sign_up
   # def new
@@ -16,14 +16,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   api_service = ApiService.new
   person, terms = api_service.fetch_and_map_waitlistperson_and_term(resource.email.split("@")[0])
   resource.person_id = person.id
-  # begin
-  # rescue =>
+   # begin
+   # rescue =>
 
-  # else
-  #     #... executes when no error
-  # ensure
-  #     #... always executed
-  # end
+   # else
+   #     #... executes when no error
+   # ensure
+   #     #... always executed
+   # end
    puts "PERSONID: " + resource.person_id.to_s
     if resource.save
       yield resource if block_given?
@@ -69,15 +69,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   protected
 
-    # If you have extra params to permit, append them to the sanitizer.
+  # If you have extra params to permit, append them to the sanitizer.
 
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:person_id])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :person_id ])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:person_id])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :person_id ])
   end
 
   # The path used after sign up.

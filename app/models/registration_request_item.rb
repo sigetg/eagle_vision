@@ -29,6 +29,4 @@ class RegistrationRequestItem
     :attributes,
     :type,
     :state
-
 end
-

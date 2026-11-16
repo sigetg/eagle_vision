@@ -37,5 +37,4 @@ class CourseOffering
     :creditOptionIds,
     :type,
     :state
-
 end

@@ -17,5 +17,4 @@ class Department
     :orgCodes,
     :type,
     :state
-
 end

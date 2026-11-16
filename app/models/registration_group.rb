@@ -26,5 +26,4 @@ class RegistrationGroup
     :restrictionIds,
     :type,
     :state
-
 end
