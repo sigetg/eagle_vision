@@ -16,7 +16,7 @@ Developers: George, and anyone who clones the repo.
 | 2 | `ApiService` fetches a person by id | It sends `GET /waitlist/waitlistpersons/:id` and returns a `Person` plus the active `Term` list mapped from the response |
 | 3 | `ApiService` fetches a person who doesn't exist | It raises `ApiService::NotFound` |
 | 4 | Any `ApiService` call when the API refuses the connection or takes over 5 seconds | It raises `ApiService::Unavailable` |
-| 5 | Each of the other 12 `ApiService` calls | It sends the right method, path and parameters, and maps the response into the right model objects |
+| 5 | Each of the other 14 `ApiService` calls | It sends the right method, path and parameters, and maps the response into the right model objects |
 | 6 | A student signs up with `90000001@bc.edu` | The user is saved with `person_id` 90000001 and the `user` role |
 | 7 | A staff member signs up with `90000000@bc.edu` | The user is saved with the `admin` role |
 | 8 | A signed-in student opens `/` or searches for `CSCI` | The page lists the courses from the stubbed API for the session's term |
