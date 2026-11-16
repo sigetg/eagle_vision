@@ -67,3 +67,49 @@ All 31 items were marked Looks right.
 | ID | Decision | Choice |
 |---|---|---|
 | O1 | Phase 1 runs foundation, roles, staff side, then student side (see ROADMAP.md) | Staff side before student side (recommended) |
+
+## Round 2 (2026-11-16)
+
+All 17 items were marked Looks right. No item is open, so the grill is finished; the screens are specified in `docs/specs/screens.md` and PR 1 in `docs/specs/01-foundation.md`.
+
+### Both sides: the frame
+
+| ID | Decision | Choice |
+|---|---|---|
+| L1 | The top bar holds role links, the term picker and your name; one term partial and route | Term picker in the top bar (recommended) |
+| L2 | The sign-in page is one centered card, with no duplicate form; Google button only when configured |  |
+| L3 | When the API is down, pages say so instead of crashing (ApiService::Unavailable and NotFound, rescue_from, 5-second timeout) |  |
+
+### Student screens
+
+| ID | Decision | Choice |
+|---|---|---|
+| P1 | Find courses: filters in a left column, results as cards, 20 per page, filters in the URL | Left column (recommended) |
+| P2 | A course page lists each section combination once, grading variants merged, with seats per section | Merge grading variants (recommended) |
+| P3 | The request form is its own page, with a summary and a warning when seats are open | Its own page (recommended) |
+| P4 | My requests: Waiting, Accepted and Declined groups; Edit and Withdraw only while waiting; inline confirm |  |
+
+### Staff screens
+
+| ID | Decision | Choice |
+|---|---|---|
+| Q1 | The queue lists waiting requests oldest first, with count tiles, filters and student search | Oldest first (recommended) |
+| Q2 | A request page: student answers on the left, a sticky decision panel on the right, updated by Turbo Frame |  |
+| Q3 | A course page for staff adds the course's requests under its sections | One page, requests below sections (recommended) |
+| Q4 | Staff browse courses with a waiting-requests count on each card |  |
+
+### The decision email
+
+| ID | Decision | Choice |
+|---|---|---|
+| E1 | One short email per decision, with the staff message and a link back; deliver_later; letter_opener in development |  |
+
+### PR 1: the foundation
+
+| ID | Decision | Choice |
+|---|---|---|
+| F1 | PR 1 tests today's behaviour and marks the security hole as a pending spec |  |
+| F2 | Fake API responses are small hand-written JSON files in spec/fixtures/waitlist_api/ |  |
+| F3 | CI runs RSpec, RuboCop and Brakeman on every PR | RSpec, RuboCop and Brakeman (recommended) |
+| F4 | The README explains the app and how to run it without BC's data; database.yml loses its hardcoded credentials |  |
+| F5 | George fixes the course-requests crash himself, as the first change he writes | George writes it in PR 1 (recommended) |
