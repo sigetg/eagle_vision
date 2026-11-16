@@ -8,7 +8,7 @@ class CourseOfferingsController < ApplicationController
   # GET /course_offerings or /course_offerings.json
   def index
     term_id = session.dig(:term, "id")
-    @term_name = session.dig(:term, "name") #delete user version of this stuff
+    @term_name = session.dig(:term, "name") # delete user version of this stuff
     code = ""
     @course_offerings = @api_service.fetch_and_map_waitlistcourseofferings(term_id, code)
     @pagination, @course_offerings = paginate(collection: @course_offerings, params: params)
@@ -23,5 +23,4 @@ class CourseOfferingsController < ApplicationController
   end
 
   private
-
 end

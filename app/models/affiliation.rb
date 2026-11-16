@@ -4,5 +4,4 @@ class Affiliation
   attr_accessor \
     :personAffiliation,
     :type
-
 end

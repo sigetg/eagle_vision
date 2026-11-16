@@ -6,7 +6,7 @@ class RegistrationRequestsController < ApplicationController
   def index
     @activity_offerings = {} # dictionary associating registration request ids to lists of associated activity offerings
     @creator_names = {}
-    if current_user.has_role?("admin") #if admin, query all requests associated with their department
+    if current_user.has_role?("admin") # if admin, query all requests associated with their department
       set_person_and_terms
       affiliations, departments = @api_service.fetch_and_map_waitlistperson_affiliations_and_authorized_departments(current_user.person_id.to_s)
       @registration_requests = []
@@ -14,17 +14,17 @@ class RegistrationRequestsController < ApplicationController
 
       # If the requests are being filtered by a stateKey, make human readable stateKey interpretable by API
       case params[:stateKey]
-      when 'Submitted'
-        stateKey = 'kuali.courseregistration.request.state.submitted'
-      when 'Accepted'
-        stateKey = 'kuali.courseregistration.request.state.processed.success'
-      when 'Rejected'
-        stateKey = 'kuali.courseregistration.request.state.discarded'
+      when "Submitted"
+        stateKey = "kuali.courseregistration.request.state.submitted"
+      when "Accepted"
+        stateKey = "kuali.courseregistration.request.state.processed.success"
+      when "Rejected"
+        stateKey = "kuali.courseregistration.request.state.discarded"
       end
 
       departments.each do |department|
         if params[:stateKey]
-          dept_reg_requests = @api_service.get_waitlist_requests_by_term_deptId_and_stateKey(session[:term]["id"], department.id, stateKey) #need to change term to
+          dept_reg_requests = @api_service.get_waitlist_requests_by_term_deptId_and_stateKey(session[:term]["id"], department.id, stateKey) # need to change term to
         else
           dept_reg_requests = @api_service.get_waitlist_requests_by_term_and_deptId(session[:term]["id"], department.id)
         end
@@ -35,18 +35,16 @@ class RegistrationRequestsController < ApplicationController
         get_associated_activity_offerings(dept_reg_requests, @activity_offerings)
 
         get_associated_requestor_names(dept_reg_requests, @creator_names)
-
       end
 
-    else #otherwise just get the student's requests
+    else # otherwise just get the student's requests
       @registration_requests = @api_service.get_waitlist_requests_by_student(current_user.person_id.to_s)
       get_associated_activity_offerings(@registration_requests, @activity_offerings)
       get_associated_requestor_names(@registration_requests, @creator_names)
     end
 
-    #This sorts the requests so they show up with the oldest on top, newest on the bottom
+    # This sorts the requests so they show up with the oldest on top, newest on the bottom
     @registration_requests = @registration_requests.sort_by { |request| DateTime.parse(request[:registrationRequest].effectiveDate) }
-
   end
 
   def course_offering_requests
@@ -57,11 +55,10 @@ class RegistrationRequestsController < ApplicationController
     get_associated_activity_offerings(@registration_requests, @activity_offerings)
     get_associated_requestor_names(@registration_requests, @creator_names)
 
-    #This sorts the requests so they show up with the oldest on top, newest on the bottom
+    # This sorts the requests so they show up with the oldest on top, newest on the bottom
     @registration_requests = @registration_requests.sort_by { |request| DateTime.parse(request[:registrationRequest].effectiveDate) }
 
     render :index
-
   end
 
   # GET /registration_requests/1 or /registration_requests/1.json
@@ -89,9 +86,9 @@ class RegistrationRequestsController < ApplicationController
     # @registration_request_data[:registrationRequest].attributes[0]["creator"] = @person.name NORM CAN I DO THIS PLZ
     # @api_service.update_waitlist_request(registration_request_data[:registrationRequest].id, registration_request_data)
     # redirect_to registration_requests_path, notice: "Registration request was successfully created."
-    @registration_request_data[:registrationRequest].descr["plain"] = params[ 'year'] +'\n' + params[ 'major'] + '\n' + params['descr']
+    @registration_request_data[:registrationRequest].descr["plain"] = params["year"] +'\n' + params["major"] + '\n' + params["descr"]
     @registration_request_data[:registrationRequest].descr["formatted"] = "Pending"
-    @registration_request_data[:registrationRequestItem].preferredActivityOfferingIds = params['activity_offering_ids']
+    @registration_request_data[:registrationRequestItem].preferredActivityOfferingIds = params["activity_offering_ids"]
     respond_to do |format|
       if @api_service.update_waitlist_request(@registration_request_data[:registrationRequest].id, @registration_request_data)
         @api_service.change_waitlist_request_state(@registration_request_data[:registrationRequest].id, "kuali.courseregistration.request.state.submitted")
@@ -116,21 +113,21 @@ class RegistrationRequestsController < ApplicationController
     # @api_service.update_waitlist_request(registration_request_data[:registrationRequest].id, registration_request_data)
     # redirect_to registration_requests_path, notice: "Registration request was successfully created."
     case params[:stateKey]
-    when 'Submitted'
-      stateKey = 'kuali.courseregistration.request.state.submitted'
-    when 'Accepted'
-      stateKey = 'kuali.courseregistration.request.state.processed.success'
-    when 'Rejected'
-      stateKey = 'kuali.courseregistration.request.state.discarded'
+    when "Submitted"
+      stateKey = "kuali.courseregistration.request.state.submitted"
+    when "Accepted"
+      stateKey = "kuali.courseregistration.request.state.processed.success"
+    when "Rejected"
+      stateKey = "kuali.courseregistration.request.state.discarded"
     end
 
-    if params['descr']
-      @registration_request[:registrationRequest].descr["plain"] = params['descr']
+    if params["descr"]
+      @registration_request[:registrationRequest].descr["plain"] = params["descr"]
     end
-    if params['response']
-      @registration_request[:registrationRequest].descr["formatted"] = params['response']
+    if params["response"]
+      @registration_request[:registrationRequest].descr["formatted"] = params["response"]
     end
-  
+
     respond_to do |format|
       if @api_service.update_waitlist_request(@registration_request[:registrationRequest].id, @registration_request)
         if stateKey

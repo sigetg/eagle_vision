@@ -2,12 +2,12 @@ class User < ApplicationRecord
   # has_one :person
   after_create :assign_default_role
   rolify
-  belongs_to :person, class_name: 'Person', optional: true
+  belongs_to :person, class_name: "Person", optional: true
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2]
+         :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [ :google_oauth2 ]
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
@@ -41,5 +41,4 @@ class User < ApplicationRecord
       add_role(:user)
     end
   end
-
 end

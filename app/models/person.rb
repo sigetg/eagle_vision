@@ -12,5 +12,4 @@ class Person
     :pictureDocumentId,
     :type,
     :state
-
 end
