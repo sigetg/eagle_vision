@@ -1,0 +1,2 @@
+# Rails' own style rules: https://github.com/rails/rubocop-rails-omakase
+inherit_gem: { rubocop-rails-omakase: rubocop.yml }

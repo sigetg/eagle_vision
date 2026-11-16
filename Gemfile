@@ -51,6 +51,14 @@ gem "bootsnap", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+
+  # Tests: RSpec as the framework, FactoryBot to build test records
+  gem "rspec-rails", "~> 7.1"
+  gem "factory_bot_rails", "~> 6.4"
+
+  # Code style (Rails' own rules) and a security scan, both run in CI
+  gem "rubocop-rails-omakase", require: false
+  gem "brakeman", require: false
 end
 
 group :development do
@@ -66,10 +74,8 @@ group :development do
 end
 
 group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
-  gem "selenium-webdriver"
-  gem "webdrivers"
+  # Blocks real HTTP in tests, and lets a test stand in for BC's waitlist API
+  gem "webmock", "~> 3.24"
 end
 
 # devise and google oauth
@@ -84,3 +90,7 @@ gem "rolify", "~> 6.0"
 gem "httparty", "~> 0.21.0"
 
 gem "hash_to_struct", "~> 1.0"
+
+# Rails 7.0 calls JSON.generate with a quirks_mode: option that json 3 removed.
+# RuboCop pulls in the newest json, so hold it below 3 until the Rails 8 upgrade.
+gem "json", "< 3"
