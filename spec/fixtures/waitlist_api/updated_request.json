@@ -1,0 +1,70 @@
+{
+  "registrationRequest": {
+    "attributes": [
+      {
+        "id": "attr-1",
+        "key": "source.student.wait.list",
+        "value": "true"
+      }
+    ],
+    "meta": {
+      "versionInd": "0",
+      "createTime": "2023-10-01T12:00:00.000+00:00",
+      "createId": "admin",
+      "updateTime": "2023-10-01T12:00:00.000+00:00",
+      "updateId": "admin"
+    },
+    "id": "req-1",
+    "typeKey": "kuali.courseregistration.registrationrequest.type.self",
+    "stateKey": "kuali.courseregistration.request.state.submitted",
+    "effectiveDate": "2023-10-10T14:30:00.000+00:00",
+    "expirationDate": null,
+    "name": "Waitlist request for 01, 02 - Letter - TEST1101",
+    "descr": {
+      "plain": "Sophomore\\nEconomics\\nI need this course to declare the minor.",
+      "formatted": "Pending"
+    },
+    "requestorId": "90000001",
+    "termId": "kuali.atp.FA2023-2024",
+    "submittedDate": null,
+    "processResults": [],
+    "itemStudentIds": [
+      "90000001"
+    ],
+    "itemStudentPopulationId": null,
+    "type": "kuali.courseregistration.registrationrequest.type.self",
+    "state": "kuali.courseregistration.request.state.submitted"
+  },
+  "registrationRequestItem": {
+    "attributes": [],
+    "meta": {
+      "versionInd": "0",
+      "createTime": "2023-10-01T12:00:00.000+00:00",
+      "createId": "admin",
+      "updateTime": "2023-10-01T12:00:00.000+00:00",
+      "updateId": "admin"
+    },
+    "id": "item-req-1",
+    "typeKey": "kuali.courseregistration.registrationrequestitem.type.add",
+    "stateKey": "kuali.courseregistration.registrationrequestitem.state.active",
+    "effectiveDate": "2023-10-10T14:30:00.000+00:00",
+    "name": "Waitlist request for 01, 02 - Letter - TEST1101",
+    "descr": {
+      "plain": null,
+      "formatted": null
+    },
+    "registrationRequestId": "req-1",
+    "studentId": "90000001",
+    "preferredActivityOfferingIds": [
+      "ao-lec-01"
+    ],
+    "preferredRegistrationGroupIds": [
+      "rg-1"
+    ],
+    "preferredCredits": [],
+    "preferredGradingOptionIds": [],
+    "processResults": [],
+    "type": "kuali.courseregistration.registrationrequestitem.type.add",
+    "state": "kuali.courseregistration.registrationrequestitem.state.active"
+  }
+}

@@ -1,0 +1,78 @@
+[
+  {
+    "courseOffering": {
+      "attributes": [],
+      "meta": {
+        "versionInd": "0",
+        "createTime": "2023-10-01T12:00:00.000+00:00",
+        "createId": "admin",
+        "updateTime": "2023-10-01T12:00:00.000+00:00",
+        "updateId": "admin"
+      },
+      "id": "co-1",
+      "typeKey": "kuali.lui.type.course.offering",
+      "stateKey": "kuali.lui.state.offered",
+      "name": "Introduction to Testing",
+      "descr": {
+        "plain": "An introduction to writing tests before code.",
+        "formatted": "An introduction to writing tests before code."
+      },
+      "courseId": "course-co-1",
+      "termId": "kuali.atp.FA2023-2024",
+      "courseOfferingTitle": "Introduction to Testing",
+      "courseCode": "TEST1101",
+      "courseOfferingCode": "TEST1101",
+      "subjectAreaId": "CSCI",
+      "isHonorsOffering": false,
+      "instructors": [],
+      "unitsDeploymentOrgIds": [
+        "dept-cs"
+      ],
+      "creditOptionId": "kuali.result.values.group.credit.degree.3.0",
+      "gradingOptionIds": [
+        "kuali.resultComponent.grade.letter",
+        "kuali.resultComponent.grade.passFail"
+      ],
+      "type": "kuali.lui.type.course.offering",
+      "state": "kuali.lui.state.offered"
+    }
+  },
+  {
+    "courseOffering": {
+      "attributes": [],
+      "meta": {
+        "versionInd": "0",
+        "createTime": "2023-10-01T12:00:00.000+00:00",
+        "createId": "admin",
+        "updateTime": "2023-10-01T12:00:00.000+00:00",
+        "updateId": "admin"
+      },
+      "id": "co-2",
+      "typeKey": "kuali.lui.type.course.offering",
+      "stateKey": "kuali.lui.state.offered",
+      "name": "Advanced Fixtures",
+      "descr": {
+        "plain": "Building fake data that looks real.",
+        "formatted": "Building fake data that looks real."
+      },
+      "courseId": "course-co-2",
+      "termId": "kuali.atp.FA2023-2024",
+      "courseOfferingTitle": "Advanced Fixtures",
+      "courseCode": "TEST2201",
+      "courseOfferingCode": "TEST2201",
+      "subjectAreaId": "CSCI",
+      "isHonorsOffering": false,
+      "instructors": [],
+      "unitsDeploymentOrgIds": [
+        "dept-cs"
+      ],
+      "creditOptionId": "kuali.result.values.group.credit.degree.3.0",
+      "gradingOptionIds": [
+        "kuali.resultComponent.grade.letter",
+        "kuali.resultComponent.grade.passFail"
+      ],
+      "type": "kuali.lui.type.course.offering",
+      "state": "kuali.lui.state.offered"
+    }
+  }
+]

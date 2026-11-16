@@ -1,0 +1,38 @@
+{
+  "activityOffering": {
+    "attributes": [],
+    "meta": {
+      "versionInd": "0",
+      "createTime": "2023-10-01T12:00:00.000+00:00",
+      "createId": "admin",
+      "updateTime": "2023-10-01T12:00:00.000+00:00",
+      "updateId": "admin"
+    },
+    "id": "ao-lec-01",
+    "typeKey": "kuali.lui.type.activity.offering.lecture",
+    "stateKey": "kuali.lui.state.offered",
+    "name": null,
+    "descr": null,
+    "formatOfferingId": "fo-1",
+    "activityCode": "01",
+    "termId": "kuali.atp.FA2023-2024",
+    "courseOfferingId": "co-1",
+    "courseOfferingTitle": "Introduction to Testing",
+    "courseOfferingCode": "TEST1101",
+    "instructors": [],
+    "maximumEnrollment": 30,
+    "unitsDeploymentOrgIds": [
+      "dept-cs"
+    ],
+    "type": "kuali.lui.type.activity.offering.lecture",
+    "state": "kuali.lui.state.offered"
+  },
+  "scheduleNames": [
+    "Test Hall 101 TuTh 09:00AM-10:15AM"
+  ],
+  "activitySeatCount": {
+    "total": 30,
+    "used": 30,
+    "available": 0
+  }
+}
