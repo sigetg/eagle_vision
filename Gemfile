@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.2"
+ruby "3.4.12"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.2"
@@ -87,7 +87,7 @@ gem "omniauth-rails_csrf_protection", "~> 1.0"
 gem "activeresource", "~> 6.0"
 
 gem "rolify", "~> 6.0"
-gem "httparty", "~> 0.21.0"
+gem "httparty", "~> 0.22"
 
 gem "hash_to_struct", "~> 1.0"
 
