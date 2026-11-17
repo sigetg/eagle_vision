@@ -15,7 +15,7 @@
     <% end %>-->
     <%= form.hidden_field :id, value: registration_request.id %>
   </div>
-  <% if current_user.has_role?(:admin) %>
+  <% if current_user.staff? %>
     <p>
       <%= form.label :year, style: "font-weight: bold"  do %>
         Year (Freshman, Sophomore, Junior, Senior...):

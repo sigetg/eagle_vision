@@ -53,6 +53,7 @@ RSpec.describe "Waitlist requests", type: :request do
     end
 
     it "withdraws a request by deleting it" do
+      stub_waitlist_api(:request, id: "req-1", fixture: "request")
       delete_call = stub_waitlist_api(:delete_request, id: "req-1")
 
       delete registration_request_path("req-1")
@@ -62,12 +63,11 @@ RSpec.describe "Waitlist requests", type: :request do
     end
 
     it "cannot open another student's request" do
-      pending "PR 3 adds Pundit; today any signed-in user can open any request by id"
       stub_waitlist_api(:request, id: "req-2", fixture: "other_students_request")
 
       get registration_request_path("req-2")
 
-      expect(response).not_to have_http_status(:ok)
+      expect(response).to have_http_status(:forbidden)
     end
   end
 

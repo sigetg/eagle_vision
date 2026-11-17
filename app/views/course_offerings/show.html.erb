@@ -12,7 +12,7 @@
       <%= render activity_offering %>
       <p>
         <%= link_to "Create a New Registration Request For This Activity Offering", new_registration_request_path(activity_offering_id: activity_offering.id, term_id: activity_offering.term_id) %> |
-        <%= link_to current_user.has_role?(:admin) ? "Show Associated Waitlist Requests" : "Show this activity offering", course_offering_activity_offering_path(@course_offering) %>
+        <%= link_to current_user.staff? ? "Show Associated Waitlist Requests" : "Show this activity offering", course_offering_activity_offering_path(@course_offering) %>
       </p>
     <% end %>
   </div>

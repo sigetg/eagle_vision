@@ -7,6 +7,7 @@ class CourseOfferingsController < ApplicationController
 
   # GET /course_offerings or /course_offerings.json
   def index
+    authorize :course, :index?
     term_id = session.dig(:term, "id")
     @term_name = session.dig(:term, "name") # delete user version of this stuff
     code = ""
@@ -15,6 +16,7 @@ class CourseOfferingsController < ApplicationController
   end
 
   def search
+    authorize :course, :index?
     term_id = session.dig(:term, "id")
     @term_name = session.dig(:term, "name")
     @code = "#{params[:key]}"

@@ -9,23 +9,22 @@ RSpec.describe "Sign up", type: :request do
     }
   end
 
-  it "saves a student with their person id and the user role" do
+  it "saves a student with their person id and the student role" do
     stub_waitlist_api(:person, id: "90000001", fixture: "person_student")
 
     expect { sign_up("90000001@bc.edu") }.to change(User, :count).by(1)
 
     user = User.last
     expect(user.person_id).to eq(90000001)
-    expect(user.has_role?(:user)).to be(true)
-    expect(user.has_role?(:admin)).to be(false)
+    expect(user).to be_student
   end
 
-  it "makes someone with a Staff affiliation an admin" do
+  it "makes someone with a Staff affiliation staff" do
     stub_waitlist_api(:person, id: "90000000", fixture: "person_staff")
 
     sign_up("90000000@bc.edu")
 
-    expect(User.last.has_role?(:admin)).to be(true)
+    expect(User.last).to be_staff
   end
 
   it "shows the not-found page for an email the API doesn't know" do

@@ -1,44 +1,42 @@
 class User < ApplicationRecord
-  # has_one :person
-  after_create :assign_default_role
-  rolify
-  belongs_to :person, class_name: "Person", optional: true
+  # A student finds courses and sends waitlist requests; staff decide on them.
+  # The waitlist API decides which, from the person's affiliations, and the
+  # role is checked again at every sign-in (config/initializers/warden_hooks.rb).
+  enum :role, { student: 0, staff: 1 }, default: :student, validate: true
+
+  before_create :assign_role_from_api
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [ :google_oauth2 ]
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
       user.password = Devise.friendly_token[0, 20]
-      user.full_name = auth.info.name # assuming the user model has a name
-      user.avatar_url = auth.info.image # assuming the user model has an image
-      api_service = ApiService.new
-      person, terms = api_service.fetch_and_map_waitlistperson_and_term(user.email.split("@")[0])
+      user.full_name = auth.info.name
+      user.avatar_url = auth.info.image
+      person, _terms = ApiService.new.fetch_and_map_waitlistperson_and_term(user.email.split("@")[0])
       user.person_id = person.id
-      puts user.inspect
-      # If you are using confirmable and the provider(s) you use validate emails,
-      # uncomment the line below to skip the confirmation emails.
-      # user.skip_confirmation!
     end
+  end
+
+  # Asks the API for this person's affiliations and saves the role if it
+  # changed. Called after every sign-in.
+  def sync_role!(api = ApiService.new)
+    self.role = role_from_api(api)
+    save! if role_changed?
   end
 
   private
 
-  def assign_default_role
-    api_service = ApiService.new
-    affiliations, departments = api_service.fetch_and_map_waitlistperson_affiliations_and_authorized_departments(self.person_id)
-    is_admin = false
-    for affiliation in affiliations
-      if affiliation.type["name"] == "Staff"
-        is_admin = true
-      end
-    end
-    if is_admin
-      add_role(:admin)
-    else
-      add_role(:user)
-    end
+  def assign_role_from_api
+    self.role = role_from_api(ApiService.new)
+  end
+
+  def role_from_api(api)
+    affiliations, _departments = api.fetch_and_map_waitlistperson_affiliations_and_authorized_departments(person_id.to_s)
+    affiliations.any? { |affiliation| affiliation.type&.dig("name") == "Staff" } ? :staff : :student
   end
 end

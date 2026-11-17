@@ -85,7 +85,7 @@ gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection", "~> 1.0"
 
 
-gem "rolify", "~> 6.0"
 gem "httparty", "~> 0.22"
 
 gem "hash_to_struct", "~> 1.0"
+gem "pundit", "~> 2.5"

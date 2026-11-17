@@ -1,4 +1,6 @@
 class RegistrationRequestsController < ApplicationController
+  include WaitlistRequestLoading
+
   before_action :set_api_service
   before_action :set_person_and_terms, only: %i[ create index course_offering_requests ]
 
@@ -6,7 +8,8 @@ class RegistrationRequestsController < ApplicationController
   def index
     @activity_offerings = {} # dictionary associating registration request ids to lists of associated activity offerings
     @creator_names = {}
-    if current_user.has_role?("admin") # if admin, query all requests associated with their department
+    authorize :waitlist_request, current_user.staff? ? :queue? : :index?
+    if current_user.staff? # if admin, query all requests associated with their department
       set_person_and_terms
       affiliations, departments = @api_service.fetch_and_map_waitlistperson_affiliations_and_authorized_departments(current_user.person_id.to_s)
       @registration_requests = []
@@ -48,6 +51,7 @@ class RegistrationRequestsController < ApplicationController
   end
 
   def course_offering_requests
+    authorize :course, :see_requests?
     course_offering_id = params[:course_offering_id]
     @registration_requests = @api_service.get_waitlist_requests_by_course_offering(course_offering_id)
     @activity_offerings = {}
@@ -63,6 +67,7 @@ class RegistrationRequestsController < ApplicationController
 
   # GET /registration_requests/1 or /registration_requests/1.json
   def show
+    authorize load_waitlist_request(params[:id]), :show?
     @registration_request = @api_service.get_waitlist_request(params[:id])
     @creator = params[:creator]
     @activity_offerings = []
@@ -76,12 +81,14 @@ class RegistrationRequestsController < ApplicationController
 
   # GET /registration_requests/new
   def new
+    authorize :waitlist_request, :create?
     @registration_group_id = params[:registration_group_id]
     @activity_offering_ids = params[:activity_offering_ids]
   end
 
   # POST /registration_requests or /registration_requests.json
   def create
+    authorize :waitlist_request, :create?
     @registration_request_data = @api_service.create_waitlist_request(@person.id, params[:registration_group_id])
     # @registration_request_data[:registrationRequest].attributes[0]["creator"] = @person.name NORM CAN I DO THIS PLZ
     # @api_service.update_waitlist_request(registration_request_data[:registrationRequest].id, registration_request_data)
@@ -103,12 +110,14 @@ class RegistrationRequestsController < ApplicationController
 
   # GET /registration_requests/1/edit
   def edit
+    authorize load_waitlist_request(params[:id]), :update?
     @registration_request_data = @api_service.get_waitlist_request(params[:id])
     @registration_request = @registration_request_data[:registrationRequest]
   end
 
   # PATCH/PUT /registration_requests/1 or /registration_requests/1.json
   def update
+    authorize load_waitlist_request(params[:id]), current_user.staff? ? :decide? : :update?
     @registration_request = @api_service.get_waitlist_request(params[:id])
     # @api_service.update_waitlist_request(registration_request_data[:registrationRequest].id, registration_request_data)
     # redirect_to registration_requests_path, notice: "Registration request was successfully created."
@@ -144,6 +153,7 @@ class RegistrationRequestsController < ApplicationController
 
   # DELETE /registration_requests/1 or /registration_requests/1.json
   def destroy
+    authorize load_waitlist_request(params[:id]), :destroy?
     # @registration_request = @api_service.get_waitlist_request(params[:id])
     @api_service.delete_waitlist_request(params[:id])
     flash[:notice] = "Registration request was successfully destroyed."

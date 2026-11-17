@@ -175,14 +175,36 @@ class ApiService
   end
 
 
-  def fetch_and_map_waitlistactivityofferings(activity_offering_id)
-    response = http(:get, "/waitlistactivityofferings/#{activity_offering_id}")
-    api_data = JSON.parse(response.body)
-    # puts "API RESPONSE: " + response.inspect
-    # puts "API ITEM: " + api_data.inspect
-    # puts "ID: " + activity_offering_id.inspect
+  # Everything the API says about one person, from one call: a Struct with
+  # person, terms (hashes, as stored in session[:term]), affiliations and
+  # departments.
+  PersonProfile = ::Struct.new(:person, :terms, :affiliations, :departments, keyword_init: true)
 
-    # returns an array of activity offerings
+  def fetch_person_profile(person_id)
+    @profiles ||= {}
+    @profiles[person_id.to_s] ||= begin
+      response = http(:get, "/waitlistpersons/#{person_id}")
+      raise NotFound.new(person_id) unless response.code == 200
+
+      data = JSON.parse(response.body)
+      person, terms = self.class.map_to_person_and_term(data)
+      affiliations, departments = self.class.map_to_affiliations_and_authorized_departments(data)
+      PersonProfile.new(person: person, terms: terms, affiliations: affiliations, departments: departments)
+    end
+  end
+
+  # One section by id. Pages that list requests ask for the same section many
+  # times, so each ApiService instance (one per web request) remembers them.
+  def fetch_and_map_waitlistactivityofferings(activity_offering_id)
+    @activity_offerings ||= {}
+    @activity_offerings[activity_offering_id.to_s] ||= fetch_activity_offering_uncached(activity_offering_id)
+  end
+
+  def fetch_activity_offering_uncached(activity_offering_id)
+    response = http(:get, "/waitlistactivityofferings/#{activity_offering_id}")
+    raise NotFound.new(activity_offering_id) unless response.code == 200
+
+    api_data = JSON.parse(response.body)
     self.class.map_to_activity_offering(api_data)
   end
 
@@ -229,6 +251,7 @@ class ApiService
       schedule_names = api_item["scheduleNames"]
       activity.scheduleNames = schedule_names[0]
     end
+    activity.seatCount = api_item["activitySeatCount"]
     activity
   end
 

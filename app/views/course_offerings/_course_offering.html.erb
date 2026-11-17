@@ -12,7 +12,7 @@
       <!--<%= course_offering.termId %>-->
     </p>
     <%= link_to 'Show Associated Registration Groups', course_offering_registration_groups_path(course_offering.id) %>
-    <% if current_user.has_role?("admin") %>
+    <% if current_user.staff? %>
       <%= link_to 'Show Existing Registration Requests', "course_offering_requests/#{course_offering.id}" %>
     <% end %>
   </div>

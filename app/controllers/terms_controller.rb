@@ -1,5 +1,6 @@
 class TermsController < ApplicationController
   before_action :set_person_and_terms
+  before_action { authorize :term, :update? }
 
   def terms_dropdown
     if session[:term].nil?
