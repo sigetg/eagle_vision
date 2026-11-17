@@ -42,7 +42,7 @@
       <tbody>
         <% @rows.each do |waitlist_request| %>
           <tr class="link-row">
-            <td><%= link_to waitlist_request.student_name, registration_request_path(waitlist_request.id) %></td>
+            <td><%= link_to waitlist_request.student_name, staff_request_path(waitlist_request.id) %></td>
             <td><strong><%= waitlist_request.course_code %></strong> <span class="muted"><%= waitlist_request.section_codes %></span></td>
             <td><%= waitlist_request.open_seats %></td>
             <td><%= waitlist_request.sent_at&.strftime("%b %-d") %></td>

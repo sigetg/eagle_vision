@@ -1,0 +1,54 @@
+<% content_for :title, "Request from #{@waitlist_request.student_name}" %>
+<p class="small"><%= link_to "Back to requests", staff_requests_path %></p>
+<h1><%= @waitlist_request.student_name %> <span class="muted">wants into <%= @waitlist_request.course_code %></span></h1>
+
+<div class="grid-2">
+  <div class="stack">
+    <div class="card">
+      <h3>Student</h3>
+      <dl class="facts">
+        <dt>Name</dt><dd><%= @waitlist_request.student_name %></dd>
+        <dt>Class year</dt><dd><%= @waitlist_request.answers.class_year.presence || "Not given" %></dd>
+        <dt>Major</dt><dd><%= @waitlist_request.answers.major.presence || "Not given" %></dd>
+        <dt>Sent</dt><dd><%= @waitlist_request.sent_at&.strftime("%B %-d, %Y at %-l:%M%P") %></dd>
+        <% if @waitlist_request.answers.grading.present? %><dt>Grading</dt><dd><%= @waitlist_request.answers.grading %></dd><% end %>
+      </dl>
+    </div>
+
+    <div class="card">
+      <h3>Wanted sections</h3>
+      <table class="list">
+        <thead><tr><th>Section</th><th>When and where</th><th>Instructor</th><th>Seats</th></tr></thead>
+        <tbody>
+          <% @waitlist_request.sections.each do |section| %>
+            <tr>
+              <td><%= section.kind %> <%= section.activityCode %></td>
+              <td><%= section.schedule.time_text %><br><span class="muted small"><%= section.schedule.room %></span></td>
+              <td><%= section.instructor_names.join(", ").presence || "TBA" %></td>
+              <td><%= render "shared/seats", section: section %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <% others = @waitlist_request.group_ids.drop(1).filter_map { |id| @groups[id] } %>
+      <% if others.any? %>
+        <h3 style="margin-top:12px">Would also accept</h3>
+        <ul><% others.each do |group| %><li><%= group[:registration_group].name %></li><% end %></ul>
+      <% end %>
+    </div>
+
+    <div class="card">
+      <h3>Reason</h3>
+      <p><%= simple_format(@waitlist_request.answers.reason.presence || "No reason given.") %></p>
+    </div>
+
+    <% if @waitlist_request.course_offering_id %>
+      <p><%= link_to "#{@other_requests_count} other #{"request".pluralize(@other_requests_count)} for #{@waitlist_request.course_code}",
+                     staff_course_requests_path(@waitlist_request.course_offering_id) %></p>
+    <% end %>
+  </div>
+
+  <div class="sticky">
+    <%= render "decision_panel", waitlist_request: @waitlist_request, error: nil %>
+  </div>
+</div>

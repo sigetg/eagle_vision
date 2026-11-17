@@ -19,7 +19,11 @@ Rails.application.routes.draw do
   }
 
   namespace :staff do
-    resources :requests, only: %i[ index ]
+    resources :requests, only: %i[ index show ] do
+      resource :decision, only: :create
+    end
+    get "courses/:course_offering_id/requests", to: redirect { |params, _| "/course_offering_requests/#{params[:course_offering_id]}" },
+                                                 as: :course_requests
   end
 
   # The term picker in the top bar.

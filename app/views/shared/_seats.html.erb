@@ -1,0 +1,7 @@
+<% total = section.seats_total %>
+<% if total.positive? %>
+  <span class="seats-bar"><span style="width: <%= [ (section.seats_used * 100.0 / total).round, 100 ].min %>%"></span></span>
+  <span class="small"><%= section.seats_used %> / <%= total %></span>
+<% else %>
+  <span class="muted small">No count</span>
+<% end %>

@@ -1,0 +1,28 @@
+<%= turbo_frame_tag "decision_panel" do %>
+  <div class="card stack">
+    <div class="button-row"><strong>Status</strong> <%= status_badge(waitlist_request.status) %></div>
+    <% if error %><div class="errors"><%= error %></div><% end %>
+
+    <% if waitlist_request.waiting? %>
+      <%= form_with url: staff_request_decision_path(waitlist_request.id), method: :post do |f| %>
+        <div class="field">
+          <%= f.label :message, "Message to the student" %>
+          <%= f.text_area :message, placeholder: "Required to decline, optional to accept" %>
+        </div>
+        <div class="button-row" style="margin-top:12px">
+          <%= f.button "Accept", name: "decision", value: "accept", class: "button accept" %>
+          <%= f.button "Decline", name: "decision", value: "decline", class: "button" %>
+        </div>
+      <% end %>
+    <% else %>
+      <% decision = waitlist_request.decision %>
+      <p class="small muted">
+        <%= RequestStatus.label(waitlist_request.status) %><%= " by #{decision.decided_by}" if decision.decided_by.present? %><%= " on #{decision.decided_at_time.strftime("%B %-d at %-l:%M%P")}" if decision.decided_at_time %>
+      </p>
+      <% if decision.message.present? %><div class="message"><%= decision.message %></div><% end %>
+      <%= form_with url: staff_request_decision_path(waitlist_request.id), method: :post do |f| %>
+        <%= f.button "Reopen", name: "decision", value: "reopen", class: "button secondary" %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
