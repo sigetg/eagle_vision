@@ -42,10 +42,20 @@ class ApplicationController < ActionController::Base
   # Each role's pages. These move to the rebuilt screens PR by PR.
   def student_home_path = course_offerings_path
   def my_requests_home_path = registration_requests_path
-  def staff_home_path = registration_requests_path
+  def staff_home_path = staff_requests_path
   def staff_courses_home_path = course_offerings_path
 
   private
+
+  # The number on the top bar's Requests link: waiting requests in this
+  # term. Cached for a minute so it doesn't cost a page its speed.
+  def waiting_count_for_badge
+    return unless current_user&.staff? && current_term
+
+    Rails.cache.fetch([ "waiting-count", current_user.id, current_term["id"] ], expires_in: 1.minute) do
+      RequestQueue.new(api: set_api_service, viewer: current_viewer, term_id: current_term["id"]).counts[:waiting]
+    end
+  end
 
   def render_api_unavailable
     skip_authorization

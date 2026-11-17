@@ -1,0 +1,56 @@
+<% content_for :title, "Requests" %>
+<h1>Requests <span class="muted small"><%= current_term&.dig("name") %></span></h1>
+
+<% counts = @queue.counts %>
+<div class="tiles">
+  <% RequestStatus::ALL.each do |status| %>
+    <%= link_to staff_requests_path(request.query_parameters.except("page").merge(status: status)),
+                class: [ "tile", ("active" if @status == status.to_s) ] do %>
+      <span class="muted small"><%= RequestStatus.label(status) %></span>
+      <strong><%= counts[status] %></strong>
+    <% end %>
+  <% end %>
+</div>
+
+<%= form_with url: staff_requests_path, method: :get, class: "filters-row", data: { controller: "autosubmit", turbo_frame: "_top" } do %>
+  <%= hidden_field_tag :status, @status %>
+  <div>
+    <label for="department">Department</label>
+    <%= select_tag :department, options_for_select([ [ "All departments", "" ] ] + @queue.departments.map { |d| [ d.longName, d.id ] }, params[:department]),
+                   data: { action: "autosubmit#submit" } %>
+  </div>
+  <div>
+    <label for="course">Course</label>
+    <%= select_tag :course, options_for_select([ [ "All courses", "" ] ] + @queue.course_codes, params[:course]), data: { action: "autosubmit#submit" } %>
+  </div>
+  <div>
+    <label for="student">Student</label>
+    <%= search_field_tag :student, params[:student], placeholder: "Name", data: { action: "input->autosubmit#submit" } %>
+  </div>
+  <div>
+    <label for="sort">Sort</label>
+    <%= select_tag :sort, options_for_select([ [ "Oldest first", "oldest" ], [ "Newest first", "newest" ] ], params[:sort]), data: { action: "autosubmit#submit" } %>
+  </div>
+<% end %>
+
+<% if @rows.empty? %>
+  <div class="card muted">No <%= RequestStatus.label(@status).downcase %> requests<%= " match these filters" if params.values_at(:department, :course, :student).any?(&:present?) %>.</div>
+<% else %>
+  <div class="table-wrap">
+    <table class="list">
+      <thead><tr><th>Student</th><th>Course and sections</th><th>Seats open now</th><th>Sent</th><th>Status</th></tr></thead>
+      <tbody>
+        <% @rows.each do |waitlist_request| %>
+          <tr class="link-row">
+            <td><%= link_to waitlist_request.student_name, registration_request_path(waitlist_request.id) %></td>
+            <td><strong><%= waitlist_request.course_code %></strong> <span class="muted"><%= waitlist_request.section_codes %></span></td>
+            <td><%= waitlist_request.open_seats %></td>
+            <td><%= waitlist_request.sent_at&.strftime("%b %-d") %></td>
+            <td><%= status_badge(waitlist_request.status) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= render "shared/pagination", page: @page %>
+<% end %>

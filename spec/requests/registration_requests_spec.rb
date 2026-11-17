@@ -72,7 +72,11 @@ RSpec.describe "Waitlist requests", type: :request do
   end
 
   describe "as staff" do
-    before { sign_in create_waitlist_user(:staff) }
+    before do
+      sign_in create_waitlist_user(:staff)
+      # The top bar counts waiting requests for staff.
+      stub_waitlist_api(:requests, query: { termId: term_id, deptId: "dept-cs" }, fixture: "requests")
+    end
 
     it "lists requests from each authorized department" do
       stub_waitlist_api(:requests, query: { termId: term_id, deptId: "dept-cs" }, fixture: "requests")

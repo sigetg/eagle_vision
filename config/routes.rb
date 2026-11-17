@@ -18,6 +18,10 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
+  namespace :staff do
+    resources :requests, only: %i[ index ]
+  end
+
   # The term picker in the top bar.
   resource :term, only: :update
 

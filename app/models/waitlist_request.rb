@@ -6,7 +6,7 @@
 # WaitlistRequestLoader) fills them in.
 class WaitlistRequest
   attr_reader :request, :item
-  attr_accessor :sections, :student_name
+  attr_accessor :sections, :student_name, :department_id
 
   def self.from_api(data)
     new(data[:registrationRequest], data[:registrationRequestItem])

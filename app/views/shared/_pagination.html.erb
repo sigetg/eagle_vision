@@ -1,0 +1,7 @@
+<% if page.pages > 1 %>
+  <nav class="pagination" aria-label="Pages">
+    <% if page.previous? %><%= link_to "Previous", request.query_parameters.merge(page: page.number - 1), class: "button quiet small" %><% end %>
+    <span class="muted small">Page <%= page.number %> of <%= page.pages %></span>
+    <% if page.next? %><%= link_to "Next", request.query_parameters.merge(page: page.number + 1), class: "button quiet small" %><% end %>
+  </nav>
+<% end %>
