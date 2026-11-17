@@ -1,0 +1,8 @@
+<% content_for :title, "Edit request" %>
+<p class="small"><%= link_to "Back to my requests", requests_path %></p>
+<h1>Edit your request for <%= @waitlist_request.course_code %></h1>
+<%= form_with url: request_path(@waitlist_request.id), method: :patch, class: "card stack main-view" do %>
+  <p class="muted small">Sections <%= @waitlist_request.section_codes %>. To change sections, withdraw this request and send a new one.</p>
+  <%= render "answer_fields", answers: @answers %>
+  <%= submit_tag "Save changes" %>
+<% end %>

@@ -30,7 +30,7 @@ RSpec.describe "When the waitlist API fails", type: :request do
     sign_in create_waitlist_user(:student)
     stub_waitlist_api(:request, id: "nope", status: 404)
 
-    get registration_request_path("nope")
+    get edit_request_path("nope")
 
     expect(response).to have_http_status(:not_found)
     expect(response.body).to include("We couldn't find that")

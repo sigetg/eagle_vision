@@ -1,0 +1,43 @@
+<% content_for :title, "My requests" %>
+<h1>My requests <span class="muted small"><%= current_term&.dig("name") %></span></h1>
+
+<% if @groups.values.all?(&:empty?) %>
+  <div class="card">You haven't sent any requests this term. <%= link_to "Find a course", courses_path %> to start one.</div>
+<% end %>
+
+<% RequestStatus::ALL.each do |status| %>
+  <% rows = @groups[status] %>
+  <h2><%= RequestStatus.label(status) %> <span class="muted small">(<%= rows.size %>)</span></h2>
+  <% if rows.empty? %>
+    <p class="muted small">None.</p>
+  <% end %>
+  <div class="stack">
+    <% rows.each do |waitlist_request| %>
+      <div class="card" id="<%= dom_id_for(waitlist_request) %>" data-controller="toggle">
+        <div class="request-card">
+          <div>
+            <strong><%= waitlist_request.course_code %></strong> <%= waitlist_request.course_title %>
+            <div class="small muted">Sections <%= waitlist_request.section_codes %> &middot; sent <%= waitlist_request.sent_at&.strftime("%B %-d") %></div>
+          </div>
+          <%= status_badge(waitlist_request.status) %>
+        </div>
+        <% if waitlist_request.decided? && waitlist_request.decision.message.present? %>
+          <div class="message"><%= waitlist_request.decision.message %></div>
+        <% end %>
+        <% if waitlist_request.waiting? %>
+          <div class="button-row" style="margin-top:10px">
+            <%= link_to "Edit", edit_request_path(waitlist_request.id), class: "button quiet small" %>
+            <button type="button" class="quiet small" data-action="toggle#toggle">Withdraw</button>
+          </div>
+          <div class="confirm" data-toggle-target="panel" hidden>
+            <p style="margin:0 0 8px">Withdraw this request? Staff will no longer see it.</p>
+            <div class="button-row">
+              <%= button_to "Withdraw", request_path(waitlist_request.id), method: :delete, class: "small" %>
+              <button type="button" class="quiet small" data-action="toggle#toggle">Keep it</button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

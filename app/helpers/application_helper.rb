@@ -39,4 +39,8 @@ module ApplicationHelper
   def status_badge(status)
     tag.span(RequestStatus.label(status), class: [ "badge", status ])
   end
+
+  def dom_id_for(waitlist_request)
+    "request-#{waitlist_request.id.to_s.parameterize}"
+  end
 end

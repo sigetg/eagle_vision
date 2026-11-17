@@ -54,8 +54,10 @@ class WaitlistRequest
   def course_title = sections.first&.courseOfferingTitle
   def course_offering_id = sections.first&.courseOfferingId
 
+  # The departments the request belongs to: those of its sections, plus the
+  # one the API listed it under, when known.
   def department_ids
-    sections.flat_map { |section| Array(section.unitsDeploymentOrgIds) }.map(&:to_s).uniq
+    (sections.flat_map { |section| Array(section.unitsDeploymentOrgIds) } + [ department_id ]).compact.map(&:to_s).uniq
   end
 
   def section_codes

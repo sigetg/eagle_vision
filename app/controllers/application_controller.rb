@@ -39,9 +39,9 @@ class ApplicationController < ActionController::Base
     session[:term] ||= current_viewer.terms.first
   end
 
-  # Each role's pages. These move to the rebuilt screens PR by PR.
+  # Each role's pages.
   def student_home_path = courses_path
-  def my_requests_home_path = registration_requests_path
+  def my_requests_home_path = requests_path
   def staff_home_path = staff_requests_path
   def staff_courses_home_path = courses_path
 

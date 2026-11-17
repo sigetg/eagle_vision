@@ -40,6 +40,16 @@ RSpec.describe "Staff request page and decisions", type: :request do
     expect(response.body).to include("Accepted", "Reopen", "decision_panel")
   end
 
+  it "falls back to the course's sections when the API can't find a section by id" do
+    stub_waitlist_api(:activity_offering, id: "ao-lec-01", status: 404)
+    stub_waitlist_api(:course_offerings, query: { termId: term_id, code: "" }, fixture: "course_offerings")
+
+    get staff_request_path("req-1")
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("Lecture 01", "30 / 30")
+  end
+
   it "emails the student after a decision" do
     stub_waitlist_api(:update_request, id: "req-1", fixture: "updated_request")
     stub_waitlist_api(:change_state, id: "req-1", state: declined)
@@ -92,6 +102,7 @@ RSpec.describe "Staff request page and decisions", type: :request do
     other_dept = JSON.parse(waitlist_fixture("activity_offering"))
     other_dept["activityOffering"]["unitsDeploymentOrgIds"] = [ "dept-math" ]
     stub_request(:get, waitlist_api_url(:activity_offering, id: "ao-lec-01")).to_return(body: other_dept.to_json)
+    stub_request(:get, waitlist_api_url(:requests)).with(query: { termId: term_id, deptId: "dept-cs" }).to_return(body: "[]")
 
     get staff_request_path("req-1")
 

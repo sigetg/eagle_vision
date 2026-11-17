@@ -55,15 +55,11 @@ class RequestQueue
     sort == "newest" ? rows.reverse : rows
   end
 
-  def fill_in(rows)
+  # Names and sections for the rows on screen. sections_for is the
+  # controller's (WaitlistRequestLoading), passed in as a block.
+  def fill_in(rows, &sections_for)
     fill_in_names(rows)
-    rows.each do |waitlist_request|
-      waitlist_request.sections = waitlist_request.section_ids.filter_map do |section_id|
-        @api.fetch_and_map_waitlistactivityofferings(section_id)
-      rescue ApiService::NotFound
-        nil
-      end
-    end
+    rows.each { |waitlist_request| waitlist_request.sections = sections_for.call(waitlist_request) }
   end
 
   private

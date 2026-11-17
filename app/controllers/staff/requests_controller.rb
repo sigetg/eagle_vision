@@ -11,7 +11,7 @@ module Staff
       @rows = @queue.filter(status: @status, department_id: params[:department], course_code: params[:course],
                             student: params[:student], sort: params[:sort])
       @page, @rows = paginate_array(@rows, per_page: RequestQueue::PER_PAGE)
-      @queue.fill_in(@rows)
+      @queue.fill_in(@rows) { |waitlist_request| sections_for(waitlist_request) }
     end
 
     def show

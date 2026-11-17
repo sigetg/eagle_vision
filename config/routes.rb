@@ -4,11 +4,6 @@ Rails.application.routes.draw do
     resources :requests, only: %i[ new create ]
   end
 
-  resources :registration_requests do
-    get "show_with_params", on: :member
-  end
-  # resources :registration_request_items
-
   # login routes
   devise_for :users, controllers: {
     registrations: "users/registrations",
@@ -16,8 +11,8 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
-  # My requests (rebuilt in PR 10).
-  get "requests", to: "registration_requests#index", as: :requests
+  # My requests: a student's own requests, with Edit and Withdraw.
+  resources :requests, only: %i[ index edit update destroy ]
 
   namespace :staff do
     resources :requests, only: %i[ index show ] do
