@@ -40,6 +40,15 @@ RSpec.describe "Staff request page and decisions", type: :request do
     expect(response.body).to include("Accepted", "Reopen", "decision_panel")
   end
 
+  it "emails the student after a decision" do
+    stub_waitlist_api(:update_request, id: "req-1", fixture: "updated_request")
+    stub_waitlist_api(:change_state, id: "req-1", state: declined)
+
+    expect {
+      post staff_request_decision_path("req-1"), params: { decision: "decline", message: "Sorry." }
+    }.to have_enqueued_mail(DecisionMailer, :decided)
+  end
+
   it "refuses to decline without a message" do
     change = stub_waitlist_api(:change_state, id: "req-1", state: declined)
 

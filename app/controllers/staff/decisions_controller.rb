@@ -21,7 +21,19 @@ module Staff
 
     private
 
-    # PR 7 emails the student here.
-    def after_decision(_status); end
+    # Emails the student (E1). deliver_later sends it from a background job,
+    # so the page doesn't wait on the mail server.
+    def after_decision(status)
+      department = current_viewer.departments.find { |d| @waitlist_request.department_ids.include?(d.id.to_s) }
+      DecisionMailer.with(
+        to: student_email, status: status.to_s, course_code: @waitlist_request.course_code,
+        sections: @waitlist_request.section_codes, message: @waitlist_request.decision.message,
+        department: department&.longName
+      ).decided.deliver_later
+    end
+
+    def student_email
+      User.find_by(person_id: @waitlist_request.student_id)&.email || "#{@waitlist_request.student_id}@bc.edu"
+    end
   end
 end

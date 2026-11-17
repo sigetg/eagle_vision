@@ -1,0 +1,12 @@
+Hello,
+
+Your waitlist request for <%= @course_code %> (sections <%= @sections %>) <%= DecisionMailer::SUBJECT_WORDS.fetch(@status) %>.
+<% if @message.present? %>
+
+A message from <%= @department || "the department" %>:
+<%= @message %>
+<% end %>
+
+View my requests: <%= requests_url %>
+
+Sent by Eagle Vision for <%= @department || "your department" %>. This inbox isn't read; reply to your department instead.

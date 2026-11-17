@@ -1,0 +1,14 @@
+<p>Hello,</p>
+<p>
+  Your waitlist request for <strong><%= @course_code %></strong> (sections <%= @sections %>)
+  <% if @status == :accepted %>was <strong>accepted</strong>. Register for the section in EagleApps.
+  <% elsif @status == :declined %>was <strong>declined</strong>.
+  <% else %>was <strong>reopened</strong>. It is waiting for a decision again.
+  <% end %>
+</p>
+<% if @message.present? %>
+  <p>A message from <%= @department || "the department" %>:</p>
+  <blockquote style="border-left:3px solid #b29d6c;margin:0;padding:6px 12px;"><%= @message %></blockquote>
+<% end %>
+<p><a href="<%= requests_url %>" style="display:inline-block;background:#8a100b;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;">View my requests</a></p>
+<p style="color:#6b625c;font-size:12px;">Sent by Eagle Vision for <%= @department || "your department" %>. This inbox isn't read; reply to your department instead.</p>

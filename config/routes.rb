@@ -18,6 +18,9 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
+  # My requests (rebuilt in PR 10).
+  get "requests", to: "registration_requests#index", as: :requests
+
   namespace :staff do
     resources :requests, only: %i[ index show ] do
       resource :decision, only: :create
