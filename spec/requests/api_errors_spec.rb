@@ -10,6 +10,7 @@ RSpec.describe "When the waitlist API fails", type: :request do
     stub_request(:get, waitlist_api_url(:person, id: "90000001")).to_raise(Errno::ECONNREFUSED)
 
     get root_path
+    follow_redirect!
 
     expect(response).to have_http_status(:service_unavailable)
     expect(response.body).to include("The course system isn't responding")
@@ -20,6 +21,7 @@ RSpec.describe "When the waitlist API fails", type: :request do
     stub_request(:get, waitlist_api_url(:person, id: "90000001")).to_timeout
 
     get root_path
+    follow_redirect!
 
     expect(response).to have_http_status(:service_unavailable)
   end

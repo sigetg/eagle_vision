@@ -13,7 +13,8 @@ class ApplicationController < ActionController::Base
   rescue_from ApiService::NotFound, with: :render_not_found
   rescue_from Pundit::NotAuthorizedError, with: :render_forbidden
 
-  helper_method :current_viewer, :current_term
+  helper_method :current_viewer, :current_term, :student_home_path, :staff_home_path,
+                :staff_courses_home_path, :my_requests_home_path
 
   def set_api_service
     @api_service ||= ApiService.new
@@ -35,8 +36,14 @@ class ApplicationController < ActionController::Base
   def pundit_user = current_viewer
 
   def current_term
-    session[:term]
+    session[:term] ||= current_viewer.terms.first
   end
+
+  # Each role's pages. These move to the rebuilt screens PR by PR.
+  def student_home_path = course_offerings_path
+  def my_requests_home_path = registration_requests_path
+  def staff_home_path = registration_requests_path
+  def staff_courses_home_path = course_offerings_path
 
   private
 

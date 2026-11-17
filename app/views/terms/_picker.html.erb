@@ -1,0 +1,8 @@
+<% terms = current_viewer_terms %>
+<% if terms.any? %>
+  <%= form_with url: term_path, method: :patch, data: { controller: "autosubmit", turbo: false } do |f| %>
+    <%= hidden_field_tag :return_to, request.fullpath %>
+    <%= f.select :term_id, terms.map { |term| [ term["name"], term["id"] ] }, { selected: current_term&.dig("id") },
+                 data: { action: "autosubmit#submit" }, "aria-label": "Term" %>
+  <% end %>
+<% end %>

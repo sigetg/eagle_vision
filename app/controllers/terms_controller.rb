@@ -1,29 +1,17 @@
+# The term picker in the top bar posts here. One route for every page: it
+# saves the chosen term in the session and goes back where it came from.
 class TermsController < ApplicationController
-  before_action :set_person_and_terms
-  before_action { authorize :term, :update? }
-
-  def terms_dropdown
-    if session[:term].nil?
-      session[:term] = @terms[0]
-    end
-    respond_to do |format|
-      format.html { render partial: "terms_dropdown", layout: false }
-      format.json { render json: @terms }
-      format.turbo_stream
-    end
+  def update
+    authorize :term, :update?
+    term = current_viewer.terms.find { |candidate| candidate["id"] == params[:term_id] }
+    session[:term] = term if term
+    redirect_to safe_return_path
   end
 
-  def set_term
-    if params[:term_index]
-      session[:term] = @terms[params[:term_index].to_i]
-    end
-    redirect_to controller: "course_offerings", action: "index", term_id: @terms[params[:term_index].to_i]["id"], term_name: @terms[params[:term_index].to_i]["name"]
-  end
+  private
 
-  def set_term_reg_requests
-    if params[:term_index]
-      session[:term] = @terms[params[:term_index].to_i]
-    end
-    redirect_to controller: "registration_requests", action: "index", term_id: @terms[params[:term_index].to_i]["id"], term_name: @terms[params[:term_index].to_i]["name"]
+  def safe_return_path
+    path = params[:return_to].to_s
+    path.start_with?("/") && !path.start_with?("//") ? path : root_path
   end
 end

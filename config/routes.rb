@@ -18,11 +18,9 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
-  resources :terms
-  post "set_term", to: "terms#set_term", as: :set_term
-  post "set_term_reg_requests", to: "terms#set_term_reg_requests", as: :set_term_reg_requests
-  get "terms_dropdown", to: "terms#terms_dropdown", as: :terms_dropdown
+  # The term picker in the top bar.
+  resource :term, only: :update
 
-  # Defines the root path route ("/")
-  root "course_offerings#index"
+  # Each role lands on its own home page.
+  root "home#show"
 end
