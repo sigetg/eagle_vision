@@ -8,7 +8,7 @@ This app was built in 2023 to 2024 and is being rebuilt in public, one pull requ
 
 ## Stack
 
-- Rails 7.0 on Ruby 3.2 (the upgrade to Rails 8 and Ruby 3.4 is the next PR)
+- Rails 8.1 on Ruby 3.4
 - Postgres for user accounts
 - Devise for sign-in, with optional Google sign-in
 - HTTParty for calls to the waitlist API, all in `app/services/api_service.rb`
@@ -21,7 +21,7 @@ You need three things running: Postgres, BC's waitlist API, and the Rails app.
 
 ### 1. Ruby and Postgres
 
-Install Ruby 3.2.2 (the repo's `.ruby-version`; [mise](https://mise.jdx.dev) or rbenv will pick it up) and Postgres. The app connects to Postgres as your local user. To use something else, set `DATABASE_URL`, for example `DATABASE_URL=postgres://me:secret@localhost:5432`.
+Install Ruby 3.4.12 (the repo's `.ruby-version`; [mise](https://mise.jdx.dev) or rbenv will pick it up) and Postgres. The app connects to Postgres as your local user. To use something else, set `DATABASE_URL`, for example `DATABASE_URL=postgres://me:secret@localhost:5432`.
 
 ```sh
 bundle install

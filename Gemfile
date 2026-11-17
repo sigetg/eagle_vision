@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.4.12"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.3"
+gem "rails", "~> 8.1.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -79,18 +79,13 @@ group :test do
 end
 
 # devise and google oauth
-gem "devise", "~> 4.9"
+gem "devise", "~> 5.0"
 gem "omniauth"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection", "~> 1.0"
 
-gem "activeresource", "~> 6.0"
 
 gem "rolify", "~> 6.0"
 gem "httparty", "~> 0.22"
 
 gem "hash_to_struct", "~> 1.0"
-
-# Rails 7.0 calls JSON.generate with a quirks_mode: option that json 3 removed.
-# RuboCop pulls in the newest json, so hold it below 3 until the Rails 8 upgrade.
-gem "json", "< 3"
