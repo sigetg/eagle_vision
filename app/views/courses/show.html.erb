@@ -1,0 +1,57 @@
+<% content_for :title, @course.courseOfferingCode %>
+<p class="small"><%= link_to "Back to courses", courses_path %></p>
+<div class="card stack">
+  <h1><%= @course.courseOfferingCode %> <%= @course.courseOfferingTitle %></h1>
+  <div class="card-meta">
+    <span><%= course_credits(@course) %></span>
+    <span>Grading: <%= course_gradings(@course).join(", ") %></span>
+    <span><%= current_term&.dig("name") %></span>
+  </div>
+  <div><%= course_description(@course) %></div>
+</div>
+
+<h2>Sections</h2>
+<div class="table-wrap">
+  <table class="list">
+    <thead><tr><th>Sections</th><th>When and where</th><th>Instructor</th><th>Seats</th><th></th></tr></thead>
+    <tbody>
+      <% @options.each do |option| %>
+        <tr>
+          <td><% option.sections.each do |section| %><div><%= section.kind %> <%= section.activityCode %></div><% end %>
+            <% if option.gradings.size > 1 %><span class="muted small"><%= option.gradings.join(" or ") %></span><% end %></td>
+          <td><% option.sections.each do |section| %><div><%= section.schedule.time_text %> <span class="muted small"><%= section.schedule.room %></span></div><% end %></td>
+          <td><%= option.sections.flat_map(&:instructor_names).uniq.join(", ").presence || "TBA" %></td>
+          <td><% option.sections.each do |section| %><div><%= render "shared/seats", section: section %></div><% end %></td>
+          <td>
+            <span class="badge <%= option.full? ? "full" : "open" %>"><%= option.full? ? "Full" : "Open" %></span>
+            <% if policy(:course).request_spot? %>
+              <div style="margin-top:6px"><%= link_to "Request a spot", new_spot_request_path(@course, option), class: ["button", "small", ("secondary" if option.open?)] %></div>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @options.empty? %><tr><td colspan="5" class="muted">No sections are listed for this course.</td></tr><% end %>
+    </tbody>
+  </table>
+</div>
+
+<% if @requests %>
+  <h2 id="requests">Requests</h2>
+  <% if @requests.empty? %>
+    <div class="card muted">No requests for this course yet.</div>
+  <% else %>
+    <table class="list">
+      <thead><tr><th>Student</th><th>Sections</th><th>Status</th><th>Sent</th></tr></thead>
+      <tbody>
+        <% @requests.each do |waitlist_request| %>
+          <tr>
+            <td><%= link_to waitlist_request.student_name, staff_request_path(waitlist_request.id) %></td>
+            <td><%= waitlist_request.section_codes %></td>
+            <td><%= status_badge(waitlist_request.status) %></td>
+            <td><%= waitlist_request.sent_at&.strftime("%b %-d") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>

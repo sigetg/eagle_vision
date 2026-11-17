@@ -40,10 +40,10 @@ class ApplicationController < ActionController::Base
   end
 
   # Each role's pages. These move to the rebuilt screens PR by PR.
-  def student_home_path = course_offerings_path
+  def student_home_path = courses_path
   def my_requests_home_path = registration_requests_path
   def staff_home_path = staff_requests_path
-  def staff_courses_home_path = course_offerings_path
+  def staff_courses_home_path = courses_path
 
   private
 

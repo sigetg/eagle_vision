@@ -257,7 +257,12 @@ class ApiService
 
   def fetch_and_map_waitlistregistrationgroups(course_offering_id)
     response = http(:get, "/waitlistregistrationgroups?courseOfferingId=#{course_offering_id}")
+    # Some courses make the API answer 500; treat them as having no sections.
+    return [] unless response.code == 200
+
     api_data = JSON.parse(response.body)
+    return [] unless api_data.is_a?(Array)
+
     # returns an array of registration groups each with associated activity offerings
     api_data.map { |api_item| self.class.map_to_registration_group(api_item) }
   end

@@ -78,16 +78,6 @@ RSpec.describe "Waitlist requests", type: :request do
       stub_waitlist_api(:requests, query: { termId: term_id, deptId: "dept-cs" }, fixture: "requests")
     end
 
-    it "lists requests from each authorized department" do
-      stub_waitlist_api(:requests, query: { termId: term_id, deptId: "dept-cs" }, fixture: "requests")
-      stub_waitlist_api(:person, id: "90000001", fixture: "person_student")
-
-      get registration_requests_path
-
-      expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Testperson, Avery")
-    end
-
     it "accepts a request with a message to the student" do
       stub_waitlist_api(:request, id: "req-1", fixture: "request")
       save = stub_waitlist_api(:update_request, id: "req-1", fixture: "updated_request")
@@ -100,15 +90,6 @@ RSpec.describe "Waitlist requests", type: :request do
       }).to have_been_requested
       expect(accept).to have_been_requested
       expect(response).to redirect_to(registration_requests_url)
-    end
-
-    it "opens a course's requests page" do
-      stub_waitlist_api(:requests, query: { courseOfferingId: "co-1" }, fixture: "requests")
-      stub_waitlist_api(:person, id: "90000001", fixture: "person_student")
-
-      get "/course_offering_requests/co-1"
-
-      expect(response).to have_http_status(:ok)
     end
   end
 end

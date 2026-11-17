@@ -1,0 +1,74 @@
+<% content_for :title, "Courses" %>
+<h1><%= current_user.staff? ? "Courses" : "Find courses" %> <span class="muted small"><%= current_term&.dig("name") %></span></h1>
+
+<div class="sidebar-layout" data-controller="toggle">
+  <aside>
+    <button type="button" class="quiet small filters-toggle" data-action="toggle#toggle">Filters</button>
+    <%= form_with url: courses_path, method: :get, id: "course-filters", class: "card filters-panel", data: { toggle_target: "panel", controller: "autosubmit", turbo_frame: "results", turbo_action: "advance" } do %>
+      <%= hidden_field_tag :q, params[:q] %>
+      <fieldset>
+        <legend>Department</legend>
+        <%= select_tag :department, options_for_select([ [ "All", "" ] ] + @catalog.departments, params[:department]), data: { action: "autosubmit#submit" } %>
+      </fieldset>
+      <fieldset>
+        <legend>Level</legend>
+        <% CourseCatalog::LEVELS.each do |level| %>
+          <label class="check"><%= radio_button_tag :level, level, params[:level] == level, data: { action: "autosubmit#submit" } %> <%= level %></label>
+        <% end %>
+        <label class="check"><%= radio_button_tag :level, "", params[:level].blank?, data: { action: "autosubmit#submit" } %> Any</label>
+      </fieldset>
+      <fieldset>
+        <legend>Days</legend>
+        <div class="button-row">
+          <% CourseCatalog::DAYS.each do |day| %>
+            <label class="check"><%= check_box_tag "days[]", day, Array(params[:days]).include?(day), id: "day-#{day}", data: { action: "autosubmit#submit" } %> <%= day %></label>
+          <% end %>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Time of day</legend>
+        <%= select_tag :time, options_for_select([ [ "Any time", "" ] ] + CourseCatalog::TIMES.map { |key, (label, *)| [ label, key ] }, params[:time]), data: { action: "autosubmit#submit" } %>
+      </fieldset>
+      <fieldset>
+        <legend>Professor</legend>
+        <%= search_field_tag :professor, params[:professor], placeholder: "Last name", data: { action: "input->autosubmit#submit" } %>
+      </fieldset>
+      <label class="check"><%= check_box_tag :open, "1", params[:open] == "1", data: { action: "autosubmit#submit" } %> Has open seats</label>
+      <% if current_user.staff? %>
+        <label class="check"><%= check_box_tag :waiting, "1", params[:waiting] == "1", data: { action: "autosubmit#submit" } %> Has waiting requests</label>
+      <% end %>
+    <% end %>
+  </aside>
+
+  <section>
+    <%= form_with url: courses_path, method: :get, class: "filters-row", data: { turbo_frame: "results", turbo_action: "advance" } do %>
+      <% request.query_parameters.except("q", "page").each do |key, value| %>
+        <% Array(value).each do |v| %><%= hidden_field_tag(value.is_a?(Array) ? "#{key}[]" : key, v, id: nil) %><% end %>
+      <% end %>
+      <div style="flex:1"><%= search_field_tag :q, params[:q], placeholder: "Search by code or title, like CSCI1101 or Biology", "aria-label": "Search" %></div>
+      <%= submit_tag "Search", name: nil %>
+    <% end %>
+
+    <%= turbo_frame_tag "results", data: { turbo_action: "advance" } do %>
+      <div class="results-head"><span class="muted"><%= pluralize(@page.total, "course") %></span></div>
+      <div class="stack">
+        <% @courses.each do |course| %>
+          <%= link_to course_path(course.id), class: "card course-card", data: { turbo_frame: "_top" } do %>
+            <div class="button-row" style="justify-content:space-between">
+              <span><span class="code"><%= course.courseOfferingCode %></span> <strong><%= course.courseOfferingTitle %></strong></span>
+              <span class="card-meta">
+                <% if current_user.staff? %><span class="badge waiting"><%= @waiting_counts[course.courseOfferingCode].to_i %> waiting</span><% end %>
+                <% summary = @catalog.seats_summary(course) %>
+                <% if summary %><span class="badge <%= summary == "Full" ? "full" : "open" %>"><%= summary %></span><% end %>
+              </span>
+            </div>
+            <p><%= plain_description(course) %></p>
+            <div class="card-meta"><span><%= course_credits(course) %></span></div>
+          <% end %>
+        <% end %>
+        <% if @courses.empty? %><div class="card muted">No courses match these filters.</div><% end %>
+      </div>
+      <%= render "shared/pagination", page: @page %>
+    <% end %>
+  </section>
+</div>

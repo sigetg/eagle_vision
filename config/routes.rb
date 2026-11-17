@@ -1,14 +1,10 @@
 Rails.application.routes.draw do
-  # course offerings routes
-  get "/search", to: "course_offerings#search"
-  resources :course_offerings do
-    get "/registration_groups", to: "registration_groups#index"
-  end
+  # Find courses and the course page, for both roles.
+  resources :courses, only: %i[ index show ]
 
   resources :registration_requests do
     get "show_with_params", on: :member
   end
-  get "/course_offering_requests/:course_offering_id", to: "registration_requests#course_offering_requests"
   # resources :registration_request_items
 
   # login routes
@@ -25,7 +21,7 @@ Rails.application.routes.draw do
     resources :requests, only: %i[ index show ] do
       resource :decision, only: :create
     end
-    get "courses/:course_offering_id/requests", to: redirect { |params, _| "/course_offering_requests/#{params[:course_offering_id]}" },
+    get "courses/:course_offering_id/requests", to: redirect { |params, _| "/courses/#{params[:course_offering_id]}#requests" },
                                                  as: :course_requests
   end
 
