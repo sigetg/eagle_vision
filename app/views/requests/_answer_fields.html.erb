@@ -1,0 +1,17 @@
+<% if answers.errors.any? %>
+  <div class="errors"><% answers.errors.full_messages.each do |message| %><div><%= message %></div><% end %></div>
+<% end %>
+<div class="field">
+  <%= label_tag "answers_class_year", "Class year" %>
+  <%= select_tag "answers[class_year]", options_for_select([ [ "Choose one", "" ] ] + RequestAnswers::CLASS_YEARS, answers.class_year), id: "answers_class_year" %>
+</div>
+<div class="field">
+  <%= label_tag "answers_major", "Major" %>
+  <%= text_field_tag "answers[major]", answers.major, id: "answers_major" %>
+</div>
+<div class="field" data-controller="counter" data-counter-max-value="<%= RequestAnswers::REASON_LIMIT %>">
+  <%= label_tag "answers_reason", "Why do you need this course?" %>
+  <%= text_area_tag "answers[reason]", answers.reason, id: "answers_reason", maxlength: RequestAnswers::REASON_LIMIT,
+                    data: { counter_target: "input", action: "input->counter#update" } %>
+  <div class="counter" data-counter-target="output"></div>
+</div>

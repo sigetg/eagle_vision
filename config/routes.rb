@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   # Find courses and the course page, for both roles.
-  resources :courses, only: %i[ index show ]
+  resources :courses, only: %i[ index show ] do
+    resources :requests, only: %i[ new create ]
+  end
 
   resources :registration_requests do
     get "show_with_params", on: :member

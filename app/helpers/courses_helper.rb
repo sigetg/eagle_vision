@@ -21,9 +21,9 @@ module CoursesHelper
                                  .map { |id| GRADING_WORDS[id.to_s.split(".").last] || id.to_s.split(".").last.titleize }.uniq
   end
 
-  # Where "Request a spot" goes. PR 9 replaces this with the new form.
-  def new_spot_request_path(_course, option)
-    new_registration_request_path(registration_group_id: option.group_id, activity_offering_ids: option.sections.map(&:id).join(" "))
+  # Where "Request a spot" goes: the request form for that row.
+  def new_spot_request_path(course, option)
+    new_course_request_path(course.id, group: option.group_id)
   end
 
   def filter_query(overrides = {})

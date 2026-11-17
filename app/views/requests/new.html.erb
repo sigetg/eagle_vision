@@ -1,0 +1,43 @@
+<% content_for :title, "Request a spot in #{@course.courseOfferingCode}" %>
+<p class="small"><%= link_to "Back to #{@course.courseOfferingCode}", course_path(@course.id) %></p>
+<h1>Request a spot in <%= @course.courseOfferingCode %> <%= @course.courseOfferingTitle %></h1>
+
+<div class="grid-2">
+  <%= form_with url: course_requests_path(@course.id), method: :post, class: "card stack" do %>
+    <%= hidden_field_tag :group, @option.group_id %>
+    <%= render "answer_fields", answers: @answers %>
+    <% if @option.gradings.size > 1 %>
+      <fieldset>
+        <legend>Grading</legend>
+        <% @option.gradings.each do |grading| %>
+          <label class="check"><%= radio_button_tag "answers[grading]", grading, @answers.grading == grading %> <%= grading %></label>
+        <% end %>
+      </fieldset>
+    <% end %>
+    <fieldset>
+      <legend>Sections you would accept</legend>
+      <% @options.each do |option| %>
+        <label class="check">
+          <%= check_box_tag "group_ids[]", option.group_id, @accepted_group_ids.include?(option.group_id), id: "group-#{option.group_id}" %>
+          <%= option.codes %> <span class="muted small"><%= option.sections.map { |s| s.schedule.time_text }.join("; ") %></span>
+          <span class="badge <%= option.full? ? "full" : "open" %>"><%= option.full? ? "Full" : "Open" %></span>
+        </label>
+      <% end %>
+    </fieldset>
+    <%= submit_tag "Send request" %>
+  <% end %>
+
+  <aside class="card stack">
+    <h3>You chose</h3>
+    <% @option.sections.each do |section| %>
+      <div>
+        <strong><%= section.kind %> <%= section.activityCode %></strong>
+        <div class="small"><%= section.schedule.time_text %> <span class="muted"><%= section.schedule.room %></span></div>
+        <%= render "shared/seats", section: section %>
+      </div>
+    <% end %>
+    <% if @option.sections.any? { |section| !section.full? } %>
+      <div class="notice-open">Seats are open in this section. You can register in EagleApps now. Send a request only if EagleApps won't let you in.</div>
+    <% end %>
+  </aside>
+</div>
