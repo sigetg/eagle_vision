@@ -99,7 +99,6 @@ RSpec.describe "Waitlist requests", type: :request do
     end
 
     it "opens a course's requests page" do
-      pending "George's fix in this PR: the action needs set_person_and_terms, or @terms is nil"
       stub_waitlist_api(:requests, query: { courseOfferingId: "co-1" }, fixture: "requests")
       stub_waitlist_api(:person, id: "90000001", fixture: "person_student")
 

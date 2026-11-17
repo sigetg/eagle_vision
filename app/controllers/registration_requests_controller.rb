@@ -1,6 +1,6 @@
 class RegistrationRequestsController < ApplicationController
   before_action :set_api_service
-  before_action :set_person_and_terms, only: %i[ create index]
+  before_action :set_person_and_terms, only: %i[ create index course_offering_requests ]
 
   # GET /registration_requests or /registration_requests.json
   def index
